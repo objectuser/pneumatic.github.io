@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Quick Intro &mdash; Pneumatic.IO 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Pneumatic.IO 0.1 documentation" href="index.html" />
+    <link rel="next" title="Background (you can skip this)" href="about.html" />
+    <link rel="prev" title="Pneumatic.IO" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="about.html" title="Background (you can skip this)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Pneumatic.IO"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pneumatic.IO 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quick-intro">
+<h1>Quick Intro<a class="headerlink" href="#quick-intro" title="Permalink to this headline">¶</a></h1>
+<p>Pneumatic.IO is a fresh approach to ETL and structured IO. It&#8217;s a development platform, but little to no programming is required. This section provides a preview of Pneumatic. The concepts referenced here will be explained in the rest of this guide, but this section should provide a flavor of what it&#8217;s all about.</p>
+<p>Pneumatic is declarative, using an XML markup  based on Spring&#8217;s support for extensible markup. I hope in the future there will be a GUI for creating Pneumatic jobs. But for now, the XML provides a proof of concept that still makes creating ETL jobs really easy. There might be, however, a conceptual hurdle of understanding how Spring declares beans.</p>
+<p>As a quick example, reading from a file and writing to a database might look like this (omitting some boilerplate XML):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;jdbc:embedded-database id=&quot;dataSource&quot; type=&quot;HSQL&quot;&gt;
+        &lt;jdbc:script location=&quot;classpath:db-schema.sql&quot; /&gt;
+        &lt;jdbc:script location=&quot;classpath:db-test-data.sql&quot; /&gt;
+&lt;/jdbc:embedded-database&gt;
+
+&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
+        &lt;etl:fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
+        &lt;etl:output ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/etl:fileReader&gt;
+
+&lt;etl:databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;etl:insertInto table-name=&quot;mtb&quot; /&gt;
+&lt;/etl:databaseWriter&gt;
+</pre></div>
+</div>
+<p>In this guide, configuration elements are indicated by their &#8220;IDs&#8221; (identifiers). The ID needs to be unique across all the files in your jobs.  An example of an ID is the first declaration (<code class="docutils literal"><span class="pre">id=&quot;dataSource&quot;</span></code>). This refers to a Spring embedded data source. A data source is an object that provides connections to a database like Oracle, SQL Server, MySQL, etc.</p>
+<p>Next is a schema declaration (<code class="docutils literal"><span class="pre">id=&quot;mtbSchema&quot;</span></code>)  used to declare the structure of records in the job. A pipe (<code class="docutils literal"><span class="pre">id=&quot;fileReaderOutput&quot;</span></code>) provides a conduit for records, connecting one processing element (called &#8220;filters&#8221;) to another.</p>
+<p>A file reader (<code class="docutils literal"><span class="pre">id=&quot;fileReader&quot;</span></code>) is a filter that reads a file, creating records and sending them to the pipe referenced in its &#8220;output&#8221;. The file reader has an output (<code class="docutils literal"><span class="pre">etl:output</span> <span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), which refers (using the <code class="docutils literal"><span class="pre">ref</span></code> keyword) to the <code class="docutils literal"><span class="pre">fileReaderOutput</span></code> pipe. This guide will often just use the reference portion of an element when describing it (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>).</p>
+<p>A database writer (<code class="docutils literal"><span class="pre">id=&quot;databaseWriter&quot;</span></code>) writes records from the pipe referenced in its <code class="docutils literal"><span class="pre">input</span></code> to a table available in the data source (the <code class="docutils literal"><span class="pre">mtb</span></code> table in this case). Don&#8217;t be confused by the input to the database writer referencing a pipe called <code class="docutils literal"><span class="pre">fileReaderOutput</span></code>: pipes connect the output of one filter to the input of another filter. Pipes are often declared near the filter that is writing to them and so are named according to that relationship. A pipe could also be named something like <code class="docutils literal"><span class="pre">fileReaderToDatabaseWriterPipe</span></code>. You can use any convention you like.</p>
+<p>Declaring these elements provides Pneumatic enough information to read all the records in the file and write them to the database. When there are no more records to process, Pneumatic shuts down. That&#8217;s it.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Pneumatic.IO</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="about.html"
+                        title="next chapter">Background (you can skip this)</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/quick-intro.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="about.html" title="Background (you can skip this)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Pneumatic.IO"
+             >previous</a> |</li>
+        <li><a href="index.html">Pneumatic.IO 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Kevin Lewis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

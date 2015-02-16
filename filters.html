@@ -1,0 +1,387 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Filters &mdash; Pneumatic.IO 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Pneumatic.IO 0.1 documentation" href="index.html" />
+    <link rel="next" title="Testing" href="testing.html" />
+    <link rel="prev" title="Current State" href="overview.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="testing.html" title="Testing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Current State"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Pneumatic.IO 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="filters">
+<h1>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h1>
+<p>Filters are where the action is. Filters perform the processing in a job. There are filters that perform basic IO with files, databases, RESTful end points, etc. There are also filters for joining data sources, transforming it, converting data types, etc.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="filter-reference">
+<h2>Filter Reference<a class="headerlink" href="#filter-reference" title="Permalink to this headline">¶</a></h2>
+<p>This section provides a reference for the available filter types.</p>
+<div class="section" id="aggregator">
+<h3>Aggregator<a class="headerlink" href="#aggregator" title="Permalink to this headline">¶</a></h3>
+<p>The aggregator filter has a single input pipe. It has two output pipes: the normal output with the unchanged input record and the aggregator output to which the aggregator&#8217;s function is applied. The normal output is not required for an aggregator: rather it is a convenience to the developer. The aggregator output is, however, required, as that represents the purpose of the aggregator.</p>
+<p>Records are written to the normal output as each record is processed. Records are written to the aggregator output only after all input records have been processed.</p>
+</div>
+<div class="section" id="copy">
+<h3>Copy<a class="headerlink" href="#copy" title="Permalink to this headline">¶</a></h3>
+<p>The copy filter has a single input pipe. It may have any number of output pipes. Each record on the input is written to each output:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;copyOutput1&quot; /&gt;
+&lt;etl:pipe id=&quot;copyOutput2&quot; /&gt;
+&lt;etl:copy id=&quot;copy&quot; name=&quot;Test Copy&quot;&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:output ref=&quot;copyOutput1&quot; /&gt;
+        &lt;etl:output ref=&quot;copyOutput2&quot; /&gt;
+&lt;/etl:copy&gt;
+</pre></div>
+</div>
+<p>In this example, the records from the input (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>) are sent, unaltered, to both outputs (<code class="docutils literal"><span class="pre">ref=&quot;copyOutput1&quot;</span></code>, <code class="docutils literal"><span class="pre">ref=&quot;copyOutput2&quot;</span></code>).</p>
+</div>
+<div class="section" id="database-lookup">
+<h3>Database Lookup<a class="headerlink" href="#database-lookup" title="Permalink to this headline">¶</a></h3>
+<p>The database lookup filter enables lookups to a database based on its single input. The input and lookup results may be combined for its single output.</p>
+<p>The following are the key elements of the database lookup filter:</p>
+<ol class="arabic simple">
+<li>dataSource - The DataSource that provides connections to the database that provides the lookup data.</li>
+<li>outputSchema - This is the schema that defines the output records. The filter uses the column definitions on this schema to select values from either input record values or the results of the lookup. The selection is based on the names of the inputs.</li>
+<li>lookup - The lookup element composes the SQL for the lookup and its parameters.  The parameters use SpEL and may reference the input record (inputRecord) as a variable.</li>
+</ol>
+<p>It is important to avoid name collisions to ensure the results are as expected. Use aliasing on the select statement if needed to ensure those columns do not conflict with those on the input schema. Alternatively, use a mapper filter to change the schema of the input before it comes into this filter.</p>
+<p>Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;databaseLookupOutput&quot; /&gt;
+&lt;etl:databaseLookup id=&quot;databaseLookup&quot; name=&quot;Database Lookup&quot;&gt;
+        &lt;etl:input ref=&quot;mapperOutput&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;mapperMtbSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;databaseLookupOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;lookupSchema&quot; /&gt;
+        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;etl:lookup&gt;
+                &lt;etl:sql&gt;
+                        select year, cost from mtb where name = ?
+                &lt;/etl:sql&gt;
+                &lt;etl:parameter value=&quot;#inputRecord.name&quot; /&gt;
+        &lt;/etl:lookup&gt;
+&lt;/etl:databaseLookup&gt;
+</pre></div>
+</div>
+<p>The data source reference (<code class="docutils literal"><span class="pre">id=&quot;dataSource&quot;</span></code>) is an object of type <code class="docutils literal"><span class="pre">javax.sql.DataSource</span></code>.  It might be defined like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;jdbc:embedded-database id=&quot;dataSource&quot; type=&quot;HSQL&quot;&gt;
+        &lt;jdbc:script location=&quot;classpath:db-schema.sql&quot; /&gt;
+        &lt;jdbc:script location=&quot;classpath:db-test-data.sql&quot; /&gt;
+&lt;/jdbc:embedded-database&gt;
+</pre></div>
+</div>
+<p>The lookup element contains the SQL to use for the lookup and any parameters it might have. Parameters are identified by a question mark. The values are specified by the parameter tag and filled in order.</p>
+<p>The parameters tag may use expressions. Variables available in the expression include the input record (inputRecord) and the job parameters (job).</p>
+</div>
+<div class="section" id="database-reader">
+<h3>Database Reader<a class="headerlink" href="#database-reader" title="Permalink to this headline">¶</a></h3>
+<p>A database reader reads records from a database identified by a data source. A SQL select statement is used to select the desired records. The records are written to the output pipe.</p>
+<p>Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;databaseReaderOutput&quot; /&gt;
+&lt;etl:databaseReader id=&quot;databaseReader&quot; name=&quot;Database Reader&quot;&gt;
+        &lt;etl:output ref=&quot;databaseReaderOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;sqlSelectSchema&quot; /&gt;
+        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;etl:select&gt;
+                &lt;etl:sql&gt;
+                        select * from mtb where name = ? and year = ?
+                &lt;/etl:sql&gt;
+                &lt;etl:parameter value=&quot;#job.name&quot; /&gt;
+                &lt;etl:parameter value=&quot;#job.model_year&quot; /&gt;
+        &lt;/etl:select&gt;
+        &lt;etl:rejection&gt;
+                &lt;output ref=&quot;databaseReaderRejectionOutput&quot; /&gt;
+        &lt;/etl:rejection&gt;
+&lt;/etl:databaseReader&gt;
+</pre></div>
+</div>
+<p>The output is given by <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderOutput&quot;</span></code>.</p>
+<p>The output schema (<code class="docutils literal"><span class="pre">ref=&quot;sqlSelectSchema&quot;</span></code>) is used to define the output records. Columns from the select statement that match the names of the columns in the output schema are used to provide the values to the output record.</p>
+<p>The select element (<code class="docutils literal"><span class="pre">etl:select</span></code>) specifies the select statement (<code class="docutils literal"><span class="pre">etl:sql</span></code>) and any parameters. The parameters are optional. Job parameters may be used to provide values to the SQL parameters.</p>
+<p>The optional rejection element (<code class="docutils literal"><span class="pre">etl:rejection</span></code>) defines the behavior for rejecting records. If a record does not comply with the output schema, in this case it is sent to another pipe, <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderRejectionOutput&quot;</span></code>. The default is to log the record, which can also be specified explicitly:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:rejection&gt;
+        &lt;log level=&quot;WARN&quot; name=&quot;REJECTION&quot; /&gt;
+&lt;/etl:rejection&gt;
+</pre></div>
+</div>
+<p>Here, the <code class="docutils literal"><span class="pre">level</span></code> is a <a class="reference external" href="https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html">Log4J level</a>, with all those levels being available.  The <code class="docutils literal"><span class="pre">name</span></code> is the name of the logger, basically categorizing the log statement.</p>
+</div>
+<div class="section" id="database-writer">
+<h3>Database Writer<a class="headerlink" href="#database-writer" title="Permalink to this headline">¶</a></h3>
+<p>The database writer writes records from its input pipe to a database table. In its simplest form, the table name is supplied and the records are written directly to the table.  Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;etl:insertInto table-name=&quot;mtb&quot; /&gt;
+&lt;/etl:databaseWriter&gt;
+</pre></div>
+</div>
+<p>The input is required (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), as is the input schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>). The data source provides the filter with database connections (<code class="docutils literal"><span class="pre">ref=&quot;dataSource&quot;</span></code>).  Finally, the <code class="docutils literal"><span class="pre">insertInto</span></code> element provides the name of the table into which the records are inserted (<code class="docutils literal"><span class="pre">etl:insertInto</span> <span class="pre">table-name=&quot;mtb&quot;</span></code>).</p>
+<p>The database writer has a second form for updates.  The following is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;etl:updateWith&gt;
+                &lt;etl:sql&gt;
+                        update mtb set year = ?, cost = ? where name = ?
+                &lt;/etl:sql&gt;
+                &lt;etl:parameter value=&quot;#inputRecord.year&quot; /&gt;
+                &lt;etl:parameter value=&quot;#inputRecord.cost&quot; /&gt;
+                &lt;etl:parameter value=&quot;#inputRecord.name&quot; /&gt;
+        &lt;/etl:updateWith&gt;
+&lt;/etl:databaseWriter&gt;
+</pre></div>
+</div>
+<p>The difference is the <code class="docutils literal"><span class="pre">etl:updateWith</span></code> element replaces the <code class="docutils literal"><span class="pre">etl:insertInto</span></code> element. This element is a bit more complex, requiring a SQL statement be specified. The question marks in the SQL statement are parameter markers. They are supplied by the parameter elements (<code class="docutils literal"><span class="pre">etl:parameter</span></code>) in the order specified. The value of each parameter may be a constant or an SpEL expression.</p>
+<p>The variable <code class="docutils literal"><span class="pre">inputRecord</span></code> may be used to refer to the input record being processed. The columns on the input record may appear after a period or inside brackets.  The first example below refers to the <code class="docutils literal"><span class="pre">year</span></code> column on the input record. The second uses the brackets syntax to refer to the <code class="docutils literal"><span class="pre">name</span></code> column:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:parameter value=&quot;#inputRecord.year&quot; /&gt;
+
+&lt;etl:parameter value=&quot;#inputRecord[&#39;name&#39;]&quot; /&gt;
+</pre></div>
+</div>
+<p>The second syntax is useful for referring to columns that have spaces in the name:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:parameter value=&quot;#inputRecord[&#39;Column Name with Spaces&#39;]&quot; /&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="file-reader">
+<h3>File Reader<a class="headerlink" href="#file-reader" title="Permalink to this headline">¶</a></h3>
+<p>The file reader reads records from a file and writes them to its output. Records are read using a CSV format. A schema is required to define the records. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
+        &lt;etl:fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
+        &lt;etl:output ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/etl:fileReader&gt;
+</pre></div>
+</div>
+<p>The file reader reads from the file given by its location (<code class="docutils literal"><span class="pre">location=&quot;classpath:data/mtb.txt&quot;</span></code>). Alternatively, a job argument may be used to specify the file location:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:fileResource locationExpression=&quot;#job.file&quot; /&gt;
+</pre></div>
+</div>
+<p>The records read from the file are put on the output pipe (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>). The records are constructed according to the supplied schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>).</p>
+</div>
+<div class="section" id="file-writer">
+<h3>File Writer<a class="headerlink" href="#file-writer" title="Permalink to this headline">¶</a></h3>
+<p>The file writer reads records from its input and writes them to a file. The input schema in optional. If supplied, records will be validated against the schema and rejected if they don&#8217;t conform. Records are written in a CSV format. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:fileWriter id=&quot;fileWriter&quot; name=&quot;File Writer&quot;&gt;
+        &lt;etl:fileResource location=&quot;file:output/output1.txt&quot; /&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/etl:fileWriter&gt;
+</pre></div>
+</div>
+<p>The file location (<code class="docutils literal"><span class="pre">location=&quot;file:output/output1.txt&quot;</span></code>) uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/resources.html">Spring resource syntax</a>. Alternatively, a job parameter may be used to supply the file location:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:fileResource locationExpression=&quot;#job.file&quot; /&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="funnel">
+<h3>Funnel<a class="headerlink" href="#funnel" title="Permalink to this headline">¶</a></h3>
+<p>The funnel is a simple filter that combines its inputs into a single output, like a reverse copy filter. The funnel accepts any number of inputs and a single output. No schema is provided. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input1&quot; /&gt;
+&lt;etl:pipe id=&quot;input2&quot; /&gt;
+&lt;etl:pipe id=&quot;output&quot; /&gt;
+&lt;etl:funnel id=&quot;funnel&quot; name=&quot;Funnel&quot;&gt;
+        &lt;etl:input ref=&quot;input1&quot; /&gt;
+        &lt;etl:input ref=&quot;input2&quot; /&gt;
+        &lt;etl:output ref=&quot;output&quot; /&gt;
+&lt;/etl:funnel&gt;
+</pre></div>
+</div>
+<p>Each input (e.g, <code class="docutils literal"><span class="pre">etl:input</span> <span class="pre">ref=&quot;input1&quot;</span></code>) is read in turn and the record read from that input written to the output (<code class="docutils literal"><span class="pre">ref=&quot;output&quot;</span></code>). No ordering of the inputs to the output is guaranteed. If one of the inputs is empty, or no record is immediately available, the funnel will move to the next input. Each input is continuously read until it is closed. The funnel may process its records &#8220;slowly&#8221; if any of the inputs has no record available but is not closed. There is a timeout for reading from an input.</p>
+</div>
+<div class="section" id="join">
+<h3>Join<a class="headerlink" href="#join" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="mapper">
+<h3>Mapper<a class="headerlink" href="#mapper" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="restful-consumer">
+<h3>RESTful Consumer<a class="headerlink" href="#restful-consumer" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="restful-input">
+<h3>RESTful Input<a class="headerlink" href="#restful-input" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="restful-lookup">
+<h3>RESTful Lookup<a class="headerlink" href="#restful-lookup" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="sort">
+<h3>Sort<a class="headerlink" href="#sort" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="transformer">
+<h3>Transformer<a class="headerlink" href="#transformer" title="Permalink to this headline">¶</a></h3>
+<p>The transformer filter may be the most powerful filter, but also the most complex. Also, due to the use of an expression language for most operations, the transformer is generally slower than other stages. The transformer is like an enhanced copy filter: it can have only one input, but any number of outputs. The outputs are controlled through conditions and expressions.</p>
+<p>The transformer uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring SpEL</a> expression language for expressions. SpEL can be compiled, so it&#8217;s not a huge performance hit, but it is there.</p>
+<p>Consider the following transformer example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;transformerOutput&quot; /&gt;
+&lt;etl:pipe id=&quot;transformerCountOutput&quot; /&gt;
+&lt;etl:transformer id=&quot;transformer&quot; name=&quot;Transformer&quot;&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:variables&gt;
+                &lt;etl:variable name=&quot;totalCount&quot;&gt;0&lt;/etl:variable&gt;
+        &lt;/etl:variables&gt;
+        &lt;etl:expressions&gt;
+                &lt;etl:expression&gt;#totalCount = #totalCount + 1&lt;/etl:expression&gt;
+        &lt;/etl:expressions&gt;
+        &lt;etl:config outputName=&quot;transformerOutput&quot; recordName=&quot;outputRecord&quot;&gt;
+                &lt;etl:output ref=&quot;transformerOutput&quot; /&gt;
+                &lt;etl:schema ref=&quot;inputSchema&quot; /&gt;
+                &lt;etl:expression&gt;#outputRecord.Name = #inputRecord.Name + #inputRecord.Name&lt;/etl:expression&gt;
+                &lt;etl:expression&gt;#outputRecord.Count = #inputRecord.Count + #inputRecord.Count&lt;/etl:expression&gt;
+                &lt;etl:expression&gt;#outputRecord.Price = #inputRecord.Price + #inputRecord.Price&lt;/etl:expression&gt;
+        &lt;/etl:config&gt;
+        &lt;etl:config outputName=&quot;transformerCountOutput&quot; recordName=&quot;countRecord&quot;&gt;
+                &lt;etl:output ref=&quot;transformerCountOutput&quot; /&gt;
+                &lt;etl:schema ref=&quot;countSchema&quot; /&gt;
+                &lt;etl:outputCondition&gt;#input.complete&lt;/etl:outputCondition&gt;
+                &lt;etl:expression&gt;#countRecord.Count = #totalCount&lt;/etl:expression&gt;
+        &lt;/etl:config&gt;
+&lt;/etl:transformer&gt;
+</pre></div>
+</div>
+<p>The first two elements are two pipes (<code class="docutils literal"><span class="pre">id=&quot;transformerOutput&quot;</span></code> and <code class="docutils literal"><span class="pre">id=&quot;transformerCountOutput&quot;</span></code>) that will be outputs from the transformer.</p>
+<p>Next, is the transformer is declared (<code class="docutils literal"><span class="pre">id=&quot;transformer&quot;</span></code>).</p>
+<p>The first element of the transformer is its single input that, from its name, appears to have come from reading a file. The declaration is not shown above.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+</pre></div>
+</div>
+<p>Next is a set of &#8220;output configurations&#8221; (<code class="docutils literal"><span class="pre">etl:outputConfigurations</span></code>) which define the outputs of the transformer. Each configuration (<code class="docutils literal"><span class="pre">etl:config</span></code>) may have a schema,</p>
+</div>
+<div class="section" id="xml-file-reader">
+<h3>XML File Reader<a class="headerlink" href="#xml-file-reader" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Filters</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#filter-reference">Filter Reference</a><ul>
+<li><a class="reference internal" href="#aggregator">Aggregator</a></li>
+<li><a class="reference internal" href="#copy">Copy</a></li>
+<li><a class="reference internal" href="#database-lookup">Database Lookup</a></li>
+<li><a class="reference internal" href="#database-reader">Database Reader</a></li>
+<li><a class="reference internal" href="#database-writer">Database Writer</a></li>
+<li><a class="reference internal" href="#file-reader">File Reader</a></li>
+<li><a class="reference internal" href="#file-writer">File Writer</a></li>
+<li><a class="reference internal" href="#funnel">Funnel</a></li>
+<li><a class="reference internal" href="#join">Join</a></li>
+<li><a class="reference internal" href="#mapper">Mapper</a></li>
+<li><a class="reference internal" href="#restful-consumer">RESTful Consumer</a></li>
+<li><a class="reference internal" href="#restful-input">RESTful Input</a></li>
+<li><a class="reference internal" href="#restful-lookup">RESTful Lookup</a></li>
+<li><a class="reference internal" href="#sort">Sort</a></li>
+<li><a class="reference internal" href="#transformer">Transformer</a></li>
+<li><a class="reference internal" href="#xml-file-reader">XML File Reader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Current State</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="testing.html"
+                        title="next chapter">Testing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/filters.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="testing.html" title="Testing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Current State"
+             >previous</a> |</li>
+        <li><a href="index.html">Pneumatic.IO 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Kevin Lewis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>
