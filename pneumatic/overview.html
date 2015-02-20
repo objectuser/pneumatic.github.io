@@ -56,14 +56,14 @@
 </div>
 <div class="section" id="license">
 <h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
-<p>Pneumatic is licensed under the <a class="reference external" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License</a>. To acquire ETL under a different license, contact <a class="reference external" href="http://www.surgingsystems.com">Surging Systems</a>.</p>
+<p>Pneumatic is licensed under the <a class="reference external" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License</a>. To acquire Pneumatic under a different license, contact <a class="reference external" href="http://www.surgingsystems.com">Surging Systems</a>.</p>
 </div>
 <div class="section" id="concepts">
 <h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="jobs-and-filters">
 <h2>Jobs and Filters<a class="headerlink" href="#jobs-and-filters" title="Permalink to this headline">¶</a></h2>
 <p>Pneumatic &#8220;programs&#8221; are composed into &#8220;jobs&#8221;. Jobs read from files, from databases, from services and write to those same things. They transform data, join it, filter it, aggregate it and more.</p>
-<p>The reading, writing, transforming, etc. are done in &#8220;filters&#8221;. Filters are connected through pipes that carry the data from one filter to the next. This <a class="reference external" href="http://www.eaipatterns.com/PipesAndFilters.html">pipes and filters</a> architecture is widely-known. It&#8217;s also conceptually simple, yet quite powerful, and is the fundamental pattern of Pneumatic jobs.</p>
+<p>The reading, writing, transforming, etc. are done in &#8220;filters&#8221;. Filters are connected through pipes that carry the data from one filter to the next. This <a class="reference external" href="http://www.eaipatterns.com/PipesAndFilters.html">pipes and filters</a> architecture is widely-known. It&#8217;s conceptually simple, yet quite powerful, and is the fundamental pattern of Pneumatic jobs.</p>
 <p>These concepts are fundamental, but the words &#8220;job&#8221; and &#8220;filter&#8221; don&#8217;t often appear in Pneumatic configurations. But as we discuss Pneumatic in this guide, we will use those terms, so you still need to understand them.</p>
 <div class="section" id="running-a-job">
 <h3>Running a Job<a class="headerlink" href="#running-a-job" title="Permalink to this headline">¶</a></h3>
@@ -91,7 +91,7 @@
 </pre></div>
 </div>
 <p>If a record does not need to be validated or generated, no schema is required by the filter. An example of this is the copy filter which copies the input records to the configured outputs, unmodified.</p>
-<p>Sometimes a schema is optional. If the schema is not provided, information is derived from other configuration elements. If the schema is supplied, it can be used to validate the configuration of the filter. This requires slightly more configuration, but schema information in validated before a job starts, so supplying a schema can save time spent processing with an invalid configuration.</p>
+<p>Sometimes a schema is optional. If the schema is not provided, information is derived from other configuration or runtime elements (like the structure of the incoming record). If the schema is supplied, it can be used to validate the configuration of the filter. This requires slightly more configuration, but schema information in validated before a job starts, so supplying a schema can save time spent processing with an invalid configuration.</p>
 <div class="section" id="schema-types">
 <h3>Schema Types<a class="headerlink" href="#schema-types" title="Permalink to this headline">¶</a></h3>
 <p>There are three types of schemas:</p>
@@ -108,7 +108,7 @@
 </div>
 <div class="section" id="foundations">
 <h2>Foundations<a class="headerlink" href="#foundations" title="Permalink to this headline">¶</a></h2>
-<p>Pneumatic leverages <a class="reference external" href="http://spring.io/">Spring</a> projects whenever possible, and that&#8217;s a lot. There are areas where Pneumatic diverges from some frameworks like <a class="reference external" href="http://projects.spring.io/spring-batch/">Spring Batch</a>. In the future, it is possible that Pneumatic will be more closely aligned with this project and possibly others.</p>
+<p>Pneumatic leverages <a class="reference external" href="http://spring.io/">Spring</a> projects whenever possible, and that&#8217;s quite often. There are areas where Pneumatic diverges from some frameworks like <a class="reference external" href="http://projects.spring.io/spring-batch/">Spring Batch</a>. In the future, it is possible that Pneumatic will be more closely aligned with this project and possibly others.</p>
 <p>There are enormous benefits from leveraging Spring. Some of these are:</p>
 <ul class="simple">
 <li>The use of quality, tested frameworks and components that don&#8217;t have to be reinvented.</li>
