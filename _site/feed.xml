@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+
+
+
+  
+
+<title type="text">objectuser</title>
+<generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="/feed.xml" />
+<link rel="alternate" type="text/html" href="/" />
+<updated>2015-02-22T17:01:43-06:00</updated>
+<id>/</id>
+<author>
+  <name>Kevin Lewis</name>
+  <uri>/</uri>
+  <email>kevin@SurgingSystems.com</email>
+</author>
+
+
+<entry>
+  <title type="html"><![CDATA[Introducing Pneumatic.IO]]></title>
+  <link rel="alternate" type="text/html" href="/pneumatic/introducing-pneumatic"/>
+  <id>/pneumatic/introducing-pneumatic</id>
+  <published>2015-02-22T04:27:50-06:00</published>
+  <updated>2015-02-22T04:27:50-06:00</updated>
+  <author>
+    <name>Kevin Lewis</name>
+    <uri></uri>
+    <email>kevin@SurgingSystems.com</email>
+  </author>
+  
+  <content type="html">
+  
+    &lt;p&gt;I have a new open source project that’s already live on Github. It’s called &lt;a href=&quot;http://pneumatic.io&quot;&gt;Pneumatic.IO&lt;/a&gt; and I refer to it as a fresh take on ETL and structured IO.&lt;/p&gt;
+
+&lt;p&gt;The project page is &lt;a href=&quot;https://github.com/objectuser/pneumatic&quot;&gt;here&lt;/a&gt; and the reference guide is &lt;a href=&quot;/pneumatic&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It has a long way to go, but it’s progressing nicely.&lt;/p&gt;
+
+&lt;p&gt;If you’re interested in contributing, I’d appreciate your help. I’ve put up &lt;a href=&quot;http://pneumatic.io/pneumatic/getting-involved.html&quot;&gt;some ideas&lt;/a&gt; of what might be useful, but I’m also interested in new ideas, especially from people with experience in ETL and structured IO.&lt;/p&gt;
+
+  
+  &lt;p&gt;&lt;a href=&quot;/pneumatic/introducing-pneumatic&quot;&gt;Introducing Pneumatic.IO&lt;/a&gt; was originally published by Kevin Lewis at &lt;a href=&quot;&quot;&gt;objectuser&lt;/a&gt; on February 22, 2015.&lt;/p&gt;</content>
+</entry>
+
+</feed>
