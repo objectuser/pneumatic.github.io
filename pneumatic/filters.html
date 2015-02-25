@@ -445,8 +445,30 @@
 <div class="section" id="restful-consumer">
 <h3>RESTful Consumer<a class="headerlink" href="#restful-consumer" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="restful-input">
-<h3>RESTful Input<a class="headerlink" href="#restful-input" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="restful-listener">
+<h3>RESTful Listener<a class="headerlink" href="#restful-listener" title="Permalink to this headline">¶</a></h3>
+<p>(Should this be called the &#8220;RESTful Reader&#8221; to be more consistent with other filters? Something else? I&#8217;d like your feedback.)</p>
+<p>The RESTful listener is a filter that accepts RESTful requests. The requests must use the POST HTTP method and send JSON as the request body. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:pipe id=&quot;restfulListenerOutput&quot; /&gt;
+&lt;etl:restfulListener id=&quot;restfulListener&quot; name=&quot;Restful Input&quot;&gt;
+        &lt;etl:path value=&quot;mtb&quot; /&gt;
+        &lt;etl:output ref=&quot;restfulListenerOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/etl:restfulListener&gt;
+</pre></div>
+</div>
+<p>The schema (<code class="docutils literal"><span class="pre">id=&quot;mtbSchema&quot;</span></code>) is shown here because the RESTful listener uses the schema to convert JSON to a record. For the schema above, the following is an example message:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Mojo HDR&quot;</span><span class="p">,</span> <span class="s">&quot;year&quot;</span><span class="p">:</span> <span class="s">&quot;2015&quot;</span><span class="p">,</span> <span class="s">&quot;cost&quot;</span><span class="p">:</span> <span class="s">&quot;3000.00&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that the names and the data types conform to the declared schema.</p>
+<p>The restful listener (<code class="docutils literal"><span class="pre">etl:restfulListener</span> <span class="pre">id=&quot;restfulListener&quot;</span></code>) declares a path (<code class="docutils literal"><span class="pre">etl:path</span> <span class="pre">value=&quot;mtb&quot;</span></code>) that tells Pneumatic the resource that triggers this listener. If this service is running on <code class="docutils literal"><span class="pre">localhost:8080</span></code>, perhaps using the Pneumatic.IO Boot Runner (reference), which leverages Spring Boot (reference), a request is posted to <code class="docutils literal"><span class="pre">http://localhost:8080/mtb</span></code> will trigger this listener.</p>
 </div>
 <div class="section" id="restful-lookup">
 <h3>RESTful Lookup<a class="headerlink" href="#restful-lookup" title="Permalink to this headline">¶</a></h3>
@@ -588,7 +610,7 @@
 <li><a class="reference internal" href="#join">Join</a></li>
 <li><a class="reference internal" href="#mapper">Mapper</a></li>
 <li><a class="reference internal" href="#restful-consumer">RESTful Consumer</a></li>
-<li><a class="reference internal" href="#restful-input">RESTful Input</a></li>
+<li><a class="reference internal" href="#restful-listener">RESTful Listener</a></li>
 <li><a class="reference internal" href="#restful-lookup">RESTful Lookup</a></li>
 <li><a class="reference internal" href="#sort">Sort</a></li>
 <li><a class="reference internal" href="#transformer">Transformer</a></li>
