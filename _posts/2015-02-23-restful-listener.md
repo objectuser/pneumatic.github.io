@@ -93,5 +93,11 @@ To show how "micro" our microservice is, here's the full source, minus the boile
 
 That's pretty small and no programming is required.
 
+The easiest way to run Pneumatic jobs right now is to the `pn.sh` (`pn.cmd` on Windows). The `pn.sh` is in the `pneumatic-samples` project. To run a job using Spring Boot:
+
+```sh
+	sh pn.sh boot rest-listener.xml
+```
+
 Use something like the [Advanced Rest Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo) plugin for Chrome and the URL and JSON above and you should be able to POST data to the service.
 
