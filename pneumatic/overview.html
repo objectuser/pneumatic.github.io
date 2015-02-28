@@ -67,16 +67,25 @@
 <p>These concepts are fundamental, but the words &#8220;job&#8221; and &#8220;filter&#8221; don&#8217;t often appear in Pneumatic configurations. But as we discuss Pneumatic in this guide, we will use those terms, so you still need to understand them.</p>
 <div class="section" id="running-a-job">
 <h3>Running a Job<a class="headerlink" href="#running-a-job" title="Permalink to this headline">¶</a></h3>
-<p>Jobs may be run in a variety of ways. The most basic of these is the command line runner. If your job is contained in <code class="docutils literal"><span class="pre">job.xml</span></code>, you can run it with:</p>
-<div class="highlight-python"><div class="highlight"><pre>java -jar pneumatic.jar com.surgingsystems.etl.XmlRunner job.xml
+<p>Jobs may be run in a variety of ways. The easiest way to run a job is using the &#8220;Pneumatic Shell&#8221; (<code class="docutils literal"><span class="pre">pn.sh</span></code> on most systems or <code class="docutils literal"><span class="pre">pn.cmd</span></code> on Windows). The file <code class="docutils literal"><span class="pre">pn.sh</span></code> is in the <code class="docutils literal"><span class="pre">pneumatic-samples</span></code> project on [GitHub](<a class="reference external" href="https://github.com/objectuser/pneumatic">https://github.com/objectuser/pneumatic</a>).</p>
+<p>If your job is contained in <code class="docutils literal"><span class="pre">job.xml</span></code>, run it like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>sh pn.sh run job.xml
 </pre></div>
 </div>
 <p>If you have, for example, RESTful services provided by your job, use the Spring Boot runner:</p>
-<div class="highlight-python"><div class="highlight"><pre>java -jar pneumatic.jar com.surgingsystems.etl.BootRunner job.xml
+<div class="highlight-python"><div class="highlight"><pre>sh pn.sh boot job.xml
 </pre></div>
 </div>
 <p>The boot runner will stay resident until Spring Boot shuts down.</p>
 <p>From these examples, it&#8217;s obvious that Pneumatic requires Java. Pneumataic is currently compiled to Java 8.</p>
+<p>Using the script is easy, but it does quite a few things. The script uses [Gradle](<a class="reference external" href="http://gradle.org/">http://gradle.org/</a>) to:</p>
+<ol class="arabic simple">
+<li>download the latest version of Gradle</li>
+<li>compile Pneumatic.IO</li>
+<li>run the job</li>
+</ol>
+<p>The first two are only done if necessary: if Gradle has already been downloaded, or Pnematic is already built, it won&#8217;t do these things again.</p>
+<p>Gradle and Pnematic.IO are both dependent on a Java runtime on your system. Pneumatic is currently compiled to Java 8.</p>
 </div>
 </div>
 <div class="section" id="schemas">
@@ -98,7 +107,7 @@
 <ul class="simple">
 <li>Tabular schemas - (<code class="docutils literal"><span class="pre">etl:schema</span></code>) represent traditional (i.e., database like) schemas with fixed columns and data types.</li>
 <li>XML schemas (experimental) - (<code class="docutils literal"><span class="pre">etl:xmlSchema</span></code>) represent schemas for XML documents based on the XML Schema Definition. XML schemas work in some cases but are experimental at this point.</li>
-<li>JSON schemas (planned but not implemented) - (<code class="docutils literal"><span class="pre">etl:jsonSchema</span></code>) represent schemas for JSON documents based on <a class="reference external" href="http://json-schema.org/">http://json-schema.org/</a>.</li>
+<li>JSON schemas (experimental) - (<code class="docutils literal"><span class="pre">etl:jsonSchema</span></code>) represent schemas for JSON documents based on <a class="reference external" href="http://json-schema.org/">http://json-schema.org/</a>.</li>
 </ul>
 </div>
 </div>
