@@ -442,9 +442,6 @@
 </div>
 <p>The <code class="docutils literal"><span class="pre">etl:mappings</span></code> element allows for explicit mappings between input and output columns using the <code class="docutils literal"><span class="pre">etl:from</span></code> and <code class="docutils literal"><span class="pre">etl:to</span></code> elements. With this form, the column names do not need to match and type conversion is still supported.</p>
 </div>
-<div class="section" id="restful-consumer">
-<h3>RESTful Consumer<a class="headerlink" href="#restful-consumer" title="Permalink to this headline">¶</a></h3>
-</div>
 <div class="section" id="restful-listener">
 <h3>RESTful Listener<a class="headerlink" href="#restful-listener" title="Permalink to this headline">¶</a></h3>
 <p>(Should this be called the &#8220;RESTful Reader&#8221; to be more consistent with other filters? Something else? I&#8217;d like your feedback.)</p>
@@ -472,6 +469,61 @@
 </div>
 <div class="section" id="restful-lookup">
 <h3>RESTful Lookup<a class="headerlink" href="#restful-lookup" title="Permalink to this headline">¶</a></h3>
+<p>The RESTful lookup is a filter that allows a Pneumatic to perform a request against a resource and use the result of the request for subsequent processing. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:restfulLookup id=&quot;restfulLookup&quot; name=&quot;Price Lookup&quot;&gt;
+        &lt;etl:http method=&quot;GET&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;output&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;outputSchema&quot; /&gt;
+        &lt;etl:responseSchema ref=&quot;responseSchema&quot; /&gt;
+&lt;/etl:restfulLookup&gt;
+</pre></div>
+</div>
+<p>In this example, the filter might be adding a price to the records it writes to its output.</p>
+<p>In this case, RESTful lookup uses an HTTP GET to perform the request (<code class="docutils literal"><span class="pre">method=&quot;GET&quot;</span></code>).</p>
+<p>The request URL may use values from the current record. Consider the following as the <code class="docutils literal"><span class="pre">inputSchema</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;inputSchema&quot; name=&quot;Input Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+</pre></div>
+</div>
+<p>The value of the <code class="docutils literal"><span class="pre">name</span></code> column would replace the token <code class="docutils literal"><span class="pre">{name}</span></code> in <code class="docutils literal"><span class="pre">http://localhost:8080/mtb/{name}/price</span></code>. This is a feature of the [Spring Framework client](<a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/remoting.html#rest-client-access">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/remoting.html#rest-client-access</a>).</p>
+<p>Now consider the following schemas:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;outputSchema&quot; name=&quot;Input Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+        &lt;etl:column name=&quot;price&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:schema id=&quot;responseSchema&quot; name=&quot;Criteria Schema&quot;&gt;
+        &lt;etl:column name=&quot;price&quot; type=&quot;string&quot; /&gt;
+&lt;/etl:schema&gt;
+</pre></div>
+</div>
+<p>The response schema from the example (<code class="docutils literal"><span class="pre">etl:responseSchema</span> <span class="pre">ref=&quot;responseSchema&quot;</span></code>) reads the price from the GET request to the request URL. The values declared in that schema are available to map to the record written to the output. The output schema (<code class="docutils literal"><span class="pre">etl:outputSchema</span> <span class="pre">ref=&quot;outputSchema&quot;</span></code>) is used to select values from a combination of the input record (defined by the input schema, <code class="docutils literal"><span class="pre">etl:inputSchema</span> <span class="pre">ref=&quot;inputSchema&quot;</span></code>) and the response.</p>
+<p>Note that the data type of <code class="docutils literal"><span class="pre">price</span></code> in the response schema is <code class="docutils literal"><span class="pre">string</span></code>, while the same column name in the output schema has a <code class="docutils literal"><span class="pre">decimal</span></code> type. Type conversion is automatic.</p>
+</div>
+<div class="section" id="restful-writer">
+<h3>RESTful Writer<a class="headerlink" href="#restful-writer" title="Permalink to this headline">¶</a></h3>
+<p>The RESTful writer is a filter for submitting requests to a RESTful service. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input&quot; /&gt;
+&lt;etl:pipe id=&quot;rejectionOutput&quot; /&gt;
+&lt;etl:restfulWriter id=&quot;restfulWriter&quot; name=&quot;Restful Writer&quot;&gt;
+        &lt;etl:http method=&quot;PUT&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;etl:rejection&gt;
+                &lt;etl:output ref=&quot;rejectionOutput&quot; /&gt;
+        &lt;/etl:rejection&gt;
+&lt;/etl:restfulWriter&gt;
+</pre></div>
+</div>
+<p>The HTTP method used to submit the request is configurable (<code class="docutils literal"><span class="pre">method=&quot;PUT&quot;</span></code>). The payload of the request is a JSON message based on the input schema (<code class="docutils literal"><span class="pre">ref=&quot;inputSchema&quot;</span></code>).</p>
+<p>The URL may also contain values from the current input record, as in the RESTful lookup filter.</p>
 </div>
 <div class="section" id="sort">
 <h3>Sort<a class="headerlink" href="#sort" title="Permalink to this headline">¶</a></h3>
@@ -609,9 +661,9 @@
 <li><a class="reference internal" href="#funnel">Funnel</a></li>
 <li><a class="reference internal" href="#join">Join</a></li>
 <li><a class="reference internal" href="#mapper">Mapper</a></li>
-<li><a class="reference internal" href="#restful-consumer">RESTful Consumer</a></li>
 <li><a class="reference internal" href="#restful-listener">RESTful Listener</a></li>
 <li><a class="reference internal" href="#restful-lookup">RESTful Lookup</a></li>
+<li><a class="reference internal" href="#restful-writer">RESTful Writer</a></li>
 <li><a class="reference internal" href="#sort">Sort</a></li>
 <li><a class="reference internal" href="#transformer">Transformer</a></li>
 <li><a class="reference internal" href="#xml-file-reader">XML File Reader</a></li>
