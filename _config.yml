@@ -14,7 +14,7 @@ owner:
   avatar:         objectuser.png
   email:          "kevin in the proximity of SurgingSystems.com"
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
-  description:    Epiphany much?
+  description:    We're in a golden age of tech.
   # Social networking links used in footer. Update and remove as you like.
   twitter:        objectuser
   github:         objectuser      
@@ -34,7 +34,7 @@ links:
     url: /
     external: false
     icon: home
-  - title: Projects
+  - title: Pneumatic.IO
     url: /projects
   - title: About
     url: /about
