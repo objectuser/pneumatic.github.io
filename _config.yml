@@ -34,7 +34,9 @@ links:
     url: /
     external: false
     icon: home
-  - title: Pneumatic.IO
+  - title: Pneumatic.IO Docs
+    url: /pneumatic
+  - title: Projects
     url: /projects
   - title: About
     url: /about
