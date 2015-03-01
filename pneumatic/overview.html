@@ -63,8 +63,11 @@
 <h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="jobs-and-filters">
 <h2>Jobs and Filters<a class="headerlink" href="#jobs-and-filters" title="Permalink to this headline">¶</a></h2>
-<p>Pneumatic &#8220;programs&#8221; are composed into &#8220;jobs&#8221;. Jobs read from files, from databases, from services and write to those same things. They transform data, join it, filter it, aggregate it and more.</p>
+<p>Pneumatic &#8220;programs&#8221; are represented as &#8220;jobs&#8221;. Jobs read from files, from databases, from services and write to those same things. They transform data, join it, filter it, aggregate it and more.</p>
 <p>The reading, writing, transforming, etc. are done in &#8220;filters&#8221;. Filters are connected through pipes that carry the data from one filter to the next. This <a class="reference external" href="http://www.eaipatterns.com/PipesAndFilters.html">pipes and filters</a> architecture is widely-known. It&#8217;s conceptually simple, yet quite powerful, and is the fundamental pattern of Pneumatic jobs.</p>
+<p>It looks a bit like this:</p>
+<img alt="_images/architecture.png" src="_images/architecture.png" />
+<p>Scale this out with more pipes connecting more filters and you get the picture of the architecture of Pneumatic.IO. Simple concepts form powerful jobs.</p>
 <p>These concepts are fundamental, but the words &#8220;job&#8221; and &#8220;filter&#8221; don&#8217;t often appear in Pneumatic configurations. But as we discuss Pneumatic in this guide, we will use those terms, so you still need to understand them.</p>
 <div class="section" id="running-a-job">
 <h3>Running a Job<a class="headerlink" href="#running-a-job" title="Permalink to this headline">¶</a></h3>
