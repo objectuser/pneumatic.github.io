@@ -147,5 +147,5 @@ prose:
           value: false
 
 
-include: [".htaccess", "_sources", "_static"]
+include: [".htaccess", "_sources", "_static", "_images"]
 exclude: ["lib", "config.rb", "Gemfile", "Capfile", "Gemfile.lock", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
