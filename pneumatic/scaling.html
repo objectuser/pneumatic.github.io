@@ -8,7 +8,7 @@
     
     <title>Scaling &mdash; Pneumatic.IO Reference Guide</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,9 +26,58 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="Pneumatic.IO Reference Guide" href="index.html" />
-    <link rel="prev" title="Extending Pneumatic" href="extending.html" /> 
+    <link rel="prev" title="Extending Pneumatic" href="extending.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
   </head>
   <body role="document">
+<div class="pageheader">
+  <ul>
+    <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
+    <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
+    <li><a href="index.html">Docs Home</a></li>
+  </ul>
+  <div>
+    <a href="index.html">
+      <img src="_static/banner.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -38,29 +87,13 @@
         <li class="right" >
           <a href="extending.html" title="Extending Pneumatic"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pneumatic.IO Reference Guide</a> &raquo;</li> 
+        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="contents.html">Documentation</a> &raquo;</li>
+ 
       </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="scaling">
-<h1>Scaling<a class="headerlink" href="#scaling" title="Permalink to this headline">¶</a></h1>
-<p>This section contains thoughts on scaling Pneumatic.</p>
-</div>
-
-
-          </div>
-        </div>
-      </div>
+    </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/SurgingSystemsIcon-Transparent.png" alt="Logo"/>
-            </a></p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="extending.html"
                         title="previous chapter">Extending Pneumatic</a></p>
@@ -86,6 +119,21 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="scaling">
+<h1>Scaling<a class="headerlink" href="#scaling" title="Permalink to this headline">¶</a></h1>
+<p>This section contains thoughts on scaling Pneumatic.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -97,7 +145,9 @@
         <li class="right" >
           <a href="extending.html" title="Extending Pneumatic"
              >previous</a> |</li>
-        <li><a href="index.html">Pneumatic.IO Reference Guide</a> &raquo;</li> 
+        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="contents.html">Documentation</a> &raquo;</li>
+ 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

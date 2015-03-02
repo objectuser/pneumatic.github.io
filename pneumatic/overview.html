@@ -8,7 +8,7 @@
     
     <title>Current State &mdash; Pneumatic.IO Reference Guide</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -27,9 +27,58 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="Pneumatic.IO Reference Guide" href="index.html" />
     <link rel="next" title="Filters" href="filters.html" />
-    <link rel="prev" title="Getting Involved" href="getting-involved.html" /> 
+    <link rel="prev" title="Getting Involved" href="getting-involved.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
   </head>
   <body role="document">
+<div class="pageheader">
+  <ul>
+    <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
+    <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
+    <li><a href="index.html">Docs Home</a></li>
+  </ul>
+  <div>
+    <a href="index.html">
+      <img src="_static/banner.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -42,9 +91,60 @@
         <li class="right" >
           <a href="getting-involved.html" title="Getting Involved"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Pneumatic.IO Reference Guide</a> &raquo;</li> 
+        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="contents.html">Documentation</a> &raquo;</li>
+ 
       </ul>
-    </div>  
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Current State</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#concepts">Concepts</a><ul>
+<li><a class="reference internal" href="#jobs-and-filters">Jobs and Filters</a><ul>
+<li><a class="reference internal" href="#running-a-job">Running a Job</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#schemas">Schemas</a><ul>
+<li><a class="reference internal" href="#schema-types">Schema Types</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pipes">Pipes</a></li>
+<li><a class="reference internal" href="#foundations">Foundations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting-involved.html"
+                        title="previous chapter">Getting Involved</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="filters.html"
+                        title="next chapter">Filters</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/overview.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -136,58 +236,6 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/SurgingSystemsIcon-Transparent.png" alt="Logo"/>
-            </a></p>
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Current State</a></li>
-<li><a class="reference internal" href="#license">License</a></li>
-<li><a class="reference internal" href="#concepts">Concepts</a><ul>
-<li><a class="reference internal" href="#jobs-and-filters">Jobs and Filters</a><ul>
-<li><a class="reference internal" href="#running-a-job">Running a Job</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#schemas">Schemas</a><ul>
-<li><a class="reference internal" href="#schema-types">Schema Types</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pipes">Pipes</a></li>
-<li><a class="reference internal" href="#foundations">Foundations</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="getting-involved.html"
-                        title="previous chapter">Getting Involved</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="filters.html"
-                        title="next chapter">Filters</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/overview.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -202,7 +250,9 @@
         <li class="right" >
           <a href="getting-involved.html" title="Getting Involved"
              >previous</a> |</li>
-        <li><a href="index.html">Pneumatic.IO Reference Guide</a> &raquo;</li> 
+        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="contents.html">Documentation</a> &raquo;</li>
+ 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
