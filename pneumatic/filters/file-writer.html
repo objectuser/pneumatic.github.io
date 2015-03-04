@@ -6,28 +6,29 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Testing &mdash; Pneumatic.IO Reference Guide</title>
+    <title>File Writer &mdash; Pneumatic.IO Reference Guide</title>
     
-    <link rel="stylesheet" href="_static/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
+        URL_ROOT:    '../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="Pneumatic.IO Reference Guide" href="index.html" />
-    <link rel="next" title="Extending Pneumatic" href="extending.html" />
-    <link rel="prev" title="XML File Reader" href="filters/xml-file-reader.html" />
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pneumatic.IO Reference Guide" href="../index.html" />
+    <link rel="up" title="Filters" href="../filters.html" />
+    <link rel="next" title="Funnel" href="funnel.html" />
+    <link rel="prev" title="File Reader" href="file-reader.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
  
@@ -70,11 +71,11 @@
   <ul>
     <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
     <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
-    <li><a href="index.html">Docs Home</a></li>
+    <li><a href="../index.html">Docs Home</a></li>
   </ul>
   <div>
-    <a href="index.html">
-      <img src="_static/banner.png" alt="SPHINX" />
+    <a href="../index.html">
+      <img src="../_static/banner.png" alt="SPHINX" />
     </a>
   </div>
 </div>
@@ -83,54 +84,38 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
+          <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="extending.html" title="Extending Pneumatic"
+          <a href="funnel.html" title="Funnel"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="filters/xml-file-reader.html" title="XML File Reader"
+          <a href="file-reader.html" title="File Reader"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
- 
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Testing</a><ul>
-<li><a class="reference internal" href="#unit-testing">Unit Testing</a><ul>
-<li><a class="reference internal" href="#junit">JUnit</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#functional-testing">Functional Testing</a><ul>
-<li><a class="reference internal" href="#etl-test">ETL Test</a></li>
-<li><a class="reference internal" href="#data-set">Data Set</a></li>
-<li><a class="reference internal" href="#examples">Examples</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
   <h4>Previous topic</h4>
-  <p class="topless"><a href="filters/xml-file-reader.html"
-                        title="previous chapter">XML File Reader</a></p>
+  <p class="topless"><a href="file-reader.html"
+                        title="previous chapter">File Reader</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="extending.html"
-                        title="next chapter">Extending Pneumatic</a></p>
+  <p class="topless"><a href="funnel.html"
+                        title="next chapter">Funnel</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/testing.txt"
+      <li><a href="../_sources/filters/file-writer.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
+    <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
@@ -149,27 +134,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="testing">
-<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="unit-testing">
-<h2>Unit Testing<a class="headerlink" href="#unit-testing" title="Permalink to this headline">¶</a></h2>
-<p>ETL jobs are traditionally challenging to test. Often, the entire job must be tested as a unit, which makes it difficult to find errors and more cumbersome to setup some kinds of test cases.</p>
-<p>Pneumatic makes unit testing possible, easy and effective. Individual filters in a job can be isolated for unit testing either using traditional Java unit testing frameworks (e.g., JUnit) or using the built in declarative unit testing facility.</p>
-<div class="section" id="junit">
-<h3>JUnit<a class="headerlink" href="#junit" title="Permalink to this headline">¶</a></h3>
+  <div class="section" id="file-writer">
+<h1>File Writer<a class="headerlink" href="#file-writer" title="Permalink to this headline">¶</a></h1>
+<p>The file writer reads records from its input and writes them to a file. The input schema in optional. If supplied, records will be validated against the schema and rejected if they don&#8217;t conform. Records are written in a CSV format. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:fileWriter id=&quot;fileWriter&quot; name=&quot;File Writer&quot;&gt;
+        &lt;etl:fileResource location=&quot;file:output/output1.txt&quot; /&gt;
+        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/etl:fileWriter&gt;
+</pre></div>
 </div>
-</div>
-<div class="section" id="functional-testing">
-<h2>Functional Testing<a class="headerlink" href="#functional-testing" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="etl-test">
-<h3>ETL Test<a class="headerlink" href="#etl-test" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="data-set">
-<h3>Data Set<a class="headerlink" href="#data-set" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
-</div>
+<p>The file location (<code class="docutils literal"><span class="pre">location=&quot;file:output/output1.txt&quot;</span></code>) uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/resources.html">Spring resource syntax</a>. Alternatively, a job parameter may be used to supply the file location:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:fileResource locationExpression=&quot;#job.file&quot; /&gt;
+</pre></div>
 </div>
 </div>
 
@@ -183,17 +161,18 @@
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
+          <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="extending.html" title="Extending Pneumatic"
+          <a href="funnel.html" title="Funnel"
              >next</a> |</li>
         <li class="right" >
-          <a href="filters/xml-file-reader.html" title="XML File Reader"
+          <a href="file-reader.html" title="File Reader"
              >previous</a> |</li>
-        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
- 
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

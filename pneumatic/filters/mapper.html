@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mapper &mdash; Pneumatic.IO Reference Guide</title>
+    
+    <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pneumatic.IO Reference Guide" href="../index.html" />
+    <link rel="up" title="Filters" href="../filters.html" />
+    <link rel="next" title="RESTful Listener" href="restful-listener.html" />
+    <link rel="prev" title="Join" href="join.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body role="document">
+<div class="pageheader">
+  <ul>
+    <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
+    <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
+    <li><a href="../index.html">Docs Home</a></li>
+  </ul>
+  <div>
+    <a href="../index.html">
+      <img src="../_static/banner.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="restful-listener.html" title="RESTful Listener"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="join.html" title="Join"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="join.html"
+                        title="previous chapter">Join</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="restful-listener.html"
+                        title="next chapter">RESTful Listener</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/filters/mapper.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mapper">
+<h1>Mapper<a class="headerlink" href="#mapper" title="Permalink to this headline">¶</a></h1>
+<p>The mapper translates records that conform to an input schema to records that conform to an output schema. In its simplest form, the output schema provides enough information to perform the mapping. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;bike_number&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:pipe id=&quot;input&quot; /&gt;
+&lt;etl:pipe id=&quot;mapperOutput&quot; /&gt;
+&lt;etl:mapper id=&quot;simpleMapper&quot; name=&quot;Simple Mapper&quot;&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;mapperOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/etl:mapper&gt;
+</pre></div>
+</div>
+<p>The mapper filter (<code class="docutils literal"><span class="pre">mapper</span> <span class="pre">id=&quot;simpleMapper&quot;</span></code>) uses the output schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>) to choose columns from the input records. The columns are chosen by name. In this example, the input has four columns available and three are selected for output: <code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">bike_number</span></code> and <code class="docutils literal"><span class="pre">year</span></code>.</p>
+<p>Also note that the type of the <code class="docutils literal"><span class="pre">bike_number</span></code> column is changed from integer to string. The mapper is able to make reasonable type conversions automatically: integer and decimal to string and integer to decimal.</p>
+<p>More complicated translations are also supported as shown in the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;etl:column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:pipe id=&quot;mapperOutput&quot; /&gt;
+&lt;etl:mapper id=&quot;mapper&quot; name=&quot;Mapper&quot;&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;mapperOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;etl:mappings&gt;
+                &lt;etl:mapping&gt;
+                        &lt;etl:from&gt;
+                                &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+                        &lt;/etl:from&gt;
+                        &lt;etl:to&gt;
+                                &lt;etl:column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
+                        &lt;/etl:to&gt;
+                &lt;/etl:mapping&gt;
+                &lt;etl:mapping&gt;
+                        &lt;etl:from&gt;
+                                &lt;etl:column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+                        &lt;/etl:from&gt;
+                        &lt;etl:to&gt;
+                                &lt;etl:column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
+                        &lt;/etl:to&gt;
+                &lt;/etl:mapping&gt;
+                &lt;etl:mapping&gt;
+                        &lt;etl:from&gt;
+                                &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+                        &lt;/etl:from&gt;
+                        &lt;etl:to&gt;
+                                &lt;etl:column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
+                        &lt;/etl:to&gt;
+                &lt;/etl:mapping&gt;
+                &lt;etl:mapping&gt;
+                        &lt;etl:from&gt;
+                                &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/etl:from&gt;
+                        &lt;etl:to&gt;
+                                &lt;etl:column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/etl:to&gt;
+                &lt;/etl:mapping&gt;
+        &lt;/etl:mappings&gt;
+&lt;/etl:mapper&gt;
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">etl:mappings</span></code> element allows for explicit mappings between input and output columns using the <code class="docutils literal"><span class="pre">etl:from</span></code> and <code class="docutils literal"><span class="pre">etl:to</span></code> elements. With this form, the column names do not need to match and type conversion is still supported.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="restful-listener.html" title="RESTful Listener"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="join.html" title="Join"
+             >previous</a> |</li>
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" >Filters</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Kevin Lewis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

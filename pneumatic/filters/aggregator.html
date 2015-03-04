@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Aggregator &mdash; Pneumatic.IO Reference Guide</title>
+    
+    <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pneumatic.IO Reference Guide" href="../index.html" />
+    <link rel="up" title="Filters" href="../filters.html" />
+    <link rel="next" title="Copy" href="copy.html" />
+    <link rel="prev" title="Filters" href="../filters.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body role="document">
+<div class="pageheader">
+  <ul>
+    <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
+    <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
+    <li><a href="../index.html">Docs Home</a></li>
+  </ul>
+  <div>
+    <a href="../index.html">
+      <img src="../_static/banner.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="copy.html" title="Copy"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../filters.html" title="Filters"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../filters.html"
+                        title="previous chapter">Filters</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copy.html"
+                        title="next chapter">Copy</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/filters/aggregator.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="aggregator">
+<h1>Aggregator<a class="headerlink" href="#aggregator" title="Permalink to this headline">¶</a></h1>
+<p>The aggregator filter has a single input pipe. It also has a single output pipe: the aggregator output to which the aggregator&#8217;s function is applied.</p>
+<p>A single record is written to the after all input records have been processed from the aggregator&#8217;s input.</p>
+<p>Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input&quot; /&gt;
+&lt;etl:pipe id=&quot;output&quot; /&gt;
+&lt;etl:pipe id=&quot;aggregatorOutput&quot; /&gt;
+&lt;etl:aggregator id=&quot;priceAggregator&quot; name=&quot;Price Aggregator&quot;&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;aggregatorOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
+        &lt;etl:function&gt;
+                &lt;etl:sum&gt;
+                        &lt;etl:in&gt;
+                                &lt;etl:column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/etl:in&gt;
+                        &lt;etl:out&gt;
+                                &lt;etl:column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/etl:out&gt;
+                &lt;/etl:sum&gt;
+        &lt;/etl:function&gt;
+&lt;/etl:aggregator&gt;
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">etl:function</span></code> element is the heart of the aggregator. In this case, we have a &#8220;sum&#8221; function (<code class="docutils literal"><span class="pre">etl:sum</span></code>). The sum function sums the input selected by the <code class="docutils literal"><span class="pre">etl:in</span></code> column and writes it to the output in the column defined in <code class="docutils literal"><span class="pre">etl:out</span></code>.</p>
+<p>The available functions are:</p>
+<ul class="simple">
+<li>average</li>
+<li>count</li>
+<li>sum</li>
+</ul>
+<p>That&#8217;s not very many functions, but the aggregator may be extended with any function you like using a Spring Bean:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:aggregator id=&quot;aggregator2&quot; name=&quot;Test Aggregator 2&quot;&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;aggregatorOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
+        &lt;etl:function&gt;
+                &lt;bean class=&quot;com.surgingsystems.etl.filter.function.SumFunction&quot;&gt;
+                        &lt;property name=&quot;inputColumnDefinition&quot;&gt;
+                                &lt;etl:column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/property&gt;
+                        &lt;property name=&quot;outputColumnDefinition&quot;&gt;
+                                &lt;etl:column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/property&gt;
+                &lt;/bean&gt;
+        &lt;/etl:function&gt;
+&lt;/etl:aggregator&gt;
+</pre></div>
+</div>
+<p>In this case, we are referencing the underlying Java class (<code class="docutils literal"><span class="pre">SumFunction</span></code>). Any function that implements the internal Function interface may be used. That interface is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">com</span><span class="o">.</span><span class="n">surgingsystems</span><span class="o">.</span><span class="n">etl</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Function</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="copy.html" title="Copy"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../filters.html" title="Filters"
+             >previous</a> |</li>
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" >Filters</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Kevin Lewis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

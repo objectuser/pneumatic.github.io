@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RESTful Lookup &mdash; Pneumatic.IO Reference Guide</title>
+    
+    <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="top" title="Pneumatic.IO Reference Guide" href="../index.html" />
+    <link rel="up" title="Filters" href="../filters.html" />
+    <link rel="next" title="RESTful Writer" href="restful-writer.html" />
+    <link rel="prev" title="RESTful Listener" href="restful-listener.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body role="document">
+<div class="pageheader">
+  <ul>
+    <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
+    <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
+    <li><a href="../index.html">Docs Home</a></li>
+  </ul>
+  <div>
+    <a href="../index.html">
+      <img src="../_static/banner.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="restful-writer.html" title="RESTful Writer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="restful-listener.html" title="RESTful Listener"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="restful-listener.html"
+                        title="previous chapter">RESTful Listener</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="restful-writer.html"
+                        title="next chapter">RESTful Writer</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/filters/restful-lookup.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="restful-lookup">
+<h1>RESTful Lookup<a class="headerlink" href="#restful-lookup" title="Permalink to this headline">¶</a></h1>
+<p>The RESTful lookup is a filter that allows a Pneumatic to perform a request against a resource and use the result of the request for subsequent processing. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:restfulLookup id=&quot;restfulLookup&quot; name=&quot;Price Lookup&quot;&gt;
+        &lt;etl:http method=&quot;GET&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
+        &lt;etl:input ref=&quot;input&quot; /&gt;
+        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;etl:output ref=&quot;output&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;outputSchema&quot; /&gt;
+        &lt;etl:responseSchema ref=&quot;responseSchema&quot; /&gt;
+&lt;/etl:restfulLookup&gt;
+</pre></div>
+</div>
+<p>In this example, the filter might be adding a price to the records it writes to its output.</p>
+<p>In this case, RESTful lookup uses an HTTP GET to perform the request (<code class="docutils literal"><span class="pre">method=&quot;GET&quot;</span></code>).</p>
+<p>The request URL may use values from the current record. Consider the following as the <code class="docutils literal"><span class="pre">inputSchema</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;inputSchema&quot; name=&quot;Input Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+</pre></div>
+</div>
+<p>The value of the <code class="docutils literal"><span class="pre">name</span></code> column would replace the token <code class="docutils literal"><span class="pre">{name}</span></code> in <code class="docutils literal"><span class="pre">http://localhost:8080/mtb/{name}/price</span></code>. This is a feature of the [Spring Framework client](<a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/remoting.html#rest-client-access">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/remoting.html#rest-client-access</a>).</p>
+<p>Now consider the following schemas:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;outputSchema&quot; name=&quot;Input Schema&quot;&gt;
+        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;etl:column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
+        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+        &lt;etl:column name=&quot;price&quot; type=&quot;decimal&quot; /&gt;
+&lt;/etl:schema&gt;
+
+&lt;etl:schema id=&quot;responseSchema&quot; name=&quot;Criteria Schema&quot;&gt;
+        &lt;etl:column name=&quot;price&quot; type=&quot;string&quot; /&gt;
+&lt;/etl:schema&gt;
+</pre></div>
+</div>
+<p>The response schema from the example (<code class="docutils literal"><span class="pre">etl:responseSchema</span> <span class="pre">ref=&quot;responseSchema&quot;</span></code>) reads the price from the GET request to the request URL. The values declared in that schema are available to map to the record written to the output. The output schema (<code class="docutils literal"><span class="pre">etl:outputSchema</span> <span class="pre">ref=&quot;outputSchema&quot;</span></code>) is used to select values from a combination of the input record (defined by the input schema, <code class="docutils literal"><span class="pre">etl:inputSchema</span> <span class="pre">ref=&quot;inputSchema&quot;</span></code>) and the response.</p>
+<p>Note that the data type of <code class="docutils literal"><span class="pre">price</span></code> in the response schema is <code class="docutils literal"><span class="pre">string</span></code>, while the same column name in the output schema has a <code class="docutils literal"><span class="pre">decimal</span></code> type. Type conversion is automatic.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="restful-writer.html" title="RESTful Writer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="restful-listener.html" title="RESTful Listener"
+             >previous</a> |</li>
+        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../filters.html" >Filters</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Kevin Lewis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>
