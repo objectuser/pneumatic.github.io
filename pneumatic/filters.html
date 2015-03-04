@@ -362,11 +362,24 @@
 &lt;/etl:fileReader&gt;
 </pre></div>
 </div>
-<p>The file reader reads from the file given by its location (<code class="docutils literal"><span class="pre">location=&quot;classpath:data/mtb.txt&quot;</span></code>). Alternatively, a job argument may be used to specify the file location:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:fileResource locationExpression=&quot;#job.file&quot; /&gt;
+<p>The file reader reads from the file given by its location (<code class="docutils literal"><span class="pre">location=&quot;classpath:data/mtb.txt&quot;</span></code>). Alternatively, a job argument may be used to specify the file location::1</p>
+<blockquote>
+<div>&lt;etl:fileResource locationExpression=&#8221;#job.file&#8221; /&gt;</div></blockquote>
+<p>The records read from the file are put on the output pipe (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>). The records are constructed according to the supplied schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>).</p>
+<p>The file reader supports the <code class="docutils literal"><span class="pre">rejection</span></code> element for controlling rejected records:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;etl:pipe id=&quot;fileReaderRejectionOutput&quot; /&gt;
+&lt;etl:fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
+        &lt;etl:fileResource location=&quot;classpath:data/bad-data.txt&quot; /&gt;
+        &lt;etl:output ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;etl:rejection&gt;
+                &lt;etl:output ref=&quot;fileReaderRejectionOutput&quot; /&gt;
+        &lt;/etl:rejection&gt;
+&lt;/etl:fileReader&gt;
 </pre></div>
 </div>
-<p>The records read from the file are put on the output pipe (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>). The records are constructed according to the supplied schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>).</p>
+<p>By default, rejected records are logged.</p>
 </div>
 <div class="section" id="file-writer">
 <h3>File Writer<a class="headerlink" href="#file-writer" title="Permalink to this headline">¶</a></h3>
@@ -745,6 +758,8 @@
 </div>
 <div class="section" id="xml-file-reader">
 <h3>XML File Reader<a class="headerlink" href="#xml-file-reader" title="Permalink to this headline">¶</a></h3>
+<p>The XML file reader reads records from an XML document. It should be considered experimental. (Is it really useful to read records this way? If you think so, let me know!) There is no DSL for this filter. To get a feel for it, look at the <code class="docutils literal"><span class="pre">xml-test.xml</span></code> sample.</p>
+<p>(If you have an idea on how to better support XML in Pneumatic.IO, let me know!)</p>
 </div>
 </div>
 </div>
