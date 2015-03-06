@@ -91,8 +91,8 @@
         <li class="right" >
           <a href="index.html" title="Pneumatic.IO"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="index.html">Documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -142,30 +142,30 @@
         &lt;jdbc:script location=&quot;classpath:db-test-data.sql&quot; /&gt;
 &lt;/jdbc:embedded-database&gt;
 
-&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-&lt;/etl:schema&gt;
+&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/schema&gt;
 
-&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
-&lt;etl:fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
-        &lt;etl:fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
-        &lt;etl:output ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
-&lt;/etl:fileReader&gt;
+&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
+        &lt;fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
+        &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/fileReader&gt;
 
-&lt;etl:databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
-        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;etl:insertInto table-name=&quot;mtb&quot; /&gt;
-&lt;/etl:databaseWriter&gt;
+&lt;databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
+        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;insertInto table-name=&quot;mtb&quot; /&gt;
+&lt;/databaseWriter&gt;
 </pre></div>
 </div>
 <p>In this guide, configuration elements are indicated by their &#8220;IDs&#8221; (identifiers). The ID needs to be unique across all the files in your jobs.  An example of an ID is the first declaration (<code class="docutils literal"><span class="pre">id=&quot;dataSource&quot;</span></code>). This refers to a Spring embedded data source. A data source is an object that provides connections to a database like Oracle, SQL Server, MySQL, etc.</p>
 <p>Next is a schema declaration (<code class="docutils literal"><span class="pre">id=&quot;mtbSchema&quot;</span></code>)  used to declare the structure of records in the job. A pipe (<code class="docutils literal"><span class="pre">id=&quot;fileReaderOutput&quot;</span></code>) provides a conduit for records, connecting one processing element (called &#8220;filters&#8221;) to another.</p>
-<p>A file reader (<code class="docutils literal"><span class="pre">id=&quot;fileReader&quot;</span></code>) is a filter that reads a file, creating records and sending them to the pipe referenced in its &#8220;output&#8221;. The file reader has an output (<code class="docutils literal"><span class="pre">etl:output</span> <span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), which refers (using the <code class="docutils literal"><span class="pre">ref</span></code> keyword) to the <code class="docutils literal"><span class="pre">fileReaderOutput</span></code> pipe. This guide will often just use the reference portion of an element when describing it (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>).</p>
+<p>A file reader (<code class="docutils literal"><span class="pre">id=&quot;fileReader&quot;</span></code>) is a filter that reads a file, creating records and sending them to the pipe referenced in its &#8220;output&#8221;. The file reader has an output (<code class="docutils literal"><span class="pre">output</span> <span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), which refers (using the <code class="docutils literal"><span class="pre">ref</span></code> keyword) to the <code class="docutils literal"><span class="pre">fileReaderOutput</span></code> pipe. This guide will often just use the reference portion of an element when describing it (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>).</p>
 <p>A database writer (<code class="docutils literal"><span class="pre">id=&quot;databaseWriter&quot;</span></code>) writes records from the pipe referenced in its <code class="docutils literal"><span class="pre">input</span></code> to a table available in the data source (the <code class="docutils literal"><span class="pre">mtb</span></code> table in this case). Don&#8217;t be confused by the input to the database writer referencing a pipe called <code class="docutils literal"><span class="pre">fileReaderOutput</span></code>: pipes connect the output of one filter to the input of another filter. Pipes are often declared near the filter that is writing to them and so are named according to that relationship. A pipe could also be named something like <code class="docutils literal"><span class="pre">fileReaderToDatabaseWriterPipe</span></code>. You can use any convention you like.</p>
 <p>Declaring these elements provides Pneumatic enough information to read all the records in the file and write them to the database. When there are no more records to process, Pneumatic shuts down. That&#8217;s it.</p>
 </div>
@@ -188,8 +188,8 @@
         <li class="right" >
           <a href="index.html" title="Pneumatic.IO"
              >previous</a> |</li>
-        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="index.html">Documentation</a> &raquo;</li>
  
       </ul>
     </div>

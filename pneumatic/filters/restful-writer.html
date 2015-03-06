@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="restful-lookup.html" title="RESTful Lookup"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,16 +137,16 @@
   <div class="section" id="restful-writer">
 <h1>RESTful Writer<a class="headerlink" href="#restful-writer" title="Permalink to this headline">¶</a></h1>
 <p>The RESTful writer is a filter for submitting requests to a RESTful service. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input&quot; /&gt;
-&lt;etl:pipe id=&quot;rejectionOutput&quot; /&gt;
-&lt;etl:restfulWriter id=&quot;restfulWriter&quot; name=&quot;Restful Writer&quot;&gt;
-        &lt;etl:http method=&quot;PUT&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;etl:rejection&gt;
-                &lt;etl:output ref=&quot;rejectionOutput&quot; /&gt;
-        &lt;/etl:rejection&gt;
-&lt;/etl:restfulWriter&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
+&lt;pipe id=&quot;rejectionOutput&quot; /&gt;
+&lt;restfulWriter id=&quot;restfulWriter&quot; name=&quot;Restful Writer&quot;&gt;
+        &lt;http method=&quot;PUT&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;rejection&gt;
+                &lt;output ref=&quot;rejectionOutput&quot; /&gt;
+        &lt;/rejection&gt;
+&lt;/restfulWriter&gt;
 </pre></div>
 </div>
 <p>The HTTP method used to submit the request is configurable (<code class="docutils literal"><span class="pre">method=&quot;PUT&quot;</span></code>). The payload of the request is a JSON message based on the input schema (<code class="docutils literal"><span class="pre">ref=&quot;inputSchema&quot;</span></code>).</p>
@@ -171,8 +171,8 @@
         <li class="right" >
           <a href="restful-lookup.html" title="RESTful Lookup"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

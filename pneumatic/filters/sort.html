@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="restful-writer.html" title="RESTful Writer"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,35 +137,35 @@
   <div class="section" id="sort">
 <h1>Sort<a class="headerlink" href="#sort" title="Permalink to this headline">¶</a></h1>
 <p>The sort filter sorts its input records according to a comparator. The sorted output is only written after all records have been read from its input. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input&quot; /&gt;
-&lt;etl:pipe id=&quot;output&quot; /&gt;
-&lt;etl:sort id=&quot;sort&quot; name=&quot;Test Sort&quot;&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:output ref=&quot;output&quot; /&gt;
-        &lt;etl:comparator&gt;
-                &lt;etl:column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;/etl:comparator&gt;
-&lt;/etl:sort&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
+&lt;pipe id=&quot;output&quot; /&gt;
+&lt;sort id=&quot;sort&quot; name=&quot;Test Sort&quot;&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;output ref=&quot;output&quot; /&gt;
+        &lt;comparator&gt;
+                &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+        &lt;/comparator&gt;
+&lt;/sort&gt;
 </pre></div>
 </div>
 <p>The records read from the input (<code class="docutils literal"><span class="pre">ref=&quot;input&quot;</span></code>) are held in memory by the sort filter until it is ready to sort. Then the records are sorted using the comparator. In this case, the comparator orders the records by the <code class="docutils literal"><span class="pre">Name</span></code> column of the input records.</p>
 <p>The sort filter also supports arbitrary comparators using Spring Beans:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input&quot; /&gt;
-&lt;etl:pipe id=&quot;output&quot; /&gt;
-&lt;etl:sort id=&quot;sortWithBean&quot; name=&quot;Test Sort&quot;&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:output ref=&quot;output&quot; /&gt;
-        &lt;etl:comparator&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
+&lt;pipe id=&quot;output&quot; /&gt;
+&lt;sort id=&quot;sortWithBean&quot; name=&quot;Test Sort&quot;&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;output ref=&quot;output&quot; /&gt;
+        &lt;comparator&gt;
                 &lt;bean class=&quot;com.surgingsystems.etl.filter.SortFilterTest.TwoColumnComparator&quot;&gt;
                         &lt;property name=&quot;column1&quot;&gt;
-                                &lt;etl:column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+                                &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
                         &lt;/property&gt;
                         &lt;property name=&quot;column2&quot;&gt;
-                                &lt;etl:column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+                                &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
                         &lt;/property&gt;
                 &lt;/bean&gt;
-        &lt;/etl:comparator&gt;
-&lt;/etl:sort&gt;
+        &lt;/comparator&gt;
+&lt;/sort&gt;
 </pre></div>
 </div>
 <p>In this example, the comparator is supplied by a Java class (<code class="docutils literal"><span class="pre">bean</span> <span class="pre">class=&quot;...&quot;</span></code>) that has two properties for columns.</p>
@@ -190,8 +190,8 @@
         <li class="right" >
           <a href="restful-writer.html" title="RESTful Writer"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

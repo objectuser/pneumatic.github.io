@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="database-writer.html" title="Database Writer"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,29 +137,29 @@
   <div class="section" id="file-reader">
 <h1>File Reader<a class="headerlink" href="#file-reader" title="Permalink to this headline">¶</a></h1>
 <p>The file reader reads records from a file and writes them to its output. Records are read using a CSV format. A schema is required to define the records. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
-&lt;etl:fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
-        &lt;etl:fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
-        &lt;etl:output ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
-&lt;/etl:fileReader&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
+        &lt;fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
+        &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/fileReader&gt;
 </pre></div>
 </div>
 <p>The file reader reads from the file given by its location (<code class="docutils literal"><span class="pre">location=&quot;classpath:data/mtb.txt&quot;</span></code>). Alternatively, a job argument may be used to specify the file location::1</p>
 <blockquote>
-<div>&lt;etl:fileResource locationExpression=&#8221;#job.file&#8221; /&gt;</div></blockquote>
+<div>&lt;fileResource locationExpression=&#8221;#job.file&#8221; /&gt;</div></blockquote>
 <p>The records read from the file are put on the output pipe (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>). The records are constructed according to the supplied schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>).</p>
 <p>The file reader supports the <code class="docutils literal"><span class="pre">rejection</span></code> element for controlling rejected records:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
-&lt;etl:pipe id=&quot;fileReaderRejectionOutput&quot; /&gt;
-&lt;etl:fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
-        &lt;etl:fileResource location=&quot;classpath:data/bad-data.txt&quot; /&gt;
-        &lt;etl:output ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;etl:rejection&gt;
-                &lt;etl:output ref=&quot;fileReaderRejectionOutput&quot; /&gt;
-        &lt;/etl:rejection&gt;
-&lt;/etl:fileReader&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;pipe id=&quot;fileReaderRejectionOutput&quot; /&gt;
+&lt;fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
+        &lt;fileResource location=&quot;classpath:data/bad-data.txt&quot; /&gt;
+        &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;rejection&gt;
+                &lt;output ref=&quot;fileReaderRejectionOutput&quot; /&gt;
+        &lt;/rejection&gt;
+&lt;/fileReader&gt;
 </pre></div>
 </div>
 <p>By default, rejected records are logged.</p>
@@ -183,8 +183,8 @@
         <li class="right" >
           <a href="database-writer.html" title="Database Writer"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

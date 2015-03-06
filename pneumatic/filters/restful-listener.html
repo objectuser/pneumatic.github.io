@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="mapper.html" title="Mapper"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -138,18 +138,18 @@
 <h1>RESTful Listener<a class="headerlink" href="#restful-listener" title="Permalink to this headline">¶</a></h1>
 <p>(Should this be called the &#8220;RESTful Reader&#8221; to be more consistent with other filters? Something else? I&#8217;d like your feedback.)</p>
 <p>The RESTful listener is a filter that accepts RESTful requests. The requests must use the POST HTTP method and send JSON as the request body. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-&lt;/etl:schema&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/schema&gt;
 
-&lt;etl:pipe id=&quot;restfulListenerOutput&quot; /&gt;
-&lt;etl:restfulListener id=&quot;restfulListener&quot; name=&quot;Restful Input&quot;&gt;
-        &lt;etl:path value=&quot;mtb&quot; /&gt;
-        &lt;etl:output ref=&quot;restfulListenerOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
-&lt;/etl:restfulListener&gt;
+&lt;pipe id=&quot;restfulListenerOutput&quot; /&gt;
+&lt;restfulListener id=&quot;restfulListener&quot; name=&quot;Restful Input&quot;&gt;
+        &lt;path value=&quot;mtb&quot; /&gt;
+        &lt;output ref=&quot;restfulListenerOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/restfulListener&gt;
 </pre></div>
 </div>
 <p>The schema (<code class="docutils literal"><span class="pre">id=&quot;mtbSchema&quot;</span></code>) is shown here because the RESTful listener uses the schema to convert JSON to a record. For the schema above, the following is an example message:</p>
@@ -157,7 +157,7 @@
 </pre></div>
 </div>
 <p>Note that the names and the data types conform to the declared schema.</p>
-<p>The restful listener (<code class="docutils literal"><span class="pre">etl:restfulListener</span> <span class="pre">id=&quot;restfulListener&quot;</span></code>) declares a path (<code class="docutils literal"><span class="pre">etl:path</span> <span class="pre">value=&quot;mtb&quot;</span></code>) that tells Pneumatic the resource that triggers this listener. If this service is running on <code class="docutils literal"><span class="pre">localhost:8080</span></code>, perhaps using the Pneumatic.IO Boot Runner (reference), which leverages Spring Boot (reference), a request is posted to <code class="docutils literal"><span class="pre">http://localhost:8080/mtb</span></code> will trigger this listener.</p>
+<p>The restful listener (<code class="docutils literal"><span class="pre">restfulListener</span> <span class="pre">id=&quot;restfulListener&quot;</span></code>) declares a path (<code class="docutils literal"><span class="pre">path</span> <span class="pre">value=&quot;mtb&quot;</span></code>) that tells Pneumatic the resource that triggers this listener. If this service is running on <code class="docutils literal"><span class="pre">localhost:8080</span></code>, perhaps using the Pneumatic.IO Boot Runner (reference), which leverages Spring Boot (reference), a request is posted to <code class="docutils literal"><span class="pre">http://localhost:8080/mtb</span></code> will trigger this listener.</p>
 </div>
 
 
@@ -178,8 +178,8 @@
         <li class="right" >
           <a href="mapper.html" title="Mapper"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

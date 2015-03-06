@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="database-reader.html" title="Database Reader"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,42 +137,42 @@
   <div class="section" id="database-writer">
 <h1>Database Writer<a class="headerlink" href="#database-writer" title="Permalink to this headline">¶</a></h1>
 <p>The database writer writes records from its input pipe to a database table. In its simplest form, the table name is supplied and the records are written directly to the table.  Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
-&lt;etl:databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
-        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;etl:insertInto table-name=&quot;mtb&quot; /&gt;
-&lt;/etl:databaseWriter&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
+        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;insertInto table-name=&quot;mtb&quot; /&gt;
+&lt;/databaseWriter&gt;
 </pre></div>
 </div>
-<p>The input is required (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), as is the input schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>). The data source provides the filter with database connections (<code class="docutils literal"><span class="pre">ref=&quot;dataSource&quot;</span></code>).  Finally, the <code class="docutils literal"><span class="pre">insertInto</span></code> element provides the name of the table into which the records are inserted (<code class="docutils literal"><span class="pre">etl:insertInto</span> <span class="pre">table-name=&quot;mtb&quot;</span></code>).</p>
+<p>The input is required (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), as is the input schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>). The data source provides the filter with database connections (<code class="docutils literal"><span class="pre">ref=&quot;dataSource&quot;</span></code>).  Finally, the <code class="docutils literal"><span class="pre">insertInto</span></code> element provides the name of the table into which the records are inserted (<code class="docutils literal"><span class="pre">insertInto</span> <span class="pre">table-name=&quot;mtb&quot;</span></code>).</p>
 <p>The database writer has a second form for updates.  The following is an example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
-&lt;etl:databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
-        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;etl:updateWith&gt;
-                &lt;etl:sql&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
+        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;updateWith&gt;
+                &lt;sql&gt;
                         update mtb set year = ?, cost = ? where name = ?
-                &lt;/etl:sql&gt;
-                &lt;etl:parameter value=&quot;#inputRecord.year&quot; /&gt;
-                &lt;etl:parameter value=&quot;#inputRecord.cost&quot; /&gt;
-                &lt;etl:parameter value=&quot;#inputRecord.name&quot; /&gt;
-        &lt;/etl:updateWith&gt;
-&lt;/etl:databaseWriter&gt;
+                &lt;/sql&gt;
+                &lt;parameter value=&quot;#inputRecord.year&quot; /&gt;
+                &lt;parameter value=&quot;#inputRecord.cost&quot; /&gt;
+                &lt;parameter value=&quot;#inputRecord.name&quot; /&gt;
+        &lt;/updateWith&gt;
+&lt;/databaseWriter&gt;
 </pre></div>
 </div>
-<p>The difference is the <code class="docutils literal"><span class="pre">etl:updateWith</span></code> element replaces the <code class="docutils literal"><span class="pre">etl:insertInto</span></code> element. This element is a bit more complex, requiring a SQL statement be specified. The question marks in the SQL statement are parameter markers. They are supplied by the parameter elements (<code class="docutils literal"><span class="pre">etl:parameter</span></code>) in the order specified. The value of each parameter may be a constant or an SpEL expression.</p>
+<p>The difference is the <code class="docutils literal"><span class="pre">updateWith</span></code> element replaces the <code class="docutils literal"><span class="pre">insertInto</span></code> element. This element is a bit more complex, requiring a SQL statement be specified. The question marks in the SQL statement are parameter markers. They are supplied by the parameter elements (<code class="docutils literal"><span class="pre">parameter</span></code>) in the order specified. The value of each parameter may be a constant or an SpEL expression.</p>
 <p>The variable <code class="docutils literal"><span class="pre">inputRecord</span></code> may be used to refer to the input record being processed. The columns on the input record may appear after a period or inside brackets.  The first example below refers to the <code class="docutils literal"><span class="pre">year</span></code> column on the input record. The second uses the brackets syntax to refer to the <code class="docutils literal"><span class="pre">name</span></code> column:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:parameter value=&quot;#inputRecord.year&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;parameter value=&quot;#inputRecord.year&quot; /&gt;
 
-&lt;etl:parameter value=&quot;#inputRecord[&#39;name&#39;]&quot; /&gt;
+&lt;parameter value=&quot;#inputRecord[&#39;name&#39;]&quot; /&gt;
 </pre></div>
 </div>
 <p>The second syntax is useful for referring to columns that have spaces in the name:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:parameter value=&quot;#inputRecord[&#39;Column Name with Spaces&#39;]&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;parameter value=&quot;#inputRecord[&#39;Column Name with Spaces&#39;]&quot; /&gt;
 </pre></div>
 </div>
 </div>
@@ -195,8 +195,8 @@
         <li class="right" >
           <a href="database-reader.html" title="Database Reader"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="file-reader.html" title="File Reader"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,16 +137,16 @@
   <div class="section" id="file-writer">
 <h1>File Writer<a class="headerlink" href="#file-writer" title="Permalink to this headline">¶</a></h1>
 <p>The file writer reads records from its input and writes them to a file. The input schema in optional. If supplied, records will be validated against the schema and rejected if they don&#8217;t conform. Records are written in a CSV format. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;fileReaderOutput&quot; /&gt;
-&lt;etl:fileWriter id=&quot;fileWriter&quot; name=&quot;File Writer&quot;&gt;
-        &lt;etl:fileResource location=&quot;file:output/output1.txt&quot; /&gt;
-        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;mtbSchema&quot; /&gt;
-&lt;/etl:fileWriter&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+&lt;fileWriter id=&quot;fileWriter&quot; name=&quot;File Writer&quot;&gt;
+        &lt;fileResource location=&quot;file:output/output1.txt&quot; /&gt;
+        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/fileWriter&gt;
 </pre></div>
 </div>
 <p>The file location (<code class="docutils literal"><span class="pre">location=&quot;file:output/output1.txt&quot;</span></code>) uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/resources.html">Spring resource syntax</a>. Alternatively, a job parameter may be used to supply the file location:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:fileResource locationExpression=&quot;#job.file&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;fileResource locationExpression=&quot;#job.file&quot; /&gt;
 </pre></div>
 </div>
 </div>
@@ -169,8 +169,8 @@
         <li class="right" >
           <a href="file-reader.html" title="File Reader"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

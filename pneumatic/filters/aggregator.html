@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="../filters.html" title="Filters"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -139,28 +139,28 @@
 <p>The aggregator filter has a single input pipe. It also has a single output pipe: the aggregator output to which the aggregator&#8217;s function is applied.</p>
 <p>A single record is written to the after all input records have been processed from the aggregator&#8217;s input.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input&quot; /&gt;
-&lt;etl:pipe id=&quot;output&quot; /&gt;
-&lt;etl:pipe id=&quot;aggregatorOutput&quot; /&gt;
-&lt;etl:aggregator id=&quot;priceAggregator&quot; name=&quot;Price Aggregator&quot;&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;etl:output ref=&quot;aggregatorOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
-        &lt;etl:function&gt;
-                &lt;etl:sum&gt;
-                        &lt;etl:in&gt;
-                                &lt;etl:column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/etl:in&gt;
-                        &lt;etl:out&gt;
-                                &lt;etl:column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/etl:out&gt;
-                &lt;/etl:sum&gt;
-        &lt;/etl:function&gt;
-&lt;/etl:aggregator&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
+&lt;pipe id=&quot;output&quot; /&gt;
+&lt;pipe id=&quot;aggregatorOutput&quot; /&gt;
+&lt;aggregator id=&quot;priceAggregator&quot; name=&quot;Price Aggregator&quot;&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;output ref=&quot;aggregatorOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
+        &lt;function&gt;
+                &lt;sum&gt;
+                        &lt;in&gt;
+                                &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/in&gt;
+                        &lt;out&gt;
+                                &lt;column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/out&gt;
+                &lt;/sum&gt;
+        &lt;/function&gt;
+&lt;/aggregator&gt;
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">etl:function</span></code> element is the heart of the aggregator. In this case, we have a &#8220;sum&#8221; function (<code class="docutils literal"><span class="pre">etl:sum</span></code>). The sum function sums the input selected by the <code class="docutils literal"><span class="pre">etl:in</span></code> column and writes it to the output in the column defined in <code class="docutils literal"><span class="pre">etl:out</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">function</span></code> element is the heart of the aggregator. In this case, we have a &#8220;sum&#8221; function (<code class="docutils literal"><span class="pre">sum</span></code>). The sum function sums the input selected by the <code class="docutils literal"><span class="pre">in</span></code> column and writes it to the output in the column defined in <code class="docutils literal"><span class="pre">out</span></code>.</p>
 <p>The available functions are:</p>
 <ul class="simple">
 <li>average</li>
@@ -168,22 +168,22 @@
 <li>sum</li>
 </ul>
 <p>That&#8217;s not very many functions, but the aggregator may be extended with any function you like using a Spring Bean:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:aggregator id=&quot;aggregator2&quot; name=&quot;Test Aggregator 2&quot;&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;etl:output ref=&quot;aggregatorOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
-        &lt;etl:function&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;aggregator id=&quot;aggregator2&quot; name=&quot;Test Aggregator 2&quot;&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;output ref=&quot;aggregatorOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
+        &lt;function&gt;
                 &lt;bean class=&quot;com.surgingsystems.etl.filter.function.SumFunction&quot;&gt;
                         &lt;property name=&quot;inputColumnDefinition&quot;&gt;
-                                &lt;etl:column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+                                &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
                         &lt;/property&gt;
                         &lt;property name=&quot;outputColumnDefinition&quot;&gt;
-                                &lt;etl:column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
+                                &lt;column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
                         &lt;/property&gt;
                 &lt;/bean&gt;
-        &lt;/etl:function&gt;
-&lt;/etl:aggregator&gt;
+        &lt;/function&gt;
+&lt;/aggregator&gt;
 </pre></div>
 </div>
 <p>In this case, we are referencing the underlying Java class (<code class="docutils literal"><span class="pre">SumFunction</span></code>). Any function that implements the internal Function interface may be used. That interface is:</p>
@@ -210,8 +210,8 @@
         <li class="right" >
           <a href="../filters.html" title="Filters"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

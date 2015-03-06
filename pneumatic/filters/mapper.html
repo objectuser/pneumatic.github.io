@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="join.html" title="Join"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,90 +137,90 @@
   <div class="section" id="mapper">
 <h1>Mapper<a class="headerlink" href="#mapper" title="Permalink to this headline">¶</a></h1>
 <p>The mapper translates records that conform to an input schema to records that conform to an output schema. In its simplest form, the output schema provides enough information to perform the mapping. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
-        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-&lt;/etl:schema&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/schema&gt;
 
-&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;bike_number&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-&lt;/etl:schema&gt;
+&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;bike_number&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+&lt;/schema&gt;
 
-&lt;etl:pipe id=&quot;input&quot; /&gt;
-&lt;etl:pipe id=&quot;mapperOutput&quot; /&gt;
-&lt;etl:mapper id=&quot;simpleMapper&quot; name=&quot;Simple Mapper&quot;&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
-        &lt;etl:output ref=&quot;mapperOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
-&lt;/etl:mapper&gt;
+&lt;pipe id=&quot;input&quot; /&gt;
+&lt;pipe id=&quot;mapperOutput&quot; /&gt;
+&lt;mapper id=&quot;simpleMapper&quot; name=&quot;Simple Mapper&quot;&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
+        &lt;output ref=&quot;mapperOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+&lt;/mapper&gt;
 </pre></div>
 </div>
 <p>The mapper filter (<code class="docutils literal"><span class="pre">mapper</span> <span class="pre">id=&quot;simpleMapper&quot;</span></code>) uses the output schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>) to choose columns from the input records. The columns are chosen by name. In this example, the input has four columns available and three are selected for output: <code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">bike_number</span></code> and <code class="docutils literal"><span class="pre">year</span></code>.</p>
 <p>Also note that the type of the <code class="docutils literal"><span class="pre">bike_number</span></code> column is changed from integer to string. The mapper is able to make reasonable type conversions automatically: integer and decimal to string and integer to decimal.</p>
 <p>More complicated translations are also supported as shown in the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
-        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-&lt;/etl:schema&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/schema&gt;
 
-&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;etl:column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
-&lt;/etl:schema&gt;
+&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
+&lt;/schema&gt;
 
-&lt;etl:pipe id=&quot;mapperOutput&quot; /&gt;
-&lt;etl:mapper id=&quot;mapper&quot; name=&quot;Mapper&quot;&gt;
-        &lt;etl:input ref=&quot;input&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
-        &lt;etl:output ref=&quot;mapperOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;etl:mappings&gt;
-                &lt;etl:mapping&gt;
-                        &lt;etl:from&gt;
-                                &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-                        &lt;/etl:from&gt;
-                        &lt;etl:to&gt;
-                                &lt;etl:column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
-                        &lt;/etl:to&gt;
-                &lt;/etl:mapping&gt;
-                &lt;etl:mapping&gt;
-                        &lt;etl:from&gt;
-                                &lt;etl:column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
-                        &lt;/etl:from&gt;
-                        &lt;etl:to&gt;
-                                &lt;etl:column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
-                        &lt;/etl:to&gt;
-                &lt;/etl:mapping&gt;
-                &lt;etl:mapping&gt;
-                        &lt;etl:from&gt;
-                                &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-                        &lt;/etl:from&gt;
-                        &lt;etl:to&gt;
-                                &lt;etl:column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
-                        &lt;/etl:to&gt;
-                &lt;/etl:mapping&gt;
-                &lt;etl:mapping&gt;
-                        &lt;etl:from&gt;
-                                &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/etl:from&gt;
-                        &lt;etl:to&gt;
-                                &lt;etl:column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/etl:to&gt;
-                &lt;/etl:mapping&gt;
-        &lt;/etl:mappings&gt;
-&lt;/etl:mapper&gt;
+&lt;pipe id=&quot;mapperOutput&quot; /&gt;
+&lt;mapper id=&quot;mapper&quot; name=&quot;Mapper&quot;&gt;
+        &lt;input ref=&quot;input&quot; /&gt;
+        &lt;inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
+        &lt;output ref=&quot;mapperOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+        &lt;mappings&gt;
+                &lt;mapping&gt;
+                        &lt;from&gt;
+                                &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+                        &lt;/from&gt;
+                        &lt;to&gt;
+                                &lt;column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
+                        &lt;/to&gt;
+                &lt;/mapping&gt;
+                &lt;mapping&gt;
+                        &lt;from&gt;
+                                &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+                        &lt;/from&gt;
+                        &lt;to&gt;
+                                &lt;column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
+                        &lt;/to&gt;
+                &lt;/mapping&gt;
+                &lt;mapping&gt;
+                        &lt;from&gt;
+                                &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+                        &lt;/from&gt;
+                        &lt;to&gt;
+                                &lt;column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
+                        &lt;/to&gt;
+                &lt;/mapping&gt;
+                &lt;mapping&gt;
+                        &lt;from&gt;
+                                &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/from&gt;
+                        &lt;to&gt;
+                                &lt;column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
+                        &lt;/to&gt;
+                &lt;/mapping&gt;
+        &lt;/mappings&gt;
+&lt;/mapper&gt;
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">etl:mappings</span></code> element allows for explicit mappings between input and output columns using the <code class="docutils literal"><span class="pre">etl:from</span></code> and <code class="docutils literal"><span class="pre">etl:to</span></code> elements. With this form, the column names do not need to match and type conversion is still supported.</p>
+<p>The <code class="docutils literal"><span class="pre">mappings</span></code> element allows for explicit mappings between input and output columns using the <code class="docutils literal"><span class="pre">from</span></code> and <code class="docutils literal"><span class="pre">to</span></code> elements. With this form, the column names do not need to match and type conversion is still supported.</p>
 </div>
 
 
@@ -241,8 +241,8 @@
         <li class="right" >
           <a href="join.html" title="Join"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

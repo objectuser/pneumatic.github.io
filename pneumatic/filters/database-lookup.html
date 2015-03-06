@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="copy.html" title="Copy"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -145,20 +145,20 @@
 </ol>
 <p>It is important to avoid name collisions to ensure the results are as expected. Use aliasing on the select statement if needed to ensure those columns do not conflict with those on the input schema. Alternatively, use a mapper filter to change the schema of the input before it comes into this filter.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;databaseLookupOutput&quot; /&gt;
-&lt;etl:databaseLookup id=&quot;databaseLookup&quot; name=&quot;Database Lookup&quot;&gt;
-        &lt;etl:input ref=&quot;mapperOutput&quot; /&gt;
-        &lt;etl:inputSchema ref=&quot;mapperMtbSchema&quot; /&gt;
-        &lt;etl:output ref=&quot;databaseLookupOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;lookupSchema&quot; /&gt;
-        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;etl:lookup&gt;
-                &lt;etl:sql&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;databaseLookupOutput&quot; /&gt;
+&lt;databaseLookup id=&quot;databaseLookup&quot; name=&quot;Database Lookup&quot;&gt;
+        &lt;input ref=&quot;mapperOutput&quot; /&gt;
+        &lt;inputSchema ref=&quot;mapperMtbSchema&quot; /&gt;
+        &lt;output ref=&quot;databaseLookupOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;lookupSchema&quot; /&gt;
+        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;lookup&gt;
+                &lt;sql&gt;
                         select year, cost from mtb where name = ?
-                &lt;/etl:sql&gt;
-                &lt;etl:parameter value=&quot;#inputRecord.name&quot; /&gt;
-        &lt;/etl:lookup&gt;
-&lt;/etl:databaseLookup&gt;
+                &lt;/sql&gt;
+                &lt;parameter value=&quot;#inputRecord.name&quot; /&gt;
+        &lt;/lookup&gt;
+&lt;/databaseLookup&gt;
 </pre></div>
 </div>
 <p>The data source reference (<code class="docutils literal"><span class="pre">id=&quot;dataSource&quot;</span></code>) is an object of type <code class="docutils literal"><span class="pre">javax.sql.DataSource</span></code>.  It might be defined like this:</p>
@@ -190,8 +190,8 @@
         <li class="right" >
           <a href="copy.html" title="Copy"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>
