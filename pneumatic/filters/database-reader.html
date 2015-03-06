@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="database-lookup.html" title="Database Lookup"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -138,31 +138,31 @@
 <h1>Database Reader<a class="headerlink" href="#database-reader" title="Permalink to this headline">¶</a></h1>
 <p>A database reader reads records from a database identified by a data source. A SQL select statement is used to select the desired records. The records are written to the output pipe.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;databaseReaderOutput&quot; /&gt;
-&lt;etl:databaseReader id=&quot;databaseReader&quot; name=&quot;Database Reader&quot;&gt;
-        &lt;etl:output ref=&quot;databaseReaderOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;sqlSelectSchema&quot; /&gt;
-        &lt;etl:dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;etl:select&gt;
-                &lt;etl:sql&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;databaseReaderOutput&quot; /&gt;
+&lt;databaseReader id=&quot;databaseReader&quot; name=&quot;Database Reader&quot;&gt;
+        &lt;output ref=&quot;databaseReaderOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;sqlSelectSchema&quot; /&gt;
+        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+        &lt;select&gt;
+                &lt;sql&gt;
                         select * from mtb where name = ? and year = ?
-                &lt;/etl:sql&gt;
-                &lt;etl:parameter value=&quot;#job.name&quot; /&gt;
-                &lt;etl:parameter value=&quot;#job.model_year&quot; /&gt;
-        &lt;/etl:select&gt;
-        &lt;etl:rejection&gt;
+                &lt;/sql&gt;
+                &lt;parameter value=&quot;#job.name&quot; /&gt;
+                &lt;parameter value=&quot;#job.model_year&quot; /&gt;
+        &lt;/select&gt;
+        &lt;rejection&gt;
                 &lt;output ref=&quot;databaseReaderRejectionOutput&quot; /&gt;
-        &lt;/etl:rejection&gt;
-&lt;/etl:databaseReader&gt;
+        &lt;/rejection&gt;
+&lt;/databaseReader&gt;
 </pre></div>
 </div>
 <p>The output is given by <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderOutput&quot;</span></code>.</p>
 <p>The output schema (<code class="docutils literal"><span class="pre">ref=&quot;sqlSelectSchema&quot;</span></code>) is used to define the output records. Columns from the select statement that match the names of the columns in the output schema are used to provide the values to the output record.</p>
-<p>The select element (<code class="docutils literal"><span class="pre">etl:select</span></code>) specifies the select statement (<code class="docutils literal"><span class="pre">etl:sql</span></code>) and any parameters. The parameters are optional. Job parameters may be used to provide values to the SQL parameters.</p>
-<p>The optional rejection element (<code class="docutils literal"><span class="pre">etl:rejection</span></code>) defines the behavior for rejecting records. If a record does not comply with the output schema, in this case it is sent to another pipe, <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderRejectionOutput&quot;</span></code>. The default is to log the record, which can also be specified explicitly:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:rejection&gt;
+<p>The select element (<code class="docutils literal"><span class="pre">select</span></code>) specifies the select statement (<code class="docutils literal"><span class="pre">sql</span></code>) and any parameters. The parameters are optional. Job parameters may be used to provide values to the SQL parameters.</p>
+<p>The optional rejection element (<code class="docutils literal"><span class="pre">rejection</span></code>) defines the behavior for rejecting records. If a record does not comply with the output schema, in this case it is sent to another pipe, <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderRejectionOutput&quot;</span></code>. The default is to log the record, which can also be specified explicitly:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;rejection&gt;
         &lt;log level=&quot;WARN&quot; name=&quot;REJECTION&quot; /&gt;
-&lt;/etl:rejection&gt;
+&lt;/rejection&gt;
 </pre></div>
 </div>
 <p>Here, the <code class="docutils literal"><span class="pre">level</span></code> is a <a class="reference external" href="https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html">Log4J level</a>, with all those levels being available.  The <code class="docutils literal"><span class="pre">name</span></code> is the name of the logger, basically categorizing the log statement.</p>
@@ -186,8 +186,8 @@
         <li class="right" >
           <a href="database-lookup.html" title="Database Lookup"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

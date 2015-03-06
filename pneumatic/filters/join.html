@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="funnel.html" title="Funnel"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -136,53 +136,53 @@
             
   <div class="section" id="join">
 <h1>Join<a class="headerlink" href="#join" title="Permalink to this headline">¶</a></h1>
-<p>The join filter joins two inputs based on a comparison of the records in the inputs. The inputs must be sorted according to the join (<code class="docutils literal"><span class="pre">etl:comparator</span></code>) criteria prior to use in the join filter. This means either using a sort filter or otherwise ensuring the inputs are sorted. The sort criteria must be the same as the join criteria. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;innerJoinOutput&quot; /&gt;
-&lt;etl:join id=&quot;innerJoinFilter&quot; name=&quot;Inner Join&quot;&gt;
-        &lt;etl:leftInput ref=&quot;joinInput1&quot; /&gt;
-        &lt;etl:rightInput ref=&quot;joinInput2&quot; /&gt;
-        &lt;etl:output ref=&quot;innerJoinOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;etl:comparator&gt;
-                &lt;etl:column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;/etl:comparator&gt;
-&lt;/etl:join&gt;
+<p>The join filter joins two inputs based on a comparison of the records in the inputs. The inputs must be sorted according to the join (<code class="docutils literal"><span class="pre">comparator</span></code>) criteria prior to use in the join filter. This means either using a sort filter or otherwise ensuring the inputs are sorted. The sort criteria must be the same as the join criteria. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;innerJoinOutput&quot; /&gt;
+&lt;join id=&quot;innerJoinFilter&quot; name=&quot;Inner Join&quot;&gt;
+        &lt;leftInput ref=&quot;joinInput1&quot; /&gt;
+        &lt;rightInput ref=&quot;joinInput2&quot; /&gt;
+        &lt;output ref=&quot;innerJoinOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;comparator&gt;
+                &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+        &lt;/comparator&gt;
+&lt;/join&gt;
 </pre></div>
 </div>
-<p>As stated, the two inputs (<code class="docutils literal"><span class="pre">etl:leftInput</span> <span class="pre">ref=&quot;joinInput1&quot;</span></code> and <code class="docutils literal"><span class="pre">etl:rightInput</span> <span class="pre">ref=&quot;joinInput2&quot;</span></code>) must be sorted using the same ordering as the <code class="docutils literal"><span class="pre">comparator</span></code>. In this case, the inputs must be sorted by the <code class="docutils literal"><span class="pre">Name</span></code> column of the inputs.</p>
+<p>As stated, the two inputs (<code class="docutils literal"><span class="pre">leftInput</span> <span class="pre">ref=&quot;joinInput1&quot;</span></code> and <code class="docutils literal"><span class="pre">rightInput</span> <span class="pre">ref=&quot;joinInput2&quot;</span></code>) must be sorted using the same ordering as the <code class="docutils literal"><span class="pre">comparator</span></code>. In this case, the inputs must be sorted by the <code class="docutils literal"><span class="pre">Name</span></code> column of the inputs.</p>
 <p>The comparator is used to join the records based on the column provided. The default comparator only accepts a single column for the comparison. A single output record is created from the joined records. The output schema (<code class="docutils literal"><span class="pre">ref=&quot;inputSchema&quot;</span></code>) is used to select the columns from the input records. If there is no record in the <code class="docutils literal"><span class="pre">rightInput</span></code> that matches the current record in the <code class="docutils literal"><span class="pre">leftInput</span></code> no output record is written.</p>
 <p>The join filter has a second form:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;outerJoinOutput&quot; /&gt;
-&lt;etl:join id=&quot;outerJoinFilter&quot; name=&quot;Outer Join&quot;&gt;
-        &lt;etl:leftInput ref=&quot;joinInput1&quot; /&gt;
-        &lt;etl:rightInput ref=&quot;joinInput2&quot; /&gt;
-        &lt;etl:output ref=&quot;outerJoinOutput&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;etl:comparator&gt;
-                &lt;etl:column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;/etl:comparator&gt;
-        &lt;etl:leftOuterJoin /&gt;
-&lt;/etl:join&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;outerJoinOutput&quot; /&gt;
+&lt;join id=&quot;outerJoinFilter&quot; name=&quot;Outer Join&quot;&gt;
+        &lt;leftInput ref=&quot;joinInput1&quot; /&gt;
+        &lt;rightInput ref=&quot;joinInput2&quot; /&gt;
+        &lt;output ref=&quot;outerJoinOutput&quot; /&gt;
+        &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;comparator&gt;
+                &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+        &lt;/comparator&gt;
+        &lt;leftOuterJoin /&gt;
+&lt;/join&gt;
 </pre></div>
 </div>
-<p>The difference is the <code class="docutils literal"><span class="pre">etl:leftOuterJoin</span></code> element. With this element, if there is no record in the <code class="docutils literal"><span class="pre">rightInput</span></code> that matches a record in the <code class="docutils literal"><span class="pre">leftInput</span></code>, the output record is still created and sent to the output.</p>
+<p>The difference is the <code class="docutils literal"><span class="pre">leftOuterJoin</span></code> element. With this element, if there is no record in the <code class="docutils literal"><span class="pre">rightInput</span></code> that matches a record in the <code class="docutils literal"><span class="pre">leftInput</span></code>, the output record is still created and sent to the output.</p>
 <p>The join filter may be extended for other forms of comparison. Creating your own comparator may require some pramming and uses the Spring bean syntax. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:join id=&quot;innerJoinWithCustomComparator&quot; name=&quot;Inner Join with Custom Comparator&quot;&gt;
-        &lt;etl:leftInput ref=&quot;input1&quot; /&gt;
-        &lt;etl:rightInput ref=&quot;input2&quot; /&gt;
-        &lt;etl:output ref=&quot;output&quot; /&gt;
-        &lt;etl:outputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;etl:comparator&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;join id=&quot;innerJoinWithCustomComparator&quot; name=&quot;Inner Join with Custom Comparator&quot;&gt;
+        &lt;leftInput ref=&quot;input1&quot; /&gt;
+        &lt;rightInput ref=&quot;input2&quot; /&gt;
+        &lt;output ref=&quot;output&quot; /&gt;
+        &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+        &lt;comparator&gt;
                 &lt;bean class=&quot;com.surgingsystems.etl.filter.JoinFilterTest.TwoColumnComparator&quot;&gt;
                         &lt;property name=&quot;columns&quot;&gt;
                                 &lt;list&gt;
-                                        &lt;etl:column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-                                        &lt;etl:column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
+                                        &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+                                        &lt;column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
                                 &lt;/list&gt;
                         &lt;/property&gt;
                 &lt;/bean&gt;
-        &lt;/etl:comparator&gt;
-&lt;/etl:join&gt;
+        &lt;/comparator&gt;
+&lt;/join&gt;
 </pre></div>
 </div>
 <p>Here, the comparator is provided by a Spring Bean with the given class:</p>
@@ -191,12 +191,12 @@
 </div>
 <p>The rest of the bean definition is specific to the class itsef, but note that Pneumatic elements may be used in defining the bean:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;list&gt;
-        &lt;etl:column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
 &lt;/list&gt;
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">etl:column</span></code> elements are the same elements used to define schemas in Pneumatic.</p>
+<p>The <code class="docutils literal"><span class="pre">column</span></code> elements are the same elements used to define schemas in Pneumatic.</p>
 </div>
 
 
@@ -217,8 +217,8 @@
         <li class="right" >
           <a href="funnel.html" title="Funnel"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

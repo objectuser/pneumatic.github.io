@@ -91,8 +91,8 @@
         <li class="right" >
           <a href="getting-involved.html" title="Getting Involved"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="index.html">Documentation</a> &raquo;</li>
  
       </ul>
     </div>
@@ -189,18 +189,18 @@
 <li>run the job</li>
 </ol>
 <p>The first two are only done if necessary: if Gradle has already been downloaded, or Pnematic is already built, it won&#8217;t do these things again.</p>
-<p>Gradle and Pnematic.IO are both dependent on a Java runtime on your system. Pneumatic is currently compiled to Java 8.</p>
+<p>Gradle and Pnematic.IO are both dependent on a Java runtime on your system, which is <a class="reference external" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">available from Oracle</a>. Pneumatic is currently compiled to Java 8.</p>
 </div>
 </div>
 <div class="section" id="schemas">
 <h2>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h2>
 <p>Schemas describe the structure of data. Filters use schemas for validating and generating structured data in the form of &#8220;records&#8221;. A record may be thought of as an &#8220;instance&#8221; of a schema. A schema is to a record like a car is to a 2015 Porsche 911.</p>
-<p>From the previous example, a schema is defined using the <code class="docutils literal"><span class="pre">etl:schema</span></code> tag. A schema may have one to any number of columns, each with a name and a type. Currently, Pneumatic only supports <code class="docutils literal"><span class="pre">string</span></code> (Java String), <code class="docutils literal"><span class="pre">integer</span></code> (Java Integer) and <code class="docutils literal"><span class="pre">decimal</span></code> (Java Double) column types.:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;etl:column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;etl:column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;etl:column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-&lt;/etl:schema&gt;
+<p>From the previous example, a schema is defined using the <code class="docutils literal"><span class="pre">schema</span></code> tag. A schema may have one to any number of columns, each with a name and a type. Currently, Pneumatic only supports <code class="docutils literal"><span class="pre">string</span></code> (Java String), <code class="docutils literal"><span class="pre">integer</span></code> (Java Integer) and <code class="docutils literal"><span class="pre">decimal</span></code> (Java Double) column types.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+&lt;/schema&gt;
 </pre></div>
 </div>
 <p>If a record does not need to be validated or generated, no schema is required by the filter. An example of this is the copy filter which copies the input records to the configured outputs, unmodified.</p>
@@ -209,9 +209,9 @@
 <h3>Schema Types<a class="headerlink" href="#schema-types" title="Permalink to this headline">¶</a></h3>
 <p>There are three types of schemas:</p>
 <ul class="simple">
-<li>Tabular schemas - (<code class="docutils literal"><span class="pre">etl:schema</span></code>) represent traditional (i.e., database like) schemas with fixed columns and data types.</li>
-<li>XML schemas (experimental) - (<code class="docutils literal"><span class="pre">etl:xmlSchema</span></code>) represent schemas for XML documents based on the XML Schema Definition. XML schemas work in some cases but are experimental at this point.</li>
-<li>JSON schemas (experimental) - (<code class="docutils literal"><span class="pre">etl:jsonSchema</span></code>) represent schemas for JSON documents based on <a class="reference external" href="http://json-schema.org/">http://json-schema.org/</a>.</li>
+<li>Tabular schemas - (<code class="docutils literal"><span class="pre">schema</span></code>) represent traditional (i.e., database like) schemas with fixed columns and data types.</li>
+<li>XML schemas (experimental) - (<code class="docutils literal"><span class="pre">xmlSchema</span></code>) represent schemas for XML documents based on the XML Schema Definition. XML schemas work in some cases but are experimental at this point.</li>
+<li>JSON schemas (experimental) - (<code class="docutils literal"><span class="pre">jsonSchema</span></code>) represent schemas for JSON documents based on <a class="reference external" href="http://json-schema.org/">http://json-schema.org/</a>.</li>
 </ul>
 </div>
 </div>
@@ -250,8 +250,8 @@
         <li class="right" >
           <a href="getting-involved.html" title="Getting Involved"
              >previous</a> |</li>
-        <li><a href="index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="index.html">Documentation</a> &raquo;</li>
  
       </ul>
     </div>

@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="aggregator.html" title="Aggregator"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,13 +137,13 @@
   <div class="section" id="copy">
 <h1>Copy<a class="headerlink" href="#copy" title="Permalink to this headline">¶</a></h1>
 <p>The copy filter has a single input pipe. It may have any number of output pipes. Each record on the input is written to each output:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;copyOutput1&quot; /&gt;
-&lt;etl:pipe id=&quot;copyOutput2&quot; /&gt;
-&lt;etl:copy id=&quot;copy&quot; name=&quot;Test Copy&quot;&gt;
-        &lt;etl:input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;etl:output ref=&quot;copyOutput1&quot; /&gt;
-        &lt;etl:output ref=&quot;copyOutput2&quot; /&gt;
-&lt;/etl:copy&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;copyOutput1&quot; /&gt;
+&lt;pipe id=&quot;copyOutput2&quot; /&gt;
+&lt;copy id=&quot;copy&quot; name=&quot;Test Copy&quot;&gt;
+        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+        &lt;output ref=&quot;copyOutput1&quot; /&gt;
+        &lt;output ref=&quot;copyOutput2&quot; /&gt;
+&lt;/copy&gt;
 </pre></div>
 </div>
 <p>In this example, the records from the input (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>) are sent, unaltered, to both outputs (<code class="docutils literal"><span class="pre">ref=&quot;copyOutput1&quot;</span></code>, <code class="docutils literal"><span class="pre">ref=&quot;copyOutput2&quot;</span></code>).</p>
@@ -167,8 +167,8 @@
         <li class="right" >
           <a href="aggregator.html" title="Aggregator"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>

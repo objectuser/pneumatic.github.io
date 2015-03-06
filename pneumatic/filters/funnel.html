@@ -92,8 +92,8 @@
         <li class="right" >
           <a href="file-writer.html" title="File Writer"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" accesskey="U">Filters</a> &raquo;</li> 
       </ul>
@@ -137,17 +137,17 @@
   <div class="section" id="funnel">
 <h1>Funnel<a class="headerlink" href="#funnel" title="Permalink to this headline">¶</a></h1>
 <p>The funnel is a simple filter that combines its inputs into a single output, like a reverse copy filter. The funnel accepts any number of inputs and a single output. No schema is provided. Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;etl:pipe id=&quot;input1&quot; /&gt;
-&lt;etl:pipe id=&quot;input2&quot; /&gt;
-&lt;etl:pipe id=&quot;output&quot; /&gt;
-&lt;etl:funnel id=&quot;funnel&quot; name=&quot;Funnel&quot;&gt;
-        &lt;etl:input ref=&quot;input1&quot; /&gt;
-        &lt;etl:input ref=&quot;input2&quot; /&gt;
-        &lt;etl:output ref=&quot;output&quot; /&gt;
-&lt;/etl:funnel&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input1&quot; /&gt;
+&lt;pipe id=&quot;input2&quot; /&gt;
+&lt;pipe id=&quot;output&quot; /&gt;
+&lt;funnel id=&quot;funnel&quot; name=&quot;Funnel&quot;&gt;
+        &lt;input ref=&quot;input1&quot; /&gt;
+        &lt;input ref=&quot;input2&quot; /&gt;
+        &lt;output ref=&quot;output&quot; /&gt;
+&lt;/funnel&gt;
 </pre></div>
 </div>
-<p>Each input (e.g, <code class="docutils literal"><span class="pre">etl:input</span> <span class="pre">ref=&quot;input1&quot;</span></code>) is read in turn and the record read from that input written to the output (<code class="docutils literal"><span class="pre">ref=&quot;output&quot;</span></code>). No ordering of the inputs to the output is guaranteed. If one of the inputs is empty, or no record is immediately available, the funnel will move to the next input. Each input is continuously read until it is closed. The funnel may process its records &#8220;slowly&#8221; if any of the inputs has no record available but is not closed. This is due to the read &#8220;timing out&#8221;. If the input is closed, there is no delay.</p>
+<p>Each input (e.g, <code class="docutils literal"><span class="pre">input</span> <span class="pre">ref=&quot;input1&quot;</span></code>) is read in turn and the record read from that input written to the output (<code class="docutils literal"><span class="pre">ref=&quot;output&quot;</span></code>). No ordering of the inputs to the output is guaranteed. If one of the inputs is empty, or no record is immediately available, the funnel will move to the next input. Each input is continuously read until it is closed. The funnel may process its records &#8220;slowly&#8221; if any of the inputs has no record available but is not closed. This is due to the read &#8220;timing out&#8221;. If the input is closed, there is no delay.</p>
 </div>
 
 
@@ -168,8 +168,8 @@
         <li class="right" >
           <a href="file-writer.html" title="File Writer"
              >previous</a> |</li>
-        <li><a href="../index.html">Sphinx home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="../index.html">Documentation</a> &raquo;</li>
 
           <li><a href="../filters.html" >Filters</a> &raquo;</li> 
       </ul>
