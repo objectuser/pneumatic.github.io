@@ -3,6 +3,7 @@ layout: post
 title:  "The RESTful Writer"
 date:   2015-02-28 08:00:00
 categories: pneumatic
+comments: true
 ---
 
 As a sort of follow up to the [microservices]({% post_url 2015-02-25-restful-listener %}) post, I wanted to follow up with a post "from the other side". In that post, I demonstrated the creation of a microservice using just a few lines of Pneumatic markup. In this post, I'll demonstrate how to create a client for that service.

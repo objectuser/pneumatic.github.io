@@ -3,6 +3,7 @@ layout: post
 title:  "Introducing Pneumatic.IO"
 date:   2015-02-22 10:27:50
 categories: pneumatic
+comments: true
 ---
 
 I have a new open source project that's already live on Github. It's called [Pneumatic.IO](http://pneumatic.io) and I refer to it as a fresh take on ETL and structured IO.

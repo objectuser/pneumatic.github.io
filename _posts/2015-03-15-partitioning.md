@@ -3,6 +3,7 @@ layout: post
 title:  "Partitioning from a Database"
 date:   2015-03-15 10:00:00
 categories: pneumatic
+comments: true
 ---
 
 One way of scaling ETL solutions is to split the data, sending it down different processing paths that better use available infrastructure, thus increasing the capacity available for processing.

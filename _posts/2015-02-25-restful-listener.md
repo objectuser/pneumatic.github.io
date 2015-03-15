@@ -3,6 +3,7 @@ layout: post
 title:  "A Microservice with the RESTful Listener"
 date:   2015-02-25 19:00:00
 categories: pneumatic
+comments: true
 ---
 
 I was recently working on documentation for the RESTful Listener filter and wanted to write about an example.

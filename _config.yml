@@ -1,6 +1,7 @@
 title:            objectuser
 description:      "i'm thinking about it"
 logo:             logo.png
+disqus_shortname: pneumatic
 share:            true
 dropcap:          false
 # Change url to your domain. Leave localhost server or blank when working locally.
