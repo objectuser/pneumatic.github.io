@@ -5,7 +5,7 @@ date:   2015-03-06 08:00:00
 categories: pneumatic
 ---
 
-I've updated the examples and documentation to default to the ETL namespace. This removes the need for the ETL namespace prefix (``etl:``).
+I've updated the examples and documentation to default to the ETL namespace. This removes the need for the ETL namespace prefix (`etl:`).
 
 I think it makes the examples clearer. Here's a file reader in the ETL namespace:
 
