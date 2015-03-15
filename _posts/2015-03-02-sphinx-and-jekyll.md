@@ -3,6 +3,7 @@ layout: post
 title:  "Using Sphinx and Jekyll on GitHub"
 date:   2015-03-02 08:00:00
 categories: pneumatic
+comments: true
 ---
 
 I'm using Sphinx to create documentation for Pneumatic.IO. I'm hosting the docs on GitHub, here with the blog.

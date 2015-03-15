@@ -3,6 +3,7 @@ layout: post
 title:  "Simplified ETL Namespace"
 date:   2015-03-06 08:00:00
 categories: pneumatic
+comments: true
 ---
 
 I've updated the examples and documentation to default to the ETL namespace. This removes the need for the ETL namespace prefix (`etl:`).
