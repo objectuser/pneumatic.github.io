@@ -100,6 +100,15 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Database Lookup</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="copy.html"
                         title="previous chapter">Copy</a></p>
@@ -135,41 +144,115 @@
           <div class="body" role="main">
             
   <div class="section" id="database-lookup">
-<h1>Database Lookup<a class="headerlink" href="#database-lookup" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Database Lookup<a class="headerlink" href="#database-lookup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The database lookup filter enables lookups to a database based on its single input. The input and lookup results may be combined for its single output.</p>
 <p>The following are the key elements of the database lookup filter:</p>
 <ol class="arabic simple">
 <li>dataSource - The DataSource that provides connections to the database that provides the lookup data.</li>
 <li>outputSchema - This is the schema that defines the output records. The filter uses the column definitions on this schema to select values from either input record values or the results of the lookup. The selection is based on the names of the inputs.</li>
-<li>lookup - The lookup element composes the SQL for the lookup and its parameters.  The parameters use SpEL and may reference the input record (inputRecord) as a variable.</li>
+<li>sql and parameters - The lookup is performed with the SQL and the set of parameters. The parameters use SpEL and may reference the input record (<code class="docutils literal"><span class="pre">inputRecord</span></code>) as a variable.</li>
 </ol>
 <p>It is important to avoid name collisions to ensure the results are as expected. Use aliasing on the select statement if needed to ensure those columns do not conflict with those on the input schema. Alternatively, use a mapper filter to change the schema of the input before it comes into this filter.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;databaseLookupOutput&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>input: !pipe
+output: !pipe
+databaseLookup: !databaseLookup
+  name: Database Lookup
+  input: -&gt;input
+  inputSchema: -&gt;mtbSchema
+  output: -&gt;output
+  outputSchema: -&gt;sqlSelectSchema
+  dataSource: -&gt;dataSource
+  sql: select cost from mtb where name = ? and year = ?
+  parameters:
+    - &quot;#inputRecord.name&quot;
+    - &quot;#inputRecord.model_year&quot;
+</pre></div>
+</div>
+<p>Here&#8217;s the equivalent XML:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
+&lt;pipe id=&quot;output&quot; /&gt;
 &lt;databaseLookup id=&quot;databaseLookup&quot; name=&quot;Database Lookup&quot;&gt;
-        &lt;input ref=&quot;mapperOutput&quot; /&gt;
-        &lt;inputSchema ref=&quot;mapperMtbSchema&quot; /&gt;
-        &lt;output ref=&quot;databaseLookupOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;lookupSchema&quot; /&gt;
-        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;lookup&gt;
-                &lt;sql&gt;
-                        select year, cost from mtb where name = ?
-                &lt;/sql&gt;
-                &lt;parameter value=&quot;#inputRecord.name&quot; /&gt;
-        &lt;/lookup&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;mapperMtbSchema&quot; /&gt;
+  &lt;output ref=&quot;output&quot; /&gt;
+  &lt;outputSchema ref=&quot;lookupSchema&quot; /&gt;
+  &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+  &lt;lookup&gt;
+    &lt;sql&gt;
+      select year, cost from mtb where name = ? and year = ?
+    &lt;/sql&gt;
+    &lt;parameter value=&quot;#inputRecord.name&quot; /&gt;
+    &lt;parameter value=&quot;#inputRecord.model_year&quot; /&gt;
+  &lt;/lookup&gt;
 &lt;/databaseLookup&gt;
 </pre></div>
 </div>
-<p>The data source reference (<code class="docutils literal"><span class="pre">id=&quot;dataSource&quot;</span></code>) is an object of type <code class="docutils literal"><span class="pre">javax.sql.DataSource</span></code>.  It might be defined like this:</p>
+<p>The data source reference (<code class="docutils literal"><span class="pre">dataSource</span></code>) is an object of type <code class="docutils literal"><span class="pre">javax.sql.DataSource</span></code>. It might be defined like this in Spring:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;jdbc:embedded-database id=&quot;dataSource&quot; type=&quot;HSQL&quot;&gt;
-        &lt;jdbc:script location=&quot;classpath:db-schema.sql&quot; /&gt;
-        &lt;jdbc:script location=&quot;classpath:db-test-data.sql&quot; /&gt;
+  &lt;jdbc:script location=&quot;classpath:db-schema.sql&quot; /&gt;
+  &lt;jdbc:script location=&quot;classpath:db-test-data.sql&quot; /&gt;
 &lt;/jdbc:embedded-database&gt;
 </pre></div>
 </div>
-<p>The lookup element contains the SQL to use for the lookup and any parameters it might have. Parameters are identified by a question mark. The values are specified by the parameter tag and filled in order.</p>
-<p>The parameters tag may use expressions. Variables available in the expression include the input record (inputRecord) and the job parameters (job).</p>
+<p>The <code class="docutils literal"><span class="pre">sql</span></code> and <code class="docutils literal"><span class="pre">parameters</span></code> contain the SQL to use for the lookup and any parameters it might have. Parameters are identified by a question mark in the SQL statement. The values are specified by the <code class="docutils literal"><span class="pre">parameters</span></code> list (in YAML, or successive <code class="docutils literal"><span class="pre">parameter</span></code> tags in XML) and filled in order.</p>
+<p>The parameters tag may use expressions. Variables available in the expression include the input record (<code class="docutils literal"><span class="pre">inputRecord</span></code>) and the job parameters (<code class="docutils literal"><span class="pre">job</span></code>).</p>
+</div>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>databaseLookup</strong></dt>
+<dd>Use a database to lookup data to add to output records</dd>
+</dl>
+<p>Markup:</p>
+<ul class="simple">
+<li>YAML: <code class="docutils literal"><span class="pre">!databaseLookup</span></code></li>
+<li>XML: <code class="docutils literal"><span class="pre">&lt;databaseLookup</span> <span class="pre">/&gt;</span></code></li>
+</ul>
+<p>Properties:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the filter, used in logging</dd>
+<dt><code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>the pipe providing records into the filter</dd>
+<dt><code class="docutils literal"><span class="pre">inputSchema</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the schema of the records coming into the filter</p>
+<ul class="last simple">
+<li>if supplied, input records are validated against the schema and rejected if the validation fails</li>
+</ul>
+</dd>
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>the pipe to which output records are written</dd>
+<dt><code class="docutils literal"><span class="pre">outputSchema</span></code></dt>
+<dd><p class="first">the schema of the records written to <code class="docutils literal"><span class="pre">output</span></code></p>
+<p class="last">The output schema is used to select column values consisting of the set of values from the input and the lookup (SQL result). The values are selected by name. If a value exists on both the input and the lookup, the value selected is undefined.</p>
+</dd>
+<dt><code class="docutils literal"><span class="pre">dataSource</span></code></dt>
+<dd>the source of connections to the target database</dd>
+<dt><code class="docutils literal"><span class="pre">sql</span></code></dt>
+<dd>the SQL used to perform the lookup</dd>
+<dt><code class="docutils literal"><span class="pre">parameters</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span> <span class="classifier-delimiter">:</span> <span class="classifier">XML &lt;parameter /&gt;</span></dt>
+<dd>the parameters for the SQL statement</dd>
+<dt><code class="docutils literal"><span class="pre">rejection</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the strategy for rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>supply a pipe for the rejected records</dd>
+<dt><code class="docutils literal"><span class="pre">log</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">default</span></dt>
+<dd><p class="first">log the rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the logger (sometimes called the &#8220;category&#8221;)</dd>
+<dt><code class="docutils literal"><span class="pre">level</span></code></dt>
+<dd>the logging level; one of: <code class="docutils literal"><span class="pre">OFF</span></code>, <code class="docutils literal"><span class="pre">FATAL</span></code>, <code class="docutils literal"><span class="pre">ERROR</span></code>, <code class="docutils literal"><span class="pre">WARN</span></code>, <code class="docutils literal"><span class="pre">INFO</span></code>, <code class="docutils literal"><span class="pre">DEBUG</span></code>, <code class="docutils literal"><span class="pre">TRACE</span></code>, <code class="docutils literal"><span class="pre">ALL</span></code> (see the <a class="reference external" href="https://logging.apache.org/log4j/2.0/log4j-api/apidocs/index.html">Log4J2 reference</a> for additional information)</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
 </div>
 
 

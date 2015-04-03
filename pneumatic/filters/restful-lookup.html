@@ -135,15 +135,15 @@
           <div class="body" role="main">
             
   <div class="section" id="restful-lookup">
-<h1>RESTful Lookup<a class="headerlink" href="#restful-lookup" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>RESTful Lookup<a class="headerlink" href="#restful-lookup" title="Permalink to this headline">¶</a></h1>
 <p>The RESTful lookup is a filter that allows a Pneumatic to perform a request against a resource and use the result of the request for subsequent processing. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;restfulLookup id=&quot;restfulLookup&quot; name=&quot;Price Lookup&quot;&gt;
-        &lt;http method=&quot;GET&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;output ref=&quot;output&quot; /&gt;
-        &lt;outputSchema ref=&quot;outputSchema&quot; /&gt;
-        &lt;responseSchema ref=&quot;responseSchema&quot; /&gt;
+  &lt;http method=&quot;GET&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;output ref=&quot;output&quot; /&gt;
+  &lt;outputSchema ref=&quot;outputSchema&quot; /&gt;
+  &lt;responseSchema ref=&quot;responseSchema&quot; /&gt;
 &lt;/restfulLookup&gt;
 </pre></div>
 </div>
@@ -151,23 +151,23 @@
 <p>In this case, RESTful lookup uses an HTTP GET to perform the request (<code class="docutils literal"><span class="pre">method=&quot;GET&quot;</span></code>).</p>
 <p>The request URL may use values from the current record. Consider the following as the <code class="docutils literal"><span class="pre">inputSchema</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;inputSchema&quot; name=&quot;Input Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
 &lt;/schema&gt;
 </pre></div>
 </div>
 <p>The value of the <code class="docutils literal"><span class="pre">name</span></code> column would replace the token <code class="docutils literal"><span class="pre">{name}</span></code> in <code class="docutils literal"><span class="pre">http://localhost:8080/mtb/{name}/price</span></code>. This is a feature of the [Spring Framework client](<a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/remoting.html#rest-client-access">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/remoting.html#rest-client-access</a>).</p>
 <p>Now consider the following schemas:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;outputSchema&quot; name=&quot;Input Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-        &lt;column name=&quot;price&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;count&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;price&quot; type=&quot;decimal&quot; /&gt;
 &lt;/schema&gt;
 
 &lt;schema id=&quot;responseSchema&quot; name=&quot;Criteria Schema&quot;&gt;
-        &lt;column name=&quot;price&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;price&quot; type=&quot;string&quot; /&gt;
 &lt;/schema&gt;
 </pre></div>
 </div>

@@ -135,17 +135,17 @@
           <div class="body" role="main">
             
   <div class="section" id="restful-writer">
-<h1>RESTful Writer<a class="headerlink" href="#restful-writer" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>RESTful Writer<a class="headerlink" href="#restful-writer" title="Permalink to this headline">¶</a></h1>
 <p>The RESTful writer is a filter for submitting requests to a RESTful service. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
 &lt;pipe id=&quot;rejectionOutput&quot; /&gt;
 &lt;restfulWriter id=&quot;restfulWriter&quot; name=&quot;Restful Writer&quot;&gt;
-        &lt;http method=&quot;PUT&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;rejection&gt;
-                &lt;output ref=&quot;rejectionOutput&quot; /&gt;
-        &lt;/rejection&gt;
+  &lt;http method=&quot;PUT&quot; url=&quot;http://localhost:8080/mtb/{name}/price&quot; /&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;rejection&gt;
+    &lt;output ref=&quot;rejectionOutput&quot; /&gt;
+  &lt;/rejection&gt;
 &lt;/restfulWriter&gt;
 </pre></div>
 </div>

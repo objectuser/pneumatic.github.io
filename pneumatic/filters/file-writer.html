@@ -135,13 +135,13 @@
           <div class="body" role="main">
             
   <div class="section" id="file-writer">
-<h1>File Writer<a class="headerlink" href="#file-writer" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>File Writer<a class="headerlink" href="#file-writer" title="Permalink to this headline">¶</a></h1>
 <p>The file writer reads records from its input and writes them to a file. The input schema in optional. If supplied, records will be validated against the schema and rejected if they don&#8217;t conform. Records are written in a CSV format. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
 &lt;fileWriter id=&quot;fileWriter&quot; name=&quot;File Writer&quot;&gt;
-        &lt;fileResource location=&quot;file:output/output1.txt&quot; /&gt;
-        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;fileResource location=&quot;file:output/output1.txt&quot; /&gt;
+  &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+  &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
 &lt;/fileWriter&gt;
 </pre></div>
 </div>

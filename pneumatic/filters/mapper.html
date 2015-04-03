@@ -135,28 +135,28 @@
           <div class="body" role="main">
             
   <div class="section" id="mapper">
-<h1>Mapper<a class="headerlink" href="#mapper" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Mapper<a class="headerlink" href="#mapper" title="Permalink to this headline">¶</a></h1>
 <p>The mapper translates records that conform to an input schema to records that conform to an output schema. In its simplest form, the output schema provides enough information to perform the mapping. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
 &lt;/schema&gt;
 
 &lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;bike_number&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;bike_number&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
 &lt;/schema&gt;
 
 &lt;pipe id=&quot;input&quot; /&gt;
 &lt;pipe id=&quot;mapperOutput&quot; /&gt;
 &lt;mapper id=&quot;simpleMapper&quot; name=&quot;Simple Mapper&quot;&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
-        &lt;output ref=&quot;mapperOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
+  &lt;output ref=&quot;mapperOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
 &lt;/mapper&gt;
 </pre></div>
 </div>
@@ -164,59 +164,59 @@
 <p>Also note that the type of the <code class="docutils literal"><span class="pre">bike_number</span></code> column is changed from integer to string. The mapper is able to make reasonable type conversions automatically: integer and decimal to string and integer to decimal.</p>
 <p>More complicated translations are also supported as shown in the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;giantBikesSchema&quot; name=&quot;Giant Bikes Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
 &lt;/schema&gt;
 
 &lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
 &lt;/schema&gt;
 
 &lt;pipe id=&quot;mapperOutput&quot; /&gt;
 &lt;mapper id=&quot;mapper&quot; name=&quot;Mapper&quot;&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
-        &lt;output ref=&quot;mapperOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;mappings&gt;
-                &lt;mapping&gt;
-                        &lt;from&gt;
-                                &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-                        &lt;/from&gt;
-                        &lt;to&gt;
-                                &lt;column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
-                        &lt;/to&gt;
-                &lt;/mapping&gt;
-                &lt;mapping&gt;
-                        &lt;from&gt;
-                                &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
-                        &lt;/from&gt;
-                        &lt;to&gt;
-                                &lt;column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
-                        &lt;/to&gt;
-                &lt;/mapping&gt;
-                &lt;mapping&gt;
-                        &lt;from&gt;
-                                &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-                        &lt;/from&gt;
-                        &lt;to&gt;
-                                &lt;column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
-                        &lt;/to&gt;
-                &lt;/mapping&gt;
-                &lt;mapping&gt;
-                        &lt;from&gt;
-                                &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/from&gt;
-                        &lt;to&gt;
-                                &lt;column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/to&gt;
-                &lt;/mapping&gt;
-        &lt;/mappings&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;giantBikesSchema&quot; /&gt;
+  &lt;output ref=&quot;mapperOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;mappings&gt;
+    &lt;mapping&gt;
+      &lt;from&gt;
+        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+      &lt;/from&gt;
+      &lt;to&gt;
+        &lt;column name=&quot;model_name&quot; type=&quot;string&quot; /&gt;
+      &lt;/to&gt;
+    &lt;/mapping&gt;
+    &lt;mapping&gt;
+      &lt;from&gt;
+        &lt;column name=&quot;bike_number&quot; type=&quot;integer&quot; /&gt;
+      &lt;/from&gt;
+      &lt;to&gt;
+        &lt;column name=&quot;model_number&quot; type=&quot;string&quot; /&gt;
+      &lt;/to&gt;
+    &lt;/mapping&gt;
+    &lt;mapping&gt;
+      &lt;from&gt;
+        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+      &lt;/from&gt;
+      &lt;to&gt;
+        &lt;column name=&quot;model_year&quot; type=&quot;integer&quot; /&gt;
+      &lt;/to&gt;
+    &lt;/mapping&gt;
+    &lt;mapping&gt;
+      &lt;from&gt;
+        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+      &lt;/from&gt;
+      &lt;to&gt;
+        &lt;column name=&quot;unit_price&quot; type=&quot;decimal&quot; /&gt;
+      &lt;/to&gt;
+    &lt;/mapping&gt;
+  &lt;/mappings&gt;
 &lt;/mapper&gt;
 </pre></div>
 </div>

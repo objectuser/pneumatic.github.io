@@ -135,17 +135,17 @@
           <div class="body" role="main">
             
   <div class="section" id="join">
-<h1>Join<a class="headerlink" href="#join" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Join<a class="headerlink" href="#join" title="Permalink to this headline">¶</a></h1>
 <p>The join filter joins two inputs based on a comparison of the records in the inputs. The inputs must be sorted according to the join (<code class="docutils literal"><span class="pre">comparator</span></code>) criteria prior to use in the join filter. This means either using a sort filter or otherwise ensuring the inputs are sorted. The sort criteria must be the same as the join criteria. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;innerJoinOutput&quot; /&gt;
 &lt;join id=&quot;innerJoinFilter&quot; name=&quot;Inner Join&quot;&gt;
-        &lt;leftInput ref=&quot;joinInput1&quot; /&gt;
-        &lt;rightInput ref=&quot;joinInput2&quot; /&gt;
-        &lt;output ref=&quot;innerJoinOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;comparator&gt;
-                &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;/comparator&gt;
+  &lt;leftInput ref=&quot;joinInput1&quot; /&gt;
+  &lt;rightInput ref=&quot;joinInput2&quot; /&gt;
+  &lt;output ref=&quot;innerJoinOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;comparator&gt;
+    &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+  &lt;/comparator&gt;
 &lt;/join&gt;
 </pre></div>
 </div>
@@ -154,34 +154,34 @@
 <p>The join filter has a second form:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;outerJoinOutput&quot; /&gt;
 &lt;join id=&quot;outerJoinFilter&quot; name=&quot;Outer Join&quot;&gt;
-        &lt;leftInput ref=&quot;joinInput1&quot; /&gt;
-        &lt;rightInput ref=&quot;joinInput2&quot; /&gt;
-        &lt;output ref=&quot;outerJoinOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;comparator&gt;
-                &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;/comparator&gt;
-        &lt;leftOuterJoin /&gt;
+  &lt;leftInput ref=&quot;joinInput1&quot; /&gt;
+  &lt;rightInput ref=&quot;joinInput2&quot; /&gt;
+  &lt;output ref=&quot;outerJoinOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;comparator&gt;
+    &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+  &lt;/comparator&gt;
+  &lt;leftOuterJoin /&gt;
 &lt;/join&gt;
 </pre></div>
 </div>
 <p>The difference is the <code class="docutils literal"><span class="pre">leftOuterJoin</span></code> element. With this element, if there is no record in the <code class="docutils literal"><span class="pre">rightInput</span></code> that matches a record in the <code class="docutils literal"><span class="pre">leftInput</span></code>, the output record is still created and sent to the output.</p>
 <p>The join filter may be extended for other forms of comparison. Creating your own comparator may require some pramming and uses the Spring bean syntax. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;join id=&quot;innerJoinWithCustomComparator&quot; name=&quot;Inner Join with Custom Comparator&quot;&gt;
-        &lt;leftInput ref=&quot;input1&quot; /&gt;
-        &lt;rightInput ref=&quot;input2&quot; /&gt;
-        &lt;output ref=&quot;output&quot; /&gt;
-        &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;comparator&gt;
-                &lt;bean class=&quot;com.surgingsystems.etl.filter.JoinFilterTest.TwoColumnComparator&quot;&gt;
-                        &lt;property name=&quot;columns&quot;&gt;
-                                &lt;list&gt;
-                                        &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-                                        &lt;column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
-                                &lt;/list&gt;
-                        &lt;/property&gt;
-                &lt;/bean&gt;
-        &lt;/comparator&gt;
+  &lt;leftInput ref=&quot;input1&quot; /&gt;
+  &lt;rightInput ref=&quot;input2&quot; /&gt;
+  &lt;output ref=&quot;output&quot; /&gt;
+  &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;comparator&gt;
+    &lt;bean class=&quot;com.surgingsystems.etl.filter.JoinFilterTest.TwoColumnComparator&quot;&gt;
+      &lt;property name=&quot;columns&quot;&gt;
+        &lt;list&gt;
+          &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+          &lt;column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
+        &lt;/list&gt;
+      &lt;/property&gt;
+    &lt;/bean&gt;
+  &lt;/comparator&gt;
 &lt;/join&gt;
 </pre></div>
 </div>
@@ -191,8 +191,8 @@
 </div>
 <p>The rest of the bean definition is specific to the class itsef, but note that Pneumatic elements may be used in defining the bean:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;list&gt;
-        &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
 &lt;/list&gt;
 </pre></div>
 </div>

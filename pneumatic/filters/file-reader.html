@@ -135,13 +135,13 @@
           <div class="body" role="main">
             
   <div class="section" id="file-reader">
-<h1>File Reader<a class="headerlink" href="#file-reader" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>File Reader<a class="headerlink" href="#file-reader" title="Permalink to this headline">¶</a></h1>
 <p>The file reader reads records from a file and writes them to its output. Records are read using a CSV format. A schema is required to define the records. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
 &lt;fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
-        &lt;fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
-        &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
+  &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
 &lt;/fileReader&gt;
 </pre></div>
 </div>
@@ -153,12 +153,12 @@
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
 &lt;pipe id=&quot;fileReaderRejectionOutput&quot; /&gt;
 &lt;fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
-        &lt;fileResource location=&quot;classpath:data/bad-data.txt&quot; /&gt;
-        &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;rejection&gt;
-                &lt;output ref=&quot;fileReaderRejectionOutput&quot; /&gt;
-        &lt;/rejection&gt;
+  &lt;fileResource location=&quot;classpath:data/bad-data.txt&quot; /&gt;
+  &lt;output ref=&quot;fileReaderOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;rejection&gt;
+    &lt;output ref=&quot;fileReaderRejectionOutput&quot; /&gt;
+  &lt;/rejection&gt;
 &lt;/fileReader&gt;
 </pre></div>
 </div>

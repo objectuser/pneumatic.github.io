@@ -100,6 +100,15 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Database Writer</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="database-reader.html"
                         title="previous chapter">Database Reader</a></p>
@@ -135,45 +144,124 @@
           <div class="body" role="main">
             
   <div class="section" id="database-writer">
-<h1>Database Writer<a class="headerlink" href="#database-writer" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Database Writer<a class="headerlink" href="#database-writer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The database writer writes records from its input pipe to a database table. In its simplest form, the table name is supplied and the records are written directly to the table.  Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>input: !pipe
+databaseWriter: !databaseWriter
+  name: Database Writer
+  input: -&gt;input
+  inputSchema: -&gt;mtbSchema
+  dataSource: -&gt;dataSource
+  insertInto: mtb
+</pre></div>
+</div>
+<p>The equivalent in XML is:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
 &lt;databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
-        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;insertInto table-name=&quot;mtb&quot; /&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+  &lt;insertInto table-name=&quot;mtb&quot; /&gt;
 &lt;/databaseWriter&gt;
 </pre></div>
 </div>
-<p>The input is required (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>), as is the input schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>). The data source provides the filter with database connections (<code class="docutils literal"><span class="pre">ref=&quot;dataSource&quot;</span></code>).  Finally, the <code class="docutils literal"><span class="pre">insertInto</span></code> element provides the name of the table into which the records are inserted (<code class="docutils literal"><span class="pre">insertInto</span> <span class="pre">table-name=&quot;mtb&quot;</span></code>).</p>
+<p>The <code class="docutils literal"><span class="pre">input</span></code> is required, as is <code class="docutils literal"><span class="pre">inputSchema</span></code>. The <code class="docutils literal"><span class="pre">dataSource</span></code> provides the filter with database connections.  Finally, the <code class="docutils literal"><span class="pre">insertInto</span></code> element provides the name of the table into which the records are inserted (<code class="docutils literal"><span class="pre">insertInto:</span> <span class="pre">mtb</span></code>).</p>
 <p>The database writer has a second form for updates.  The following is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>input: !pipe
+databaseWriter: !databaseWriter
+  name: Database Writer
+  input: -&gt;input
+  inputSchema: -&gt;mtbSchema
+  dataSource: -&gt;dataSource
+  updateWith:
+    sql: update mtb set year = ?, cost = ? where name = ?
+    parameters:
+      - &quot;#inputRecord.year&quot;
+      - &quot;#inputRecord.price&quot;
+      - &quot;#inputRecord.name&quot;
+</pre></div>
+</div>
+<p>The equivalent in XML is:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
 &lt;databaseWriter id=&quot;databaseWriter&quot; name=&quot;Database Writer&quot;&gt;
-        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
-        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;updateWith&gt;
-                &lt;sql&gt;
-                        update mtb set year = ?, cost = ? where name = ?
-                &lt;/sql&gt;
-                &lt;parameter value=&quot;#inputRecord.year&quot; /&gt;
-                &lt;parameter value=&quot;#inputRecord.cost&quot; /&gt;
-                &lt;parameter value=&quot;#inputRecord.name&quot; /&gt;
-        &lt;/updateWith&gt;
+  &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+  &lt;inputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+  &lt;updateWith&gt;
+    &lt;sql&gt;
+      update mtb set year = ?, cost = ? where name = ?
+    &lt;/sql&gt;
+    &lt;parameter value=&quot;#inputRecord.year&quot; /&gt;
+    &lt;parameter value=&quot;#inputRecord.cost&quot; /&gt;
+    &lt;parameter value=&quot;#inputRecord.name&quot; /&gt;
+  &lt;/updateWith&gt;
 &lt;/databaseWriter&gt;
 </pre></div>
 </div>
-<p>The difference is the <code class="docutils literal"><span class="pre">updateWith</span></code> element replaces the <code class="docutils literal"><span class="pre">insertInto</span></code> element. This element is a bit more complex, requiring a SQL statement be specified. The question marks in the SQL statement are parameter markers. They are supplied by the parameter elements (<code class="docutils literal"><span class="pre">parameter</span></code>) in the order specified. The value of each parameter may be a constant or an SpEL expression.</p>
-<p>The variable <code class="docutils literal"><span class="pre">inputRecord</span></code> may be used to refer to the input record being processed. The columns on the input record may appear after a period or inside brackets.  The first example below refers to the <code class="docutils literal"><span class="pre">year</span></code> column on the input record. The second uses the brackets syntax to refer to the <code class="docutils literal"><span class="pre">name</span></code> column:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;parameter value=&quot;#inputRecord.year&quot; /&gt;
+<p>The difference is the <code class="docutils literal"><span class="pre">updateWith</span></code> element replaces the <code class="docutils literal"><span class="pre">insertInto</span></code> element. This element is a bit more complex, requiring a SQL statement be specified. The question marks in the SQL statement are parameter markers. They are supplied by the list of <code class="docutils literal"><span class="pre">parameters</span></code> in the order specified.</p>
+<p>The value of each parameter may be a constant or an SpEL expression. The variable <code class="docutils literal"><span class="pre">inputRecord</span></code> may be used to refer to the input record being processed. The columns on the input record may appear after a period or inside brackets. The first example below refers to the <code class="docutils literal"><span class="pre">year</span></code> column on the input record. The second uses the brackets syntax to refer to the <code class="docutils literal"><span class="pre">name</span></code> column:</p>
+<div class="highlight-python"><div class="highlight"><pre>.. code:: yaml
+#inputRecord.year
 
-&lt;parameter value=&quot;#inputRecord[&#39;name&#39;]&quot; /&gt;
+#inputRecord[&#39;name&#39;]
 </pre></div>
 </div>
 <p>The second syntax is useful for referring to columns that have spaces in the name:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;parameter value=&quot;#inputRecord[&#39;Column Name with Spaces&#39;]&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#inputRecord[&#39;Column Name with Spaces&#39;]</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>databaseWriter</strong></dt>
+<dd>Write input records to a database</dd>
+</dl>
+<p>Markup:</p>
+<ul class="simple">
+<li>YAML: <code class="docutils literal"><span class="pre">!databaseWriter</span></code></li>
+<li>XML: <code class="docutils literal"><span class="pre">&lt;databaseWriter</span> <span class="pre">/&gt;</span></code></li>
+</ul>
+<p>Properties:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the filter, used in logging</dd>
+<dt><code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>the pipe from which input records are read</dd>
+<dt><code class="docutils literal"><span class="pre">inputSchema</span></code></dt>
+<dd>the schema of the records read from <code class="docutils literal"><span class="pre">input</span></code></dd>
+<dt><code class="docutils literal"><span class="pre">dataSource</span></code></dt>
+<dd>the source of connections to the target database</dd>
+<dt><code class="docutils literal"><span class="pre">insertInto</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd>provides the table name into which records are inserted</dd>
+<dt><code class="docutils literal"><span class="pre">updateWith</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">specifies an update strategy</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">sql</span></code></dt>
+<dd>the SQL used to perform the update</dd>
+<dt><code class="docutils literal"><span class="pre">parameters</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span> <span class="classifier-delimiter">:</span> <span class="classifier">XML &lt;parameter /&gt;</span></dt>
+<dd>the parameters for the SQL statement</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal"><span class="pre">rejection</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the strategy for rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>supply a pipe for the rejected records</dd>
+<dt><code class="docutils literal"><span class="pre">log</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">default</span></dt>
+<dd><p class="first">log the rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the logger (sometimes called the &#8220;category&#8221;)</dd>
+<dt><code class="docutils literal"><span class="pre">level</span></code></dt>
+<dd>the logging level; one of: <code class="docutils literal"><span class="pre">OFF</span></code>, <code class="docutils literal"><span class="pre">FATAL</span></code>, <code class="docutils literal"><span class="pre">ERROR</span></code>, <code class="docutils literal"><span class="pre">WARN</span></code>, <code class="docutils literal"><span class="pre">INFO</span></code>, <code class="docutils literal"><span class="pre">DEBUG</span></code>, <code class="docutils literal"><span class="pre">TRACE</span></code>, <code class="docutils literal"><span class="pre">ALL</span></code> (see the <a class="reference external" href="https://logging.apache.org/log4j/2.0/log4j-api/apidocs/index.html">Log4J2 reference</a> for additional information)</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
 </div>
 </div>
 

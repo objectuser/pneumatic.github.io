@@ -100,6 +100,15 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Copy</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="aggregator.html"
                         title="previous chapter">Aggregator</a></p>
@@ -135,18 +144,53 @@
           <div class="body" role="main">
             
   <div class="section" id="copy">
-<h1>Copy<a class="headerlink" href="#copy" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Copy<a class="headerlink" href="#copy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The copy filter has a single input pipe. It may have any number of output pipes. Each record on the input is written to each output:</p>
+<div class="highlight-python"><div class="highlight"><pre>output1: !pipe
+output2: !pipe
+duplicate: !copy
+  name: Duplicate
+  input: -&gt;fileReaderOutput
+  outputs:
+    - -&gt;output1
+    - -&gt;output2
+</pre></div>
+</div>
+<p>Here&#8217;s the same example in XML, which has a slightly different form:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;copyOutput1&quot; /&gt;
 &lt;pipe id=&quot;copyOutput2&quot; /&gt;
-&lt;copy id=&quot;copy&quot; name=&quot;Test Copy&quot;&gt;
-        &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
-        &lt;output ref=&quot;copyOutput1&quot; /&gt;
-        &lt;output ref=&quot;copyOutput2&quot; /&gt;
+&lt;copy id=&quot;duplicate&quot; name=&quot;Duplicate&quot;&gt;
+  &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
+  &lt;output ref=&quot;copyOutput1&quot; /&gt;
+  &lt;output ref=&quot;copyOutput2&quot; /&gt;
 &lt;/copy&gt;
 </pre></div>
 </div>
 <p>In this example, the records from the input (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>) are sent, unaltered, to both outputs (<code class="docutils literal"><span class="pre">ref=&quot;copyOutput1&quot;</span></code>, <code class="docutils literal"><span class="pre">ref=&quot;copyOutput2&quot;</span></code>).</p>
+</div>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>copy</strong></dt>
+<dd>Copy records on the input to each output</dd>
+</dl>
+<p>Markup:</p>
+<ul class="simple">
+<li>YAML: <code class="docutils literal"><span class="pre">!copy</span></code></li>
+<li>XML: <code class="docutils literal"><span class="pre">&lt;copy</span> <span class="pre">/&gt;</span></code></li>
+</ul>
+<p>Properties:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the filter, used in logging</dd>
+<dt><code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>the pipe providing records into the filter</dd>
+<dt><code class="docutils literal"><span class="pre">outputs</span></code></dt>
+<dd>a list of output pipes to which records are copied</dd>
+</dl>
+</div>
 </div>
 
 
