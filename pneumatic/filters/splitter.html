@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Sort &mdash; Pneumatic.IO Reference Guide</title>
+    <title>Splitter &mdash; Pneumatic.IO Reference Guide</title>
     
     <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="top" title="Pneumatic.IO Reference Guide" href="../index.html" />
     <link rel="up" title="Filters" href="../filters.html" />
-    <link rel="next" title="Splitter" href="splitter.html" />
-    <link rel="prev" title="RESTful Writer" href="restful-writer.html" />
+    <link rel="next" title="Transformer" href="transformer.html" />
+    <link rel="prev" title="Sort" href="sort.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
  
@@ -87,10 +87,10 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="splitter.html" title="Splitter"
+          <a href="transformer.html" title="Transformer"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="restful-writer.html" title="RESTful Writer"
+          <a href="sort.html" title="Sort"
              accesskey="P">previous</a> |</li>
         <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
         <li><a href="../index.html">Documentation</a> &raquo;</li>
@@ -101,15 +101,15 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="restful-writer.html"
-                        title="previous chapter">RESTful Writer</a></p>
+  <p class="topless"><a href="sort.html"
+                        title="previous chapter">Sort</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="splitter.html"
-                        title="next chapter">Splitter</a></p>
+  <p class="topless"><a href="transformer.html"
+                        title="next chapter">Transformer</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/filters/sort.txt"
+      <li><a href="../_sources/filters/splitter.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -134,42 +134,39 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="sort">
-<span id="id1"></span><h1>Sort<a class="headerlink" href="#sort" title="Permalink to this headline">¶</a></h1>
-<p>The sort filter sorts its input records according to a comparator. The sorted output is only written after all records have been read from its input. Consider the following example:</p>
+  <div class="section" id="splitter">
+<span id="id1"></span><h1>Splitter<a class="headerlink" href="#splitter" title="Permalink to this headline">¶</a></h1>
+<p>The splitter provides a way to split a stream of data based on some values in the data itself. This is known as &#8220;<a class="reference external" href="http://en.wikipedia.org/wiki/Partition_%28database%29">partitioning</a>&#8221;. The splitter is intended to provide support for partitioning data or splitting it for any other purpose.</p>
+<p>The splitter is like an enhanced <a class="reference internal" href="copy.html#copy"><em>Copy</em></a> or a simplified <a class="reference internal" href="transformer.html#transformer"><em>Transformer</em></a>. Like those, it accepts a single input and supports any number of outputs. Like the transformer it uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring SpEL</a> expression language for expressions to determine the partitioning scheme.</p>
+<p>Consider the following transformer example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
-&lt;pipe id=&quot;output&quot; /&gt;
-&lt;sort id=&quot;sort&quot; name=&quot;Test Sort&quot;&gt;
+&lt;pipe id=&quot;output1&quot; /&gt;
+&lt;pipe id=&quot;output2&quot; /&gt;
+&lt;splitter id=&quot;splitter&quot; name=&quot;Splitter&quot;&gt;
   &lt;input ref=&quot;input&quot; /&gt;
-  &lt;output ref=&quot;output&quot; /&gt;
-  &lt;comparator&gt;
-    &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-  &lt;/comparator&gt;
-&lt;/sort&gt;
+  &lt;outputConfiguration name=&quot;aThroughM&quot;&gt;
+    &lt;output ref=&quot;output1&quot; /&gt;
+    &lt;outputCondition&gt;#inputRecord.Name.substring(0, 1) &amp;lt; &#39;N&#39;&lt;/outputCondition&gt;
+  &lt;/outputConfiguration&gt;
+  &lt;outputConfiguration name=&quot;nThroughZ&quot;&gt;
+    &lt;output ref=&quot;output2&quot; /&gt;
+    &lt;outputCondition&gt;#inputRecord.Name.substring(0, 1) &amp;gt; &#39;M&#39;&lt;/outputCondition&gt;
+  &lt;/outputConfiguration&gt;
+&lt;/splitter&gt;
 </pre></div>
 </div>
-<p>The records read from the input (<code class="docutils literal"><span class="pre">ref=&quot;input&quot;</span></code>) are held in memory by the sort filter until it is ready to sort. Then the records are sorted using the comparator. In this case, the comparator orders the records by the <code class="docutils literal"><span class="pre">Name</span></code> column of the input records.</p>
-<p>The sort filter also supports arbitrary comparators using Spring Beans:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
-&lt;pipe id=&quot;output&quot; /&gt;
-&lt;sort id=&quot;sortWithBean&quot; name=&quot;Test Sort&quot;&gt;
-  &lt;input ref=&quot;input&quot; /&gt;
-  &lt;output ref=&quot;output&quot; /&gt;
-  &lt;comparator&gt;
-    &lt;bean class=&quot;com.surgingsystems.etl.filter.SortFilterTest.TwoColumnComparator&quot;&gt;
-      &lt;property name=&quot;column1&quot;&gt;
-        &lt;column name=&quot;Name&quot; type=&quot;string&quot; /&gt;
-      &lt;/property&gt;
-      &lt;property name=&quot;column2&quot;&gt;
-        &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
-      &lt;/property&gt;
-    &lt;/bean&gt;
-  &lt;/comparator&gt;
-&lt;/sort&gt;
+<p>The first elements are pipes: one input (<code class="docutils literal"><span class="pre">id=&quot;input&quot;</span></code>) and two outputs (<code class="docutils literal"><span class="pre">id=&quot;output1&quot;</span></code>, <code class="docutils literal"><span class="pre">id=&quot;output2&quot;</span></code>) that will be outputs from the splitter.</p>
+<p>Next, the splitter is declared (<code class="docutils literal"><span class="pre">id=&quot;splitter&quot;</span></code>).</p>
+<p>The first element of the splitter is its single input:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;input ref=&quot;input&quot; /&gt;
 </pre></div>
 </div>
-<p>In this example, the comparator is supplied by a Java class (<code class="docutils literal"><span class="pre">bean</span> <span class="pre">class=&quot;...&quot;</span></code>) that has two properties for columns.</p>
-<p>Because the sort filter stores all of its records in memory before it sorts, large data sets may use more memory than desireable. The sorting of very large data sets may be more suited to other solutions. For example, if the records are stored in a database, reading the records in sorted order might be a more appropirate solution.</p>
+<p>Next in the example is a set of &#8220;output configurations&#8221;. These define the outputs of the splitter. Each configuration (<code class="docutils literal"><span class="pre">outputConfiguration</span></code>) has a name (e.g., <code class="docutils literal"><span class="pre">name=&quot;aThroughM&quot;</span></code>) which supports logging and debugging but plays no other role in the functioning of the splitter.</p>
+<p>The output element (e.g., <code class="docutils literal"><span class="pre">output</span> <span class="pre">ref=&quot;output1&quot;</span></code>) of the output configuration defines the output pipe to which a configuration writes records.</p>
+<p>The output condition (<code class="docutils literal"><span class="pre">outputCondition</span></code>) element of an output configuration determines if an input record is written to the output of that configuration. If the value of the expression is true, the record is written to the output. Otherwise, no record is written. In this example, the <code class="docutils literal"><span class="pre">output1</span></code> and <code class="docutils literal"><span class="pre">output2</span></code> pipes get records in opposite conditions: if the <code class="docutils literal"><span class="pre">Name</span></code> column begins with a letter that is less than &#8216;N&#8217;, <code class="docutils literal"><span class="pre">output1</span></code> will get a record; but if it is greater than &#8216;M&#8217;, <code class="docutils literal"><span class="pre">output2</span></code> will get a record.</p>
+<p>(Note that this one of the cases in which XML is not the best format for expressing filter configurations: we must use the literal <code class="docutils literal"><span class="pre">&amp;lt;</span></code> to express <code class="docutils literal"><span class="pre">&lt;</span></code> and <code class="docutils literal"><span class="pre">&amp;gt;</span></code> to express <code class="docutils literal"><span class="pre">&gt;</span></code>. Consult a <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references">reference</a> when creating expressions that cause issues with XML.)</p>
+<p>Note that the splitter, like the copy filter, does not use any schemas: input records are writter unmodified to the outputs.</p>
+<p>In theory, the splitter could be used to split an input stream and feed those into a series of <a class="reference internal" href="restful-writer.html#restful-writer"><em>RESTful Writer</em></a> filters that send data over a network to different machines that operate on that subset of data. In this way a Pnematic.IO job might be scaled to support large workloads.</p>
 </div>
 
 
@@ -185,10 +182,10 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="splitter.html" title="Splitter"
+          <a href="transformer.html" title="Transformer"
              >next</a> |</li>
         <li class="right" >
-          <a href="restful-writer.html" title="RESTful Writer"
+          <a href="sort.html" title="Sort"
              >previous</a> |</li>
         <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
         <li><a href="../index.html">Documentation</a> &raquo;</li>

@@ -135,20 +135,20 @@
           <div class="body" role="main">
             
   <div class="section" id="restful-listener">
-<h1>RESTful Listener<a class="headerlink" href="#restful-listener" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>RESTful Listener<a class="headerlink" href="#restful-listener" title="Permalink to this headline">¶</a></h1>
 <p>(Should this be called the &#8220;RESTful Reader&#8221; to be more consistent with other filters? Something else? I&#8217;d like your feedback.)</p>
 <p>The RESTful listener is a filter that accepts RESTful requests. The requests must use the POST HTTP method and send JSON as the request body. Consider the following example:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
+  &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
+  &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
+  &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
 &lt;/schema&gt;
 
 &lt;pipe id=&quot;restfulListenerOutput&quot; /&gt;
 &lt;restfulListener id=&quot;restfulListener&quot; name=&quot;Restful Input&quot;&gt;
-        &lt;path value=&quot;mtb&quot; /&gt;
-        &lt;output ref=&quot;restfulListenerOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
+  &lt;path value=&quot;mtb&quot; /&gt;
+  &lt;output ref=&quot;restfulListenerOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;mtbSchema&quot; /&gt;
 &lt;/restfulListener&gt;
 </pre></div>
 </div>

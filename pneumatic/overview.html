@@ -195,12 +195,16 @@
 <div class="section" id="schemas">
 <h2>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h2>
 <p>Schemas describe the structure of data. Filters use schemas for validating and generating structured data in the form of &#8220;records&#8221;. A record may be thought of as an &#8220;instance&#8221; of a schema. A schema is to a record like a car is to a 2015 Porsche 911.</p>
-<p>From the previous example, a schema is defined using the <code class="docutils literal"><span class="pre">schema</span></code> tag. A schema may have one to any number of columns, each with a name and a type. Currently, Pneumatic only supports <code class="docutils literal"><span class="pre">string</span></code> (Java String), <code class="docutils literal"><span class="pre">integer</span></code> (Java Integer) and <code class="docutils literal"><span class="pre">decimal</span></code> (Java Double) column types.:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;schema id=&quot;mtbSchema&quot; name=&quot;MTB Schema&quot;&gt;
-        &lt;column name=&quot;name&quot; type=&quot;string&quot; /&gt;
-        &lt;column name=&quot;year&quot; type=&quot;integer&quot; /&gt;
-        &lt;column name=&quot;cost&quot; type=&quot;decimal&quot; /&gt;
-&lt;/schema&gt;
+<p>From the previous example, a schema is defined using the <code class="docutils literal"><span class="pre">schema</span></code> tag. A schema may have one to any number of columns, each with a name and a type. Currently, Pneumatic only supports <code class="docutils literal"><span class="pre">string</span></code> (Java String), <code class="docutils literal"><span class="pre">integer</span></code> (Java Integer) and <code class="docutils literal"><span class="pre">decimal</span></code> (Java Double) column types:</p>
+<div class="highlight-python"><div class="highlight"><pre>mtbSchema: !schema
+  name: Input Schema
+  columns:
+    - name: name
+      type: string
+    - name: year
+      type: integer
+    - name: cost
+      type: decimal
 </pre></div>
 </div>
 <p>If a record does not need to be validated or generated, no schema is required by the filter. An example of this is the copy filter which copies the input records to the configured outputs, unmodified.</p>

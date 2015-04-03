@@ -28,7 +28,7 @@
     <link rel="top" title="Pneumatic.IO Reference Guide" href="../index.html" />
     <link rel="up" title="Filters" href="../filters.html" />
     <link rel="next" title="XML File Reader" href="xml-file-reader.html" />
-    <link rel="prev" title="Sort" href="sort.html" />
+    <link rel="prev" title="Splitter" href="splitter.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
  
@@ -90,7 +90,7 @@
           <a href="xml-file-reader.html" title="XML File Reader"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="sort.html" title="Sort"
+          <a href="splitter.html" title="Splitter"
              accesskey="P">previous</a> |</li>
         <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
         <li><a href="../index.html">Documentation</a> &raquo;</li>
@@ -101,8 +101,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="sort.html"
-                        title="previous chapter">Sort</a></p>
+  <p class="topless"><a href="splitter.html"
+                        title="previous chapter">Splitter</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="xml-file-reader.html"
                         title="next chapter">XML File Reader</a></p>
@@ -135,7 +135,7 @@
           <div class="body" role="main">
             
   <div class="section" id="transformer">
-<h1>Transformer<a class="headerlink" href="#transformer" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Transformer<a class="headerlink" href="#transformer" title="Permalink to this headline">¶</a></h1>
 <p>The transformer filter may be the most powerful filter, but also the most complex. The transformer is like an enhanced copy filter: it supports a single input, but any number of outputs. The outputs may be controlled through conditions and expressions.</p>
 <p>The transformer uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring SpEL</a> expression language for expressions. The SpEL expressions are compiled, so they should not incur a large performance penalty.</p>
 <p>Consider the following transformer example:</p>
@@ -145,35 +145,35 @@
 &lt;pipe id=&quot;output3&quot; /&gt;
 
 &lt;transformer id=&quot;validatingTransformer&quot; name=&quot;Validating Transformer&quot;&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;variable name=&quot;lastName&quot;&gt;&#39;&#39;&lt;/variable&gt;
-        &lt;variable name=&quot;orderingProblem&quot;&gt;false&lt;/variable&gt;
-        &lt;variable name=&quot;orderingProblemCount&quot;&gt;0&lt;/variable&gt;
-        &lt;expression&gt;#orderingProblem = #lastName &gt; #inputRecord.Name&lt;/expression&gt;
-        &lt;expression&gt;#orderingProblemCount = #orderingProblemCount + (#orderingProblem ? 1 : 0)&lt;/expression&gt;
-        &lt;expression&gt;#lastName = #inputRecord.Name&lt;/expression&gt;
-        &lt;config outputName=&quot;transformerOutput&quot; recordName=&quot;outputRecord&quot;&gt;
-                &lt;output ref=&quot;output1&quot; /&gt;
-                &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-                &lt;outputCondition&gt;!#orderingProblem&lt;/outputCondition&gt;
-                &lt;expression&gt;#outputRecord.Name = #inputRecord.Name&lt;/expression&gt;
-                &lt;expression&gt;#outputRecord.Count = #inputRecord.Count&lt;/expression&gt;
-                &lt;expression&gt;#outputRecord.Price = #inputRecord.Price&lt;/expression&gt;
-        &lt;/config&gt;
-        &lt;config outputName=&quot;transformerOrderOutput&quot; recordName=&quot;invalidRecord&quot;&gt;
-                &lt;output ref=&quot;output2&quot; /&gt;
-                &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-                &lt;outputCondition&gt;#orderingProblem&lt;/outputCondition&gt;
-                &lt;expression&gt;#invalidRecord.Name = #inputRecord.Name&lt;/expression&gt;
-                &lt;expression&gt;#invalidRecord.Count = #inputRecord.Count&lt;/expression&gt;
-                &lt;expression&gt;#invalidRecord.Price = #inputRecord.Price&lt;/expression&gt;
-        &lt;/config&gt;
-        &lt;config outputName=&quot;transformerOrderCountOutput&quot; recordName=&quot;invalidCountRecord&quot;&gt;
-                &lt;output ref=&quot;output3&quot; /&gt;
-                &lt;outputSchema ref=&quot;countSchema&quot; /&gt;
-                &lt;outputCondition&gt;#input.complete&lt;/outputCondition&gt;
-                &lt;expression&gt;#invalidCountRecord.Count = #orderingProblemCount&lt;/expression&gt;
-        &lt;/config&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;variable name=&quot;lastName&quot;&gt;&#39;&#39;&lt;/variable&gt;
+  &lt;variable name=&quot;orderingProblem&quot;&gt;false&lt;/variable&gt;
+  &lt;variable name=&quot;orderingProblemCount&quot;&gt;0&lt;/variable&gt;
+  &lt;expression&gt;#orderingProblem = #lastName &amp;gt; #inputRecord.Name&lt;/expression&gt;
+  &lt;expression&gt;#orderingProblemCount = #orderingProblemCount + (#orderingProblem ? 1 : 0)&lt;/expression&gt;
+  &lt;expression&gt;#lastName = #inputRecord.Name&lt;/expression&gt;
+  &lt;outputConfiguration outputName=&quot;transformerOutput&quot; recordName=&quot;outputRecord&quot;&gt;
+    &lt;output ref=&quot;output1&quot; /&gt;
+    &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+    &lt;outputCondition&gt;!#orderingProblem&lt;/outputCondition&gt;
+    &lt;expression&gt;#outputRecord.Name = #inputRecord.Name&lt;/expression&gt;
+    &lt;expression&gt;#outputRecord.Count = #inputRecord.Count&lt;/expression&gt;
+    &lt;expression&gt;#outputRecord.Price = #inputRecord.Price&lt;/expression&gt;
+  &lt;/outputConfiguration&gt;
+  &lt;outputConfiguration outputName=&quot;transformerOrderOutput&quot; recordName=&quot;invalidRecord&quot;&gt;
+    &lt;output ref=&quot;output2&quot; /&gt;
+    &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
+    &lt;outputCondition&gt;#orderingProblem&lt;/outputCondition&gt;
+    &lt;expression&gt;#invalidRecord.Name = #inputRecord.Name&lt;/expression&gt;
+    &lt;expression&gt;#invalidRecord.Count = #inputRecord.Count&lt;/expression&gt;
+    &lt;expression&gt;#invalidRecord.Price = #inputRecord.Price&lt;/expression&gt;
+  &lt;/outputConfiguration&gt;
+  &lt;outputConfiguration outputName=&quot;transformerOrderCountOutput&quot; recordName=&quot;invalidCountRecord&quot;&gt;
+    &lt;output ref=&quot;output3&quot; /&gt;
+    &lt;outputSchema ref=&quot;countSchema&quot; /&gt;
+    &lt;outputCondition&gt;#input.complete&lt;/outputCondition&gt;
+    &lt;expression&gt;#invalidCountRecord.Count = #orderingProblemCount&lt;/expression&gt;
+  &lt;/outputConfiguration&gt;
 &lt;/transformer&gt;
 </pre></div>
 </div>
@@ -183,13 +183,14 @@
 <div class="highlight-python"><div class="highlight"><pre>&lt;input ref=&quot;input&quot; /&gt;
 </pre></div>
 </div>
-<p>Next is a set of variables. The variables may be intialized to any constant value. The initialization of the variables occurs before any records have been processed. The values of previously declared variables or input records are not available for initializiation. The variables may be used in the output configuration for both output conditions and expressions.</p>
+<p>Next is a set of variables. The variables may be initialized to any constant value. The initialization of the variables occurs before any records have been processed. The values of previously declared variables or input records are not available for initialization. The variables may be used in the output configuration for both output conditions and expressions.</p>
 <p>The variables are followed by a set of expressions. The expressions are executed for each input record processed by the filter. The following expression sets the <code class="docutils literal"><span class="pre">orderingProblem</span></code> boolean value to true or false, depending on if the value of <code class="docutils literal"><span class="pre">lastName</span></code> is alpha-numerically greater than the value of the <code class="docutils literal"><span class="pre">Name</span></code> column on the current input record:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#orderingProblem = #lastName &gt; #inputRecord.Name&lt;/expression&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#orderingProblem = #lastName &amp;gt; #inputRecord.Name&lt;/expression&gt;
 </pre></div>
 </div>
 <p>This means that if, for example, <code class="docutils literal"><span class="pre">lastName</span></code> is &#8220;Mojo&#8221; and the value of <code class="docutils literal"><span class="pre">inputRecord.Name</span></code> is &#8220;Bronson&#8221;, <code class="docutils literal"><span class="pre">lastName</span></code> will be set to &#8220;true&#8221; because &#8220;M&#8221; comes after &#8220;B&#8221; in the alphabet.</p>
-<p>There are two forms for accessing a column on a record. One is using the &#8220;dot&#8221; notation as above: <code class="docutils literal"><span class="pre">inputRecord.Name</span></code>. The name of the record is before the dot and the column name is after the dot. An alternative is to use brackets: &#8220;[]&#8221;. This is expecially useful if the column name contains spaces. In the following example, the column name is &#8220;Column Name with Spaces&#8221;:</p>
+<p>(Note that this one of the cases in which XML is not the best format for expressing filter configurations: we must use the literal <code class="docutils literal"><span class="pre">&amp;lt;</span></code> to express <code class="docutils literal"><span class="pre">&lt;</span></code> and <code class="docutils literal"><span class="pre">&amp;gt;</span></code> to express <code class="docutils literal"><span class="pre">&gt;</span></code>. Consult a <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references">reference</a> when creating expressions that cause issues with XML.)</p>
+<p>There are two forms for accessing a column on a record. One is using the &#8220;dot&#8221; notation as above: <code class="docutils literal"><span class="pre">inputRecord.Name</span></code>. The name of the record is before the dot and the column name is after the dot. An alternative is to use brackets: &#8220;[]&#8221;. This is especially useful if the column name contains spaces. In the following example, the column name is &#8220;Column Name with Spaces&#8221;:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#inputRecord[&quot;Column Name with Spaces&quot;] = &quot;A useful value&quot;&lt;/expression&gt;
 </pre></div>
 </div>
@@ -227,7 +228,7 @@
           <a href="xml-file-reader.html" title="XML File Reader"
              >next</a> |</li>
         <li class="right" >
-          <a href="sort.html" title="Sort"
+          <a href="splitter.html" title="Splitter"
              >previous</a> |</li>
         <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
         <li><a href="../index.html">Documentation</a> &raquo;</li>

@@ -100,6 +100,15 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Aggregator</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="../filters.html"
                         title="previous chapter">Filters</a></p>
@@ -135,28 +144,46 @@
           <div class="body" role="main">
             
   <div class="section" id="aggregator">
-<h1>Aggregator<a class="headerlink" href="#aggregator" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Aggregator<a class="headerlink" href="#aggregator" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The aggregator filter has a single input pipe. It also has a single output pipe: the aggregator output to which the aggregator&#8217;s function is applied.</p>
 <p>A single record is written to the after all input records have been processed from the aggregator&#8217;s input.</p>
 <p>Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>input: !pipe
+aggregatorOutput: !pipe
+aggregator: !aggregator
+  name: Test Aggregator
+  input: -&gt;input
+  output: -&gt;aggregatorOutput
+  outputSchema: -&gt;aggregatorSchema
+  function: !sum
+    in:
+      name: Price
+      type: decimal
+    out:
+      name: Total Price
+      type: decimal
+</pre></div>
+</div>
+<p>Here&#8217;s the same example in XML:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
-&lt;pipe id=&quot;output&quot; /&gt;
 &lt;pipe id=&quot;aggregatorOutput&quot; /&gt;
 &lt;aggregator id=&quot;priceAggregator&quot; name=&quot;Price Aggregator&quot;&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;output ref=&quot;aggregatorOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
-        &lt;function&gt;
-                &lt;sum&gt;
-                        &lt;in&gt;
-                                &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/in&gt;
-                        &lt;out&gt;
-                                &lt;column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/out&gt;
-                &lt;/sum&gt;
-        &lt;/function&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;output ref=&quot;aggregatorOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
+  &lt;function&gt;
+    &lt;sum&gt;
+      &lt;in&gt;
+        &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+      &lt;/in&gt;
+      &lt;out&gt;
+        &lt;column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
+      &lt;/out&gt;
+    &lt;/sum&gt;
+  &lt;/function&gt;
 &lt;/aggregator&gt;
 </pre></div>
 </div>
@@ -169,26 +196,102 @@
 </ul>
 <p>That&#8217;s not very many functions, but the aggregator may be extended with any function you like using a Spring Bean:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;aggregator id=&quot;aggregator2&quot; name=&quot;Test Aggregator 2&quot;&gt;
-        &lt;input ref=&quot;input&quot; /&gt;
-        &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
-        &lt;output ref=&quot;aggregatorOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
-        &lt;function&gt;
-                &lt;bean class=&quot;com.surgingsystems.etl.filter.function.SumFunction&quot;&gt;
-                        &lt;property name=&quot;inputColumnDefinition&quot;&gt;
-                                &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/property&gt;
-                        &lt;property name=&quot;outputColumnDefinition&quot;&gt;
-                                &lt;column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
-                        &lt;/property&gt;
-                &lt;/bean&gt;
-        &lt;/function&gt;
+  &lt;input ref=&quot;input&quot; /&gt;
+  &lt;inputSchema ref=&quot;inputSchema&quot; /&gt;
+  &lt;output ref=&quot;aggregatorOutput&quot; /&gt;
+  &lt;outputSchema ref=&quot;aggregatorSchema&quot; /&gt;
+  &lt;function&gt;
+    &lt;bean class=&quot;com.surgingsystems.etl.filter.function.SumFunction&quot;&gt;
+      &lt;property name=&quot;inputColumnDefinition&quot;&gt;
+        &lt;column name=&quot;Price&quot; type=&quot;decimal&quot; /&gt;
+      &lt;/property&gt;
+      &lt;property name=&quot;outputColumnDefinition&quot;&gt;
+        &lt;column name=&quot;Total Price&quot; type=&quot;decimal&quot; /&gt;
+      &lt;/property&gt;
+    &lt;/bean&gt;
+  &lt;/function&gt;
 &lt;/aggregator&gt;
+</pre></div>
+</div>
+<p>If you&#8217;re using the YAML DSL, first define the function in Spring XML:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;bean id=&quot;myAverageFunction&quot; class=&quot;com.surgingsystems.etl.filter.function.AverageFunction&quot;&gt;
+  &lt;property name=&quot;inputColumnDefinition&quot;&gt;
+    &lt;etl:column name=&quot;Count&quot; type=&quot;integer&quot; /&gt;
+  &lt;/property&gt;
+  &lt;property name=&quot;outputColumnDefinition&quot;&gt;
+    &lt;etl:column name=&quot;Average&quot; type=&quot;decimal&quot; /&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;
+</pre></div>
+</div>
+<p>Then simply reference the function:</p>
+<div class="highlight-python"><div class="highlight"><pre>input: !pipe
+aggregatorOutput: !pipe
+aggregator: !aggregator
+  name: Test Aggregator
+  input: -&gt;input
+  inputSchema: -&gt;inputSchema
+  output: -&gt;aggregatorOutput
+  outputSchema: -&gt;aggregatorSchema
+  function: -&gt;myAverageFunction
 </pre></div>
 </div>
 <p>In this case, we are referencing the underlying Java class (<code class="docutils literal"><span class="pre">SumFunction</span></code>). Any function that implements the internal Function interface may be used. That interface is:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">com</span><span class="o">.</span><span class="n">surgingsystems</span><span class="o">.</span><span class="n">etl</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Function</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>aggregator</strong></dt>
+<dd>Perform an aggregation function on input records, write the result to the output</dd>
+</dl>
+<p>Markup:</p>
+<ul class="simple">
+<li>YAML: <code class="docutils literal"><span class="pre">!aggregator</span></code></li>
+<li>XML: <code class="docutils literal"><span class="pre">&lt;aggregator</span> <span class="pre">/&gt;</span></code></li>
+</ul>
+<p>Properties:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the filter, used in logging</dd>
+<dt><code class="docutils literal"><span class="pre">input</span></code></dt>
+<dd>the pipe providing records into the filter</dd>
+<dt><code class="docutils literal"><span class="pre">inputSchema</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the schema of the records coming into the filter</p>
+<ul class="last simple">
+<li>if supplied, the value of the <code class="docutils literal"><span class="pre">in</span></code> property is matched against the schema to ensure compatibility</li>
+<li>if supplied, input records are validated against the schema and rejected if the validation fails</li>
+</ul>
+</dd>
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>the pipe to which output records are written</dd>
+<dt><code class="docutils literal"><span class="pre">outputSchema</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the schema of the records written to <code class="docutils literal"><span class="pre">output</span></code></p>
+<ul class="last simple">
+<li>if supplied, the value of the <code class="docutils literal"><span class="pre">out</span></code> property is matched against the schema to ensure compatibility</li>
+</ul>
+</dd>
+<dt><code class="docutils literal"><span class="pre">function</span></code></dt>
+<dd>the aggregation function of the filter</dd>
+<dt><code class="docutils literal"><span class="pre">rejection</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the strategy for rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>supply a pipe for the rejected records</dd>
+<dt><code class="docutils literal"><span class="pre">log</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">default</span></dt>
+<dd><p class="first">log the rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the logger (sometimes called the &#8220;category&#8221;)</dd>
+<dt><code class="docutils literal"><span class="pre">level</span></code></dt>
+<dd>the logging level; one of: <code class="docutils literal"><span class="pre">OFF</span></code>, <code class="docutils literal"><span class="pre">FATAL</span></code>, <code class="docutils literal"><span class="pre">ERROR</span></code>, <code class="docutils literal"><span class="pre">WARN</span></code>, <code class="docutils literal"><span class="pre">INFO</span></code>, <code class="docutils literal"><span class="pre">DEBUG</span></code>, <code class="docutils literal"><span class="pre">TRACE</span></code>, <code class="docutils literal"><span class="pre">ALL</span></code> (see the <a class="reference external" href="https://logging.apache.org/log4j/2.0/log4j-api/apidocs/index.html">Log4J2 reference</a> for additional information)</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
 </div>
 </div>
 

@@ -100,6 +100,15 @@
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Database Reader</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="database-lookup.html"
                         title="previous chapter">Database Lookup</a></p>
@@ -135,37 +144,109 @@
           <div class="body" role="main">
             
   <div class="section" id="database-reader">
-<h1>Database Reader<a class="headerlink" href="#database-reader" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Database Reader<a class="headerlink" href="#database-reader" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>A database reader reads records from a database identified by a data source. A SQL select statement is used to select the desired records. The records are written to the output pipe.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;databaseReaderOutput&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>output: !pipe
+rejectionOutput: !pipe
+databaseReader: !databaseReader
+  name: Database Reader
+  output: -&gt;output
+  outputSchema: -&gt;outputSchema
+  dataSource: -&gt;dataSource
+  sql: select * from mtb where name = ? and year = ?
+  parameters:
+    - #job.name
+    - #job.model_year
+  rejection:
+    output: -&gt;rejectionOutput
+</pre></div>
+</div>
+<p>Here is the same example in XML:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;output&quot; /&gt;
+&lt;pipe id=&quot;rejectionOutput&quot; /&gt;
 &lt;databaseReader id=&quot;databaseReader&quot; name=&quot;Database Reader&quot;&gt;
-        &lt;output ref=&quot;databaseReaderOutput&quot; /&gt;
-        &lt;outputSchema ref=&quot;sqlSelectSchema&quot; /&gt;
-        &lt;dataSource ref=&quot;dataSource&quot; /&gt;
-        &lt;select&gt;
-                &lt;sql&gt;
-                        select * from mtb where name = ? and year = ?
-                &lt;/sql&gt;
-                &lt;parameter value=&quot;#job.name&quot; /&gt;
-                &lt;parameter value=&quot;#job.model_year&quot; /&gt;
-        &lt;/select&gt;
-        &lt;rejection&gt;
-                &lt;output ref=&quot;databaseReaderRejectionOutput&quot; /&gt;
-        &lt;/rejection&gt;
+  &lt;output ref=&quot;output&quot; /&gt;
+  &lt;outputSchema ref=&quot;outputSchema&quot; /&gt;
+  &lt;dataSource ref=&quot;dataSource&quot; /&gt;
+  &lt;select&gt;
+    &lt;sql&gt;
+      select * from mtb where name = ? and year = ?
+    &lt;/sql&gt;
+    &lt;parameter value=&quot;#job.name&quot; /&gt;
+    &lt;parameter value=&quot;#job.model_year&quot; /&gt;
+  &lt;/select&gt;
+  &lt;rejection&gt;
+    &lt;output ref=&quot;rejectionOutput&quot; /&gt;
+  &lt;/rejection&gt;
 &lt;/databaseReader&gt;
 </pre></div>
 </div>
 <p>The output is given by <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderOutput&quot;</span></code>.</p>
-<p>The output schema (<code class="docutils literal"><span class="pre">ref=&quot;sqlSelectSchema&quot;</span></code>) is used to define the output records. Columns from the select statement that match the names of the columns in the output schema are used to provide the values to the output record.</p>
-<p>The select element (<code class="docutils literal"><span class="pre">select</span></code>) specifies the select statement (<code class="docutils literal"><span class="pre">sql</span></code>) and any parameters. The parameters are optional. Job parameters may be used to provide values to the SQL parameters.</p>
-<p>The optional rejection element (<code class="docutils literal"><span class="pre">rejection</span></code>) defines the behavior for rejecting records. If a record does not comply with the output schema, in this case it is sent to another pipe, <code class="docutils literal"><span class="pre">ref=&quot;databaseReaderRejectionOutput&quot;</span></code>. The default is to log the record, which can also be specified explicitly:</p>
+<p>The output schema (<code class="docutils literal"><span class="pre">outputSchema&quot;</span></code>) is used to define the output records. Columns from the select statement that match the names of the columns in the output schema are used to provide the values to the output record.</p>
+<p>The <code class="docutils literal"><span class="pre">sql</span></code> element SQL select statement, with the <code class="docutils literal"><span class="pre">parameters</span></code> applied in order. The parameters are optional. Job parameters may be used to provide values to the SQL parameters.</p>
+<p>The optional rejection element (<code class="docutils literal"><span class="pre">rejection</span></code>) defines the behavior for rejecting records. If a record does not comply with the output schema, in this case it is sent to another pipe, <code class="docutils literal"><span class="pre">rejectionOutput</span></code>. The default is to log the record, which can also be specified explicitly:</p>
+<div class="highlight-python"><div class="highlight"><pre>rejection:
+  log:
+    name: REJECTION
+    level: WARN
+</pre></div>
+</div>
+<p>Or in XML:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;rejection&gt;
-        &lt;log level=&quot;WARN&quot; name=&quot;REJECTION&quot; /&gt;
+  &lt;log level=&quot;WARN&quot; name=&quot;REJECTION&quot; /&gt;
 &lt;/rejection&gt;
 </pre></div>
 </div>
 <p>Here, the <code class="docutils literal"><span class="pre">level</span></code> is a <a class="reference external" href="https://logging.apache.org/log4j/2.x/log4j-api/apidocs/org/apache/logging/log4j/Level.html">Log4J level</a>, with all those levels being available.  The <code class="docutils literal"><span class="pre">name</span></code> is the name of the logger, basically categorizing the log statement.</p>
+</div>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>databaseReader</strong></dt>
+<dd>Read records from a database</dd>
+</dl>
+<p>Markup:</p>
+<ul class="simple">
+<li>YAML: <code class="docutils literal"><span class="pre">!databaseReader</span></code></li>
+<li>XML: <code class="docutils literal"><span class="pre">&lt;databaseReader</span> <span class="pre">/&gt;</span></code></li>
+</ul>
+<p>Properties:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the filter, used in logging</dd>
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>the pipe to which output records are written</dd>
+<dt><code class="docutils literal"><span class="pre">outputSchema</span></code></dt>
+<dd><p class="first">the schema of the records written to <code class="docutils literal"><span class="pre">output</span></code></p>
+<p class="last">The output schema is used to select column values consisting of the set of values from the select statement (SQL result). The values are selected by name.</p>
+</dd>
+<dt><code class="docutils literal"><span class="pre">dataSource</span></code></dt>
+<dd>the source of connections to the target database</dd>
+<dt><code class="docutils literal"><span class="pre">sql</span></code></dt>
+<dd>the aggregation function of the filter</dd>
+<dt><code class="docutils literal"><span class="pre">parameters</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span> <span class="classifier-delimiter">:</span> <span class="classifier">XML &lt;parameter /&gt;</span></dt>
+<dd>the parameters for the SQL statement</dd>
+<dt><code class="docutils literal"><span class="pre">rejection</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">optional</span></dt>
+<dd><p class="first">the strategy for rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>supply a pipe for the rejected records</dd>
+<dt><code class="docutils literal"><span class="pre">log</span></code> <span class="classifier-delimiter">:</span> <span class="classifier">default</span></dt>
+<dd><p class="first">log the rejected records</p>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the logger (sometimes called the &#8220;category&#8221;)</dd>
+<dt><code class="docutils literal"><span class="pre">level</span></code></dt>
+<dd>the logging level; one of: <code class="docutils literal"><span class="pre">OFF</span></code>, <code class="docutils literal"><span class="pre">FATAL</span></code>, <code class="docutils literal"><span class="pre">ERROR</span></code>, <code class="docutils literal"><span class="pre">WARN</span></code>, <code class="docutils literal"><span class="pre">INFO</span></code>, <code class="docutils literal"><span class="pre">DEBUG</span></code>, <code class="docutils literal"><span class="pre">TRACE</span></code>, <code class="docutils literal"><span class="pre">ALL</span></code> (see the <a class="reference external" href="https://logging.apache.org/log4j/2.0/log4j-api/apidocs/index.html">Log4J2 reference</a> for additional information)</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
 </div>
 
 
