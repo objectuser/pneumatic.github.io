@@ -70,8 +70,8 @@ kramdown:
 
 prose:
   rooturl: '_posts'
-  siteurl: 'http://pneumatic.io/'
-  relativeLinks: 'http://pneumatic.io/links.jsonp'
+  siteurl: 'http://objectuser.github.com/'
+  relativeLinks: 'http://objectuser.github.com/links.jsonp'
   media: 'images'
   metadata:
     _posts:
