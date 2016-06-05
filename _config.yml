@@ -45,7 +45,7 @@ links:
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    America/Chicago
 future:      true
-highlighter: pygments
+highlighter: rouge
 markdown:    kramdown
 paginate:    5
 paginate_path: "page:num"
@@ -70,8 +70,8 @@ kramdown:
 
 prose:
   rooturl: '_posts'
-  siteurl: 'http://objectuser.github.com/'
-  relativeLinks: 'http://objectuser.github.com/links.jsonp'
+  siteurl: 'http://pneumatic.io/'
+  relativeLinks: 'http://pneumatic.io/links.jsonp'
   media: 'images'
   metadata:
     _posts:
