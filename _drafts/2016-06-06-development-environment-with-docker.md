@@ -6,19 +6,22 @@ categories: docker
 comments: true
 ---
 
+The [Docker Toolbox](https://www.docker.com/products/overview#/docker_toolbox) makes it easy to create a production-like development environment.
+
 In the past, setting up a local development environment involved installing a few of the key infrastructure components on my development computer and then making some compromises on things that were either too much of a pain to setup or had similar light-weight equivalents that didn't compromise the systems behavior.
 
 For example, I would always have my target database installed on my computer. But I might use a light-weight messaging system (ActiveMQ or whatever) and a simple cache instead of the enterprise system that might be the deployment target (WebSphere MQ and Redis, for example).
 
-Vagrant is a much better approach. With Vagrant you can create a configuration for an environment and share it across developers. That eliminates a lot of problems. However, using Vagrant still requires quite a bit of configuration to install and use components like MySQL and Redis. This can be simplified with tools like Ansible, Puppet or Salt, but it's still a lot of configuration before you can get started.
+[Vagrant](https://www.vagrantup.com/) is a much better approach. With Vagrant you can create a configuration for an environment and share it across developers. That eliminates a lot of problems. However, using Vagrant still requires quite a bit of configuration to install and use components like MySQL and Redis. This can be simplified with tools like [Ansible](https://www.ansible.com/), [Puppet](https://puppet.com/) or [Salt](https://saltstack.com/), but it's still a lot of configuration before you can get started.
 
-Docker and Docker Hub provide images of many of the most common components used in web and enterprise applications. They work "out of the box", so it's much easier to get started and refine things as you go. Also, the repository images are updated often, so it's often easier to move from one version to the next.
+Docker and [Docker Hub](https://hub.docker.com/) provide images of many of the most common components used in web and enterprise applications. They work "out of the box", so it's much easier to get started and refine things as you go. Also, the repository images are updated often, so it's often easier to move from one version to the next.
 
 Whether or not you're using Docker for deployment, Docker makes an excellent tool for building a local development environment and a CI environment (more on that in a future post).
 
 In this post, I want to discuss my approach for creating a development environment using Docker tooling.
 
 My current system uses the following major components:
+
 1. Angular JS (1.x)
 1. Spring Boot
 1. Redis
@@ -26,18 +29,18 @@ My current system uses the following major components:
 
 Just substitute your application environment, database, etc. and I think it's a template for a common web app configuration.
 
-In order to have an environment that closely mirrors production, I want the versions of MySQL and Redis to mirror production. It's a pain to update these things whenever the production versions change and using a shared environment has always been problematic in my experience.
+In order to have an environment that closely mirrors production, I want the versions of MySQL and Redis to mirror production. If these components are installed on the development computer, it's a pain to update them whenever the production versions changes. Also, using a shared environment has always been problematic in my experience.
 
 I also like to be able to vary how I run my business logic, because sometimes I want to run Spring Boot within my IDE for debugging purposes, and sometimes I want to run everything in a production configuration and hit that with my web browser or automated testing tool.
 
-This is where Docker Compose comes in. Docker Compose allows me to create different compositions of Docker containers based on how I want to run my application. I use two primary compositions during development:
+This is where [Docker Compose](https://docs.docker.com/compose/) comes in. Docker Compose allows me to create different compositions of Docker containers based on how I want to run my application. I use two primary compositions during development:
 
 1. Application, Redis and MySQL in Docker
 1. Application in IDE and Redis and MySQL in Docker
 
 ## Docker Machine
 
-I use Docker Machine to run Docker on my computer (Mac).
+I use [Docker Machine](https://docs.docker.com/machine/) to run Docker on my computer (Mac).
 
 I then also setup my `/etc/hosts` file to give that machine easy to remember names:
 
@@ -55,9 +58,9 @@ My application is configured to use `mysql` for the MySQL host name and `redis` 
 
 When I'm running everything in Docker, I use a compose file like this:
 
-```
+```yaml
 ---
-# A composition for running the complete application in Docker
+# A composition for running the complete system in Docker
 app:
   image: objectuser/run-java-jar
   environment:
@@ -83,16 +86,17 @@ redis:
 ```
 
 Note:
+
 * The image `objectuser/run-java-jar` is [an image I've made](https://github.com/objectuser/run-java-jar) for running a Java JAR file. It works great for Spring Boot.
 * The `links` item provides a way to map a network name to another container in the composition.
 
-I can then point my browser to `app` to use my application.
+I can then point my browser to `app` (assuming an updated `/etc/hosts` file) to use my application.
 
 ## Running in an IDE and Docker
 
-When I'm running my app in my IDE, I don't want to host the app in the machine, so I have a shorter Docker Compose file:
+When I'm running my app in my IDE, I don't want to host the app in the Docker machine, so I have a shorter Docker Compose file:
 
-```
+```yaml
 ---
 # Run a MySQL and Redis instance in Docker.
 mysql:
@@ -110,14 +114,13 @@ redis:
 
 I then need to start my machine, and then start the composition within that machine. If you're in the same directory as your Docker Compose file, and it's called `docker-compose.yml`, then:
 
-```
+```bash
 docker-machine start dev
 eval $(docker-machine env dev)
 docker-compose up
 ```
 
 Once that's started, I can start the app within my IDE and it uses the Docker-hosted MySQL and Redis servers.
-
 
 ## Conclusion
 
