@@ -137,42 +137,36 @@
 <p>Pneumatic.IO is a fresh approach to ETL and structured IO. It&#8217;s a development platform, but little to no programming is required.</p>
 <p>Pneumatic is declarative, using either a custom YAML markup, or XML markup based on Spring&#8217;s support for extensible markup. I hope in the future there will be a GUI for creating Pneumatic jobs. But for now, the textual forms provide a proof of concept that still makes creating ETL jobs really easy.</p>
 <p>As a quick example, here&#8217;s how you might read from a file and write its contents to a database.</p>
-<p>Next, here are the YAML-based Pneumatic declarations. Generally, the first line of a declaration is the item&#8217;s &#8220;identifier&#8221; (like <code class="docutils literal"><span class="pre">mtbSchema</span></code>), optionally followed by a YAML tag indicating the type of the item (<code class="docutils literal"><span class="pre">!schema</span></code> means this item is of the <code class="docutils literal"><span class="pre">schema</span></code> type). If the item is named according to convention, the type tag may be omitted. For example, because <code class="docutils literal"><span class="pre">mtbSchema</span></code> ends in <code class="docutils literal"><span class="pre">Schema</span></code> Pneumatic knows it&#8217;s a schema.</p>
-<blockquote>
-<div><p># Declare a schema that defines our records
-mtbSchema:</p>
-<blockquote>
-<div><p>name: Input Schema
-columns:</p>
-<blockquote>
-<div><ul class="simple">
-<li>name: name
-type: string</li>
-<li>name: year
-type: integer</li>
-<li>name: cost
-type: decimal</li>
-</ul>
-</div></blockquote>
-</div></blockquote>
-<p># Declare a pipe to join the file reader and database writer
+<p>Next, here are the YAML-based Pneumatic declarations. Generally, the first line of a declaration is the item&#8217;s &#8220;identifier&#8221; (like <code class="docutils literal"><span class="pre">mtbSchema</span></code>), optionally followed by a YAML tag indicating the type of the item (<code class="docutils literal"><span class="pre">!schema</span></code> means this item is of the <code class="docutils literal"><span class="pre">schema</span></code> type). If the item is named according to Pneumatci convention, the type tag may be omitted. For example, because <code class="docutils literal"><span class="pre">mtbSchema</span></code> ends in <code class="docutils literal"><span class="pre">Schema</span></code> Pneumatic knows it&#8217;s a schema.:</p>
+<div class="highlight-python"><div class="highlight"><pre># Declare a schema that defines our records
+mtbSchema:
+  name: Input Schema
+  columns:
+    - name: name
+      type: string
+    - name: year
+      type: integer
+    - name: cost
+      type: decimal
+
+# Declare a pipe to join the file reader and database writer
 fileReaderOutput:
 # Declare a file reader to read from mtb.txt
-mtbFileReader:</p>
-<blockquote>
-<div>name: File Reader
-fileResource: data/mtb.txt
-output: fileReaderOutput # reference to fileReaderOutput
-outputSchema: mtbSchema # reference to mtbSchema</div></blockquote>
-<p># Declare a database writer to read from the pipe and write to the mtb table
-mtbDatabaseWriter:</p>
-<blockquote>
-<div>name: Database Writer
-input: fileReaderOutput
-inputSchema: mtbSchema
-dataSource: dataSource # Reference the data source declared in Spring XML
-insertInto: mtb</div></blockquote>
-</div></blockquote>
+mtbFileReader:
+  name: File Reader
+  fileResource: data/mtb.txt
+  output: fileReaderOutput # reference to fileReaderOutput
+  outputSchema: mtbSchema # reference to mtbSchema
+
+# Declare a database writer to read from the pipe and write to the mtb table
+mtbDatabaseWriter:
+  name: Database Writer
+  input: fileReaderOutput
+  inputSchema: mtbSchema
+  dataSource: dataSource # Reference the data source declared in Spring XML
+  insertInto: mtb
+</pre></div>
+</div>
 <p>Visually, the job looks like this:</p>
 <img alt="_images/SimpleJob.png" src="_images/SimpleJob.png" />
 <p>The schema declaration (<code class="docutils literal"><span class="pre">mtbSchema</span></code>) is used to declare the structure of records in the job. A pipe (<code class="docutils literal"><span class="pre">fileReaderOutput</span></code>) provides a conduit from one processing element (called &#8220;filters&#8221;) to another.</p>
