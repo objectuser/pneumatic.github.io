@@ -135,48 +135,52 @@
   <div class="section" id="quick-intro">
 <h1>Quick Intro<a class="headerlink" href="#quick-intro" title="Permalink to this headline">¶</a></h1>
 <p>Pneumatic.IO is a fresh approach to ETL and structured IO. It&#8217;s a development platform, but little to no programming is required.</p>
-<p>Pneumatic is declarative, using either a custom YAML markup, or XML markup based on Spring&#8217;s support for extensible markup. I hope in the future there will be a GUI for creating Pneumatic jobs. But for now, the texutal forms provide a proof of concept that still makes creating ETL jobs really easy.</p>
-<p>As a quick example, here&#8217;s how you might read from a file and write its contents to a database in Pneumatic.</p>
-<p>First, here is a Spring data source definition:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;jdbc:embedded-database id=&quot;dataSource&quot; type=&quot;HSQL&quot;&gt;
-  &lt;jdbc:script location=&quot;classpath:db-schema.sql&quot; /&gt;
-  &lt;jdbc:script location=&quot;classpath:db-test-data.sql&quot; /&gt;
-&lt;/jdbc:embedded-database&gt;
-</pre></div>
-</div>
-<p>Next, here are the YAML-based Pneumatic declarations:</p>
-<div class="highlight-python"><div class="highlight"><pre># Declare a schema that defines our records
-mtbSchema: !schema
-  name: Input Schema
-  columns:
-    - name: name
-      type: string
-    - name: year
-      type: integer
-    - name: cost
-      type: decimal
-
-# Declare a pipe to join the file reader and database writer
-fileReaderOutput: !pipe
+<p>Pneumatic is declarative, using either a custom YAML markup, or XML markup based on Spring&#8217;s support for extensible markup. I hope in the future there will be a GUI for creating Pneumatic jobs. But for now, the textual forms provide a proof of concept that still makes creating ETL jobs really easy.</p>
+<p>As a quick example, here&#8217;s how you might read from a file and write its contents to a database.</p>
+<p>Next, here are the YAML-based Pneumatic declarations. Generally, the first line of a declaration is the item&#8217;s &#8220;identifier&#8221; (like <code class="docutils literal"><span class="pre">mtbSchema</span></code>), optionally followed by a YAML tag indicating the type of the item (<code class="docutils literal"><span class="pre">!schema</span></code> means this item is of the <code class="docutils literal"><span class="pre">schema</span></code> type). If the item is named according to convention, the type tag may be omitted. For example, because <code class="docutils literal"><span class="pre">mtbSchema</span></code> ends in <code class="docutils literal"><span class="pre">Schema</span></code> Pneumatic knows it&#8217;s a schema.</p>
+<blockquote>
+<div><p># Declare a schema that defines our records
+mtbSchema:</p>
+<blockquote>
+<div><p>name: Input Schema
+columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li>name: name
+type: string</li>
+<li>name: year
+type: integer</li>
+<li>name: cost
+type: decimal</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p># Declare a pipe to join the file reader and database writer
+fileReaderOutput:
 # Declare a file reader to read from mtb.txt
-mtbFileReader: !fileReader
-  name: File Reader
-  fileResource: data/mtb.txt
-  output: -&gt;fileReaderOutput
-  outputSchema: -&gt;inputSchema
-
-# Declare a database writer to read from the pipe and write to the mtb table
-mtbDatabaseWriter: !databaseWriter
-  name: Database Writer
-  input: -&gt;fileReaderOutput
-  inputSchema: -&gt;mtbSchema
-  dataSource: -&gt;dataSource # Reference the data source declared in Spring XML
-  insertInto: mtb
+mtbFileReader:</p>
+<blockquote>
+<div>name: File Reader
+fileResource: data/mtb.txt
+output: fileReaderOutput # reference to fileReaderOutput
+outputSchema: mtbSchema # reference to mtbSchema</div></blockquote>
+<p># Declare a database writer to read from the pipe and write to the mtb table
+mtbDatabaseWriter:</p>
+<blockquote>
+<div>name: Database Writer
+input: fileReaderOutput
+inputSchema: mtbSchema
+dataSource: dataSource # Reference the data source declared in Spring XML
+insertInto: mtb</div></blockquote>
+</div></blockquote>
+<p>Visually, the job looks like this:</p>
+<img alt="_images/SimpleJob.png" src="_images/SimpleJob.png" />
+<p>The schema declaration (<code class="docutils literal"><span class="pre">mtbSchema</span></code>) is used to declare the structure of records in the job. A pipe (<code class="docutils literal"><span class="pre">fileReaderOutput</span></code>) provides a conduit from one processing element (called &#8220;filters&#8221;) to another.</p>
+<p>A file reader (<code class="docutils literal"><span class="pre">mtbFileReader</span></code>) reads a file, creating records according to its schema (<code class="docutils literal"><span class="pre">outputSchema:</span> <span class="pre">mtbSchema</span></code>) and sending them to the pipe referenced in its <code class="docutils literal"><span class="pre">output</span></code>.</p>
+<p>A database writer (<code class="docutils literal"><span class="pre">mtbDatabaseWriter</span></code>) writes records from the pipe referenced in its <code class="docutils literal"><span class="pre">input</span></code> to a table available in the data source: the <code class="docutils literal"><span class="pre">mtb</span></code> table referenced in the <code class="docutils literal"><span class="pre">insertInto</span></code> property in this case. The data source is specified using the Spring framework:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;jdbc:embedded-database id=&quot;dataSource&quot; type=&quot;HSQL&quot; /&gt;
 </pre></div>
 </div>
-<p>The first declaration (<code class="docutils literal"><span class="pre">id=&quot;dataSource&quot;</span></code>) is a Spring embedded data source. A data source is an object that provides connections to a database like Oracle, SQL Server, MySQL, etc.</p>
-<p>Next is a schema declaration (<code class="docutils literal"><span class="pre">mtbSchema</span></code>)  used to declare the structure of records in the job. A pipe (<code class="docutils literal"><span class="pre">fileReaderOutput</span></code>) provides a conduit from one processing element (called &#8220;filters&#8221;) to another. A file reader (<code class="docutils literal"><span class="pre">mtbFileReader</span></code>) reads a file, creating records and sending them to the pipe referenced in its <code class="docutils literal"><span class="pre">output</span></code>.</p>
-<p>A database writer (<cite>mtbDatabaseWriter</cite>) writes records from the pipe referenced in its <code class="docutils literal"><span class="pre">input</span></code> to a table available in the data source: the <code class="docutils literal"><span class="pre">mtb</span></code> table referenced in the <code class="docutils literal"><span class="pre">insertInto</span></code> property in this case.</p>
 <p>Declaring these elements provides Pneumatic enough information to read all the records in the file and write them to the database. When there are no more records to process, Pneumatic shuts down. That&#8217;s it.</p>
 </div>
 
@@ -204,7 +208,7 @@ mtbDatabaseWriter: !databaseWriter
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

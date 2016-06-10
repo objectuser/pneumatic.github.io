@@ -150,25 +150,25 @@
 <p>The copy filter has a single input pipe. It may have any number of output pipes. Each record on the input is written to each output:</p>
 <div class="highlight-python"><div class="highlight"><pre>output1: !pipe
 output2: !pipe
-duplicate: !copy
+duplicateCopy:
   name: Duplicate
-  input: -&gt;fileReaderOutput
+  input: fileReaderOutput
   outputs:
-    - -&gt;output1
-    - -&gt;output2
+    - output1
+    - output2
 </pre></div>
 </div>
 <p>Here&#8217;s the same example in XML, which has a slightly different form:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;copyOutput1&quot; /&gt;
-&lt;pipe id=&quot;copyOutput2&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;output1&quot; /&gt;
+&lt;pipe id=&quot;output2&quot; /&gt;
 &lt;copy id=&quot;duplicate&quot; name=&quot;Duplicate&quot;&gt;
   &lt;input ref=&quot;fileReaderOutput&quot; /&gt;
-  &lt;output ref=&quot;copyOutput1&quot; /&gt;
-  &lt;output ref=&quot;copyOutput2&quot; /&gt;
+  &lt;output ref=&quot;output1&quot; /&gt;
+  &lt;output ref=&quot;output2&quot; /&gt;
 &lt;/copy&gt;
 </pre></div>
 </div>
-<p>In this example, the records from the input (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>) are sent, unaltered, to both outputs (<code class="docutils literal"><span class="pre">ref=&quot;copyOutput1&quot;</span></code>, <code class="docutils literal"><span class="pre">ref=&quot;copyOutput2&quot;</span></code>).</p>
+<p>In this example, the records from the input (<code class="docutils literal"><span class="pre">fileReaderOutput</span></code>) are sent, unaltered, to both outputs (<code class="docutils literal"><span class="pre">output1</span></code>, <code class="docutils literal"><span class="pre">output2</span></code>).</p>
 </div>
 <div class="section" id="specification">
 <h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
@@ -218,7 +218,7 @@ duplicate: !copy
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

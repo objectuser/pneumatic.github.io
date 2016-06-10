@@ -153,15 +153,15 @@
 rejectionOutput: !pipe
 databaseReader: !databaseReader
   name: Database Reader
-  output: -&gt;output
-  outputSchema: -&gt;outputSchema
-  dataSource: -&gt;dataSource
+  output: output
+  outputSchema: outputSchema
+  dataSource: dataSource
   sql: select * from mtb where name = ? and year = ?
   parameters:
     - #job.name
     - #job.model_year
   rejection:
-    output: -&gt;rejectionOutput
+    output: rejectionOutput
 </pre></div>
 </div>
 <p>Here is the same example in XML:</p>
@@ -274,7 +274,7 @@ databaseReader: !databaseReader
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

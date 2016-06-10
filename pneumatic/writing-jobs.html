@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Writing Jobs &mdash; Pneumatic.IO Reference Guide</title>
+    
+    <link rel="stylesheet" href="_static/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Pneumatic.IO Reference Guide" href="index.html" />
+    <link rel="next" title="Filters" href="filters.html" />
+    <link rel="prev" title="Current State" href="overview.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body role="document">
+<div class="pageheader">
+  <ul>
+    <li><a href="http://pneumatic.io">Pnematic.IO Home</a></li>
+    <li><a href="https://github.com/objectuser/pneumatic">Get it on GitHub</a></li>
+    <li><a href="index.html">Docs Home</a></li>
+  </ul>
+  <div>
+    <a href="index.html">
+      <img src="_static/banner.png" alt="SPHINX" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="filters.html" title="Filters"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Current State"
+             accesskey="P">previous</a> |</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="index.html">Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Writing Jobs</a><ul>
+<li><a class="reference internal" href="#an-assembly-line">An Assembly Line</a></li>
+<li><a class="reference internal" href="#a-stepwise-approach">A Stepwise Approach</a></li>
+<li><a class="reference internal" href="#a-simple-job">A Simple Job</a><ul>
+<li><a class="reference internal" href="#more-about-schemas">More About Schemas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Current State</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="filters.html"
+                        title="next chapter">Filters</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/writing-jobs.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="writing-jobs">
+<h1>Writing Jobs<a class="headerlink" href="#writing-jobs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="an-assembly-line">
+<h2>An Assembly Line<a class="headerlink" href="#an-assembly-line" title="Permalink to this headline">¶</a></h2>
+<p>Pneumatic.IO takes a simple and powerful approach to the creation of jobs. A Pneumatic &#8220;job&#8221; is an assembly of &#8220;filters&#8221; that provide processing features, connected together with &#8220;pipes&#8221; that allow data to move from one filter to the next.</p>
+<p>You might think of a Pneumatic job as an assembly line. An assembly line consists of some arbitrary number of &#8220;stations&#8221;, that are major steps in the assembly process. Each station may use some materials as part of its process. Once a station is done with its part of the process, it sends the result down the assembly line to the next station.</p>
+<p>In Pneumatic, the assembly line stations are &#8220;filters&#8221;. Filters provide processing on input data, like the materials that are processed at an assembly line station. Once a filter is done with its work, it sends the result to the next filter, or maybe to a file or database if the result is complete (fully assembled).</p>
+<p>Filters work on &#8220;records&#8221; that are similar to records in a database. A filter works on one record at a time. When a filter is done working on a record, it may send the same record to its output. Or, more often, a modified form of the record that is a result of the filter&#8217;s processing.</p>
+<p>Some filters have multiple inputs and produce outputs based on some combination of the inputs. Some filters have multiple outputs, using its input to send records to each output. Some filters read from files or databases, or write to files or databases. These data sources are often the original source of the records processed by a Pneumatic job. Writing to data sources is often the final output of the job.</p>
+</div>
+<div class="section" id="a-stepwise-approach">
+<h2>A Stepwise Approach<a class="headerlink" href="#a-stepwise-approach" title="Permalink to this headline">¶</a></h2>
+<p>Building on the assembly line analogy, many problems are best solved by breaking them down into small steps. Small steps are usually easier to understand. Also, if something is wrong in one (small) step, it can often be more easily understood and fixed.</p>
+<p>Pneumatic.IO comes with a variety of filters that do one and only one thing. Jobs can be built from these simple filters joined together to form a complete assembly line for your process.</p>
+<p>Pneumatic also comes with more powerful, feature rich and complicated filters, like the <a class="reference internal" href="filters/transformer.html#transformer"><em>Transformer</em></a>. The Transformer can do just about anything the other processing filters can do, but it takes more work. When you need the power of the Transformer, it&#8217;s great to have it. But try doing things without it so your jobs are simpler and easier to understand.</p>
+</div>
+<div class="section" id="a-simple-job">
+<h2>A Simple Job<a class="headerlink" href="#a-simple-job" title="Permalink to this headline">¶</a></h2>
+<p>As an example of a very simple job, consider the process of reading from one file and writing to another file. Pneumatic include a filter for reading from a file. It also includes a filter for writing to a file. All we need to do is configure these filters and connect them with a pipe.</p>
+<p>Pneumatic.IO has both an XML and YAML syntax. The YAML syntax is far less verbose and human readable, so this document will focus on the YAML syntax. If you&#8217;re not familiar with YAML, the <a class="reference external" href="https://en.wikipedia.org/wiki/YAML">Wikipedia topic has a quick intro</a>.</p>
+<p>Here&#8217;s the job:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="nn">---</span>
+<span class="c1"># Define the structure of the data in the file</span>
+<span class="l-Scalar-Plain">fileSchema</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Input Schema</span>
+  <span class="l-Scalar-Plain">columns</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Name</span>
+      <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">string</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Count</span>
+      <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">integer</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Price</span>
+      <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">decimal</span>
+
+<span class="c1"># A pipe to connect the filters</span>
+<span class="l-Scalar-Plain">fileReaderOutput</span><span class="p-Indicator">:</span>
+
+<span class="c1"># Read the file</span>
+<span class="l-Scalar-Plain">fileReader</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">File Reader</span>
+  <span class="l-Scalar-Plain">fileResource</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file:src/test/resources/data/input1.txt</span>
+  <span class="l-Scalar-Plain">output</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fileReaderOutput</span>
+  <span class="l-Scalar-Plain">outputSchema</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fileSchema</span>
+
+<span class="c1"># Write the file</span>
+<span class="l-Scalar-Plain">fileWriter</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">File Writer 1</span>
+  <span class="l-Scalar-Plain">fileResource</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file:output/output1.txt</span>
+  <span class="l-Scalar-Plain">input</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fileReaderOutput</span>
+  <span class="l-Scalar-Plain">inputSchema</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fileSchema</span>
+</pre></div>
+</div>
+<p>The first thing is something we didn&#8217;t talk about: the &#8220;schema&#8221;. A schema here means the same thing as in relational databases: it defines the structure of the data. The schema&#8217;s identifier is <code class="docutils literal"><span class="pre">fileSchema</span></code> and it has a human friendly name of &#8220;Input Schema&#8221;. The schema has three columns.</p>
+<p>Next we define the pipe that connects the two filters: <code class="docutils literal"><span class="pre">fileReaderOutput</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">fileReader</span></code> is the job&#8217;s first filter. It has the following configuration:</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">name</span></code></dt>
+<dd>the name of the filter</dd>
+<dt><code class="docutils literal"><span class="pre">fileResource</span></code></dt>
+<dd>the location of the file to read</dd>
+<dt><code class="docutils literal"><span class="pre">output</span></code></dt>
+<dd>the pipe that gets the records read from the file</dd>
+<dt><code class="docutils literal"><span class="pre">outputSchema</span></code></dt>
+<dd>the schema of the records sent to the <code class="docutils literal"><span class="pre">output</span></code></dd>
+</dl>
+<p>Because the <code class="docutils literal"><span class="pre">fileSchema</span></code> has three columns, the File Reader filter will read the first three columns of each line in the file, in order. Also, the file reader expects comma-separated values (CSV) in the record by default.</p>
+<p>Here&#8217;s an example file (<code class="docutils literal"><span class="pre">input1.txt</span></code> provided in the <code class="docutils literal"><span class="pre">pneumatic-samples</span></code> project):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">one</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">100.0</span>
+<span class="n">two</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">200.0</span>
+<span class="n">three</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">300.0</span>
+<span class="n">five</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">500.0</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">fileWriter</span></code> reads the output from <code class="docutils literal"><span class="pre">fileReader</span></code> as its input because it&#8217;s hooked up to the same pipe. It uses the same schema and writes the record to the <code class="docutils literal"><span class="pre">fileResource</span></code> property.</p>
+<div class="section" id="more-about-schemas">
+<h3>More About Schemas<a class="headerlink" href="#more-about-schemas" title="Permalink to this headline">¶</a></h3>
+<p>Schemas have a dual purpose:</p>
+<p>1. Provide information to filters on how to interpret data
+1. Allow a filter to validate data according to the schema</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="filters.html" title="Filters"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Current State"
+             >previous</a> |</li>
+        <li><a href="http://pneumatic.io">Pneumatic home</a>&nbsp;|</li>
+        <li><a href="index.html">Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015-2016, Kevin Lewis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

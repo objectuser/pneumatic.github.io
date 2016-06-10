@@ -148,15 +148,15 @@
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The aggregator filter has a single input pipe. It also has a single output pipe: the aggregator output to which the aggregator&#8217;s function is applied.</p>
-<p>A single record is written to the after all input records have been processed from the aggregator&#8217;s input.</p>
+<p>A single record is written to the output after all input records have been processed.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>input: !pipe
-aggregatorOutput: !pipe
-aggregator: !aggregator
+<div class="highlight-python"><div class="highlight"><pre>input:
+aggregatorOutput:
+aggregator:
   name: Test Aggregator
-  input: -&gt;input
-  output: -&gt;aggregatorOutput
-  outputSchema: -&gt;aggregatorSchema
+  input: input
+  output: aggregatorOutput
+  outputSchema: aggregatorSchema
   function: !sum
     in:
       name: Price
@@ -187,7 +187,7 @@ aggregator: !aggregator
 &lt;/aggregator&gt;
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">function</span></code> element is the heart of the aggregator. In this case, we have a &#8220;sum&#8221; function (<code class="docutils literal"><span class="pre">sum</span></code>). The sum function sums the input selected by the <code class="docutils literal"><span class="pre">in</span></code> column and writes it to the output in the column defined in <code class="docutils literal"><span class="pre">out</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">function</span></code> element is the heart of the aggregator. In this case, we have a &#8220;sum&#8221; function (<code class="docutils literal"><span class="pre">!sum</span></code>). The sum function sums the input selected by the <code class="docutils literal"><span class="pre">in</span></code> column and writes it to the output in the column defined in <code class="docutils literal"><span class="pre">out</span></code>.</p>
 <p>The available functions are:</p>
 <ul class="simple">
 <li>average</li>
@@ -225,15 +225,15 @@ aggregator: !aggregator
 </pre></div>
 </div>
 <p>Then simply reference the function:</p>
-<div class="highlight-python"><div class="highlight"><pre>input: !pipe
-aggregatorOutput: !pipe
-aggregator: !aggregator
+<div class="highlight-python"><div class="highlight"><pre>input:
+aggregatorOutput:
+aggregator:
   name: Test Aggregator
-  input: -&gt;input
-  inputSchema: -&gt;inputSchema
-  output: -&gt;aggregatorOutput
-  outputSchema: -&gt;aggregatorSchema
-  function: -&gt;myAverageFunction
+  input: input
+  inputSchema: inputSchema
+  output: aggregatorOutput
+  outputSchema: aggregatorSchema
+  function: myAverageFunction
 </pre></div>
 </div>
 <p>In this case, we are referencing the underlying Java class (<code class="docutils literal"><span class="pre">SumFunction</span></code>). Any function that implements the internal Function interface may be used. That interface is:</p>
@@ -320,7 +320,7 @@ aggregator: !aggregator
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

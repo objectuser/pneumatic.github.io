@@ -137,6 +137,15 @@
   <div class="section" id="file-reader">
 <span id="id1"></span><h1>File Reader<a class="headerlink" href="#file-reader" title="Permalink to this headline">¶</a></h1>
 <p>The file reader reads records from a file and writes them to its output. Records are read using a CSV format. A schema is required to define the records. Consider the following example:</p>
+<div class="highlight-python"><div class="highlight"><pre>fileReaderOutput: !pipe
+fileReader:
+  name: File Reader
+  fileResource: classpath:data/mtb.txt
+  output: fileReaderOutput
+  outputSchema: inputSchema
+</pre></div>
+</div>
+<p>Here&#8217;s the same example in XML:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
 &lt;fileReader id=&quot;fileReader&quot; name=&quot;File Reader&quot;&gt;
   &lt;fileResource location=&quot;classpath:data/mtb.txt&quot; /&gt;
@@ -145,9 +154,10 @@
 &lt;/fileReader&gt;
 </pre></div>
 </div>
-<p>The file reader reads from the file given by its location (<code class="docutils literal"><span class="pre">location=&quot;classpath:data/mtb.txt&quot;</span></code>). Alternatively, a job argument may be used to specify the file location::1</p>
-<blockquote>
-<div>&lt;fileResource locationExpression=&#8221;#job.file&#8221; /&gt;</div></blockquote>
+<p>The file reader reads from the file given by its location (<code class="docutils literal"><span class="pre">location=&quot;classpath:data/mtb.txt&quot;</span></code>). Alternatively, a job argument may be used to specify the file location:</p>
+<div class="highlight-python"><div class="highlight"><pre>fileResource locationExpression=&quot;#job.file&quot; /&gt;
+</pre></div>
+</div>
 <p>The records read from the file are put on the output pipe (<code class="docutils literal"><span class="pre">ref=&quot;fileReaderOutput&quot;</span></code>). The records are constructed according to the supplied schema (<code class="docutils literal"><span class="pre">ref=&quot;mtbSchema&quot;</span></code>).</p>
 <p>The file reader supports the <code class="docutils literal"><span class="pre">rejection</span></code> element for controlling rejected records:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;fileReaderOutput&quot; /&gt;
@@ -190,7 +200,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

@@ -151,9 +151,9 @@
 <div class="highlight-python"><div class="highlight"><pre>input: !pipe
 databaseWriter: !databaseWriter
   name: Database Writer
-  input: -&gt;input
-  inputSchema: -&gt;mtbSchema
-  dataSource: -&gt;dataSource
+  input: input
+  inputSchema: mtbSchema
+  dataSource: dataSource
   insertInto: mtb
 </pre></div>
 </div>
@@ -172,9 +172,9 @@ databaseWriter: !databaseWriter
 <div class="highlight-python"><div class="highlight"><pre>input: !pipe
 databaseWriter: !databaseWriter
   name: Database Writer
-  input: -&gt;input
-  inputSchema: -&gt;mtbSchema
-  dataSource: -&gt;dataSource
+  input: input
+  inputSchema: mtbSchema
+  dataSource: dataSource
   updateWith:
     sql: update mtb set year = ?, cost = ? where name = ?
     parameters:
@@ -290,7 +290,7 @@ databaseWriter: !databaseWriter
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

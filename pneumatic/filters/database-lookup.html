@@ -156,15 +156,15 @@
 </ol>
 <p>It is important to avoid name collisions to ensure the results are as expected. Use aliasing on the select statement if needed to ensure those columns do not conflict with those on the input schema. Alternatively, use a mapper filter to change the schema of the input before it comes into this filter.</p>
 <p>Consider the following example:</p>
-<div class="highlight-python"><div class="highlight"><pre>input: !pipe
-output: !pipe
-databaseLookup: !databaseLookup
+<div class="highlight-python"><div class="highlight"><pre>input:
+output:
+databaseLookup:
   name: Database Lookup
-  input: -&gt;input
-  inputSchema: -&gt;mtbSchema
-  output: -&gt;output
-  outputSchema: -&gt;sqlSelectSchema
-  dataSource: -&gt;dataSource
+  input: input
+  inputSchema: mtbSchema
+  output: output
+  outputSchema: sqlSelectSchema
+  dataSource: dataSource
   sql: select cost from mtb where name = ? and year = ?
   parameters:
     - &quot;#inputRecord.name&quot;
@@ -280,7 +280,7 @@ databaseLookup: !databaseLookup
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

@@ -139,74 +139,79 @@
 <p>The transformer filter may be the most powerful filter, but also the most complex. The transformer is like an enhanced copy filter: it supports a single input, but any number of outputs. The outputs may be controlled through conditions and expressions.</p>
 <p>The transformer uses the <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring SpEL</a> expression language for expressions. The SpEL expressions are compiled, so they should not incur a large performance penalty.</p>
 <p>Consider the following transformer example:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;pipe id=&quot;input&quot; /&gt;
-&lt;pipe id=&quot;output1&quot; /&gt;
-&lt;pipe id=&quot;output2&quot; /&gt;
-&lt;pipe id=&quot;output3&quot; /&gt;
+<div class="highlight-python"><div class="highlight"><pre>input:
+transformerOutput:
+transformerOrderOutput:
+transformerOrderCountOutput:
 
-&lt;transformer id=&quot;validatingTransformer&quot; name=&quot;Validating Transformer&quot;&gt;
-  &lt;input ref=&quot;input&quot; /&gt;
-  &lt;variable name=&quot;lastName&quot;&gt;&#39;&#39;&lt;/variable&gt;
-  &lt;variable name=&quot;orderingProblem&quot;&gt;false&lt;/variable&gt;
-  &lt;variable name=&quot;orderingProblemCount&quot;&gt;0&lt;/variable&gt;
-  &lt;expression&gt;#orderingProblem = #lastName &amp;gt; #inputRecord.Name&lt;/expression&gt;
-  &lt;expression&gt;#orderingProblemCount = #orderingProblemCount + (#orderingProblem ? 1 : 0)&lt;/expression&gt;
-  &lt;expression&gt;#lastName = #inputRecord.Name&lt;/expression&gt;
-  &lt;outputConfiguration outputName=&quot;transformerOutput&quot; recordName=&quot;outputRecord&quot;&gt;
-    &lt;output ref=&quot;output1&quot; /&gt;
-    &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-    &lt;outputCondition&gt;!#orderingProblem&lt;/outputCondition&gt;
-    &lt;expression&gt;#outputRecord.Name = #inputRecord.Name&lt;/expression&gt;
-    &lt;expression&gt;#outputRecord.Count = #inputRecord.Count&lt;/expression&gt;
-    &lt;expression&gt;#outputRecord.Price = #inputRecord.Price&lt;/expression&gt;
-  &lt;/outputConfiguration&gt;
-  &lt;outputConfiguration outputName=&quot;transformerOrderOutput&quot; recordName=&quot;invalidRecord&quot;&gt;
-    &lt;output ref=&quot;output2&quot; /&gt;
-    &lt;outputSchema ref=&quot;inputSchema&quot; /&gt;
-    &lt;outputCondition&gt;#orderingProblem&lt;/outputCondition&gt;
-    &lt;expression&gt;#invalidRecord.Name = #inputRecord.Name&lt;/expression&gt;
-    &lt;expression&gt;#invalidRecord.Count = #inputRecord.Count&lt;/expression&gt;
-    &lt;expression&gt;#invalidRecord.Price = #inputRecord.Price&lt;/expression&gt;
-  &lt;/outputConfiguration&gt;
-  &lt;outputConfiguration outputName=&quot;transformerOrderCountOutput&quot; recordName=&quot;invalidCountRecord&quot;&gt;
-    &lt;output ref=&quot;output3&quot; /&gt;
-    &lt;outputSchema ref=&quot;countSchema&quot; /&gt;
-    &lt;outputCondition&gt;#input.complete&lt;/outputCondition&gt;
-    &lt;expression&gt;#invalidCountRecord.Count = #orderingProblemCount&lt;/expression&gt;
-  &lt;/outputConfiguration&gt;
-&lt;/transformer&gt;
+validatingTransformer
+  name: Validating Transformer
+  input: input
+  variables:
+    lastName: &quot;&#39;&#39;&quot;
+    orderingProblem: false
+    orderingProblemCount: 0
+  expressions:
+    - &quot;#orderingProblem = #lastName &gt; #inputRecord.Name&quot;
+    - &quot;#orderingProblemCount = #orderingProblemCount + (#orderingProblem ? 1 : 0)&quot;
+    - &quot;#lastName = #inputRecord.Name&quot;
+  outputConfigurations:
+    - name: transformerOutput
+      recordName: outputRecord
+      output: transformerOutput
+      outputSchema: inputSchema
+      outputCondition: &quot;!#orderingProblem&quot;
+      expressions:
+        - &quot;#outputRecord.Name = #inputRecord.Name&quot;
+        - &quot;#outputRecord.Count = #inputRecord.Count&quot;
+        - &quot;#outputRecord.Price = #inputRecord.Price&quot;
+    - name: transformerOrderOutput
+      recordName: invalidRecord
+      output: transformerOrderOutput
+      outputSchema: inputSchema
+      outputCondition: &quot;#orderingProblem&quot;
+      expressions:
+        - &quot;#invalidRecord.Name = #inputRecord.Name&quot;
+        - &quot;#invalidRecord.Count = #inputRecord.Count&quot;
+        - &quot;#invalidRecord.Price = #inputRecord.Price&quot;
+    - name: transformerOrderCountOutput
+      recordName: invalidCountRecord
+      output: transformerOrderCountOutput
+      outputSchema: countSchema
+      outputCondition: &quot;#input.complete&quot;
+      expressions:
+        - &quot;#invalidCountRecord.Count = #orderingProblemCount&quot;
 </pre></div>
 </div>
-<p>The first elements are pipes: one input (<code class="docutils literal"><span class="pre">id=&quot;input&quot;</span></code>) and some outputs (<code class="docutils literal"><span class="pre">id=&quot;output1&quot;</span></code>, <code class="docutils literal"><span class="pre">id=&quot;output2&quot;</span></code>, <code class="docutils literal"><span class="pre">id=&quot;output3&quot;</span></code>) that will be outputs from the transformer.</p>
-<p>Next, the transformer is declared (<code class="docutils literal"><span class="pre">id=&quot;transformer&quot;</span></code>).</p>
-<p>The first element of the transformer is its single input:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;input ref=&quot;input&quot; /&gt;
+<p>The first elements are pipes: one input (<code class="docutils literal"><span class="pre">input</span></code>) and some outputs (<code class="docutils literal"><span class="pre">transformerOutput</span></code>, <code class="docutils literal"><span class="pre">transformerOrderOutput</span></code>, <code class="docutils literal"><span class="pre">transformerOrderCountOutput</span></code>) that will be outputs from the transformer.</p>
+<p>Next, the transformer is declared (<code class="docutils literal"><span class="pre">validatingTransformer</span></code>).</p>
+<p>After its name, the first element of the transformer is its single input. This sets the input of the transformer to the pipe named &#8220;input&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre>input: input
 </pre></div>
 </div>
-<p>Next is a set of variables. The variables may be initialized to any constant value. The initialization of the variables occurs before any records have been processed. The values of previously declared variables or input records are not available for initialization. The variables may be used in the output configuration for both output conditions and expressions.</p>
+<p>Next is a set of variables. The variables may be initialized to any constant value. The initialization of the variables occurs before any records have been processed. The values of previously declared variables or input records are not available for initialization. The variables may be used in the expressions section and in the output configuration for both output conditions and expressions.</p>
 <p>The variables are followed by a set of expressions. The expressions are executed for each input record processed by the filter. The following expression sets the <code class="docutils literal"><span class="pre">orderingProblem</span></code> boolean value to true or false, depending on if the value of <code class="docutils literal"><span class="pre">lastName</span></code> is alpha-numerically greater than the value of the <code class="docutils literal"><span class="pre">Name</span></code> column on the current input record:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#orderingProblem = #lastName &amp;gt; #inputRecord.Name&lt;/expression&gt;
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;#orderingProblem = #lastName &gt; #inputRecord.Name&quot;</span>
 </pre></div>
 </div>
 <p>This means that if, for example, <code class="docutils literal"><span class="pre">lastName</span></code> is &#8220;Mojo&#8221; and the value of <code class="docutils literal"><span class="pre">inputRecord.Name</span></code> is &#8220;Bronson&#8221;, <code class="docutils literal"><span class="pre">lastName</span></code> will be set to &#8220;true&#8221; because &#8220;M&#8221; comes after &#8220;B&#8221; in the alphabet.</p>
-<p>(Note that this one of the cases in which XML is not the best format for expressing filter configurations: we must use the literal <code class="docutils literal"><span class="pre">&amp;lt;</span></code> to express <code class="docutils literal"><span class="pre">&lt;</span></code> and <code class="docutils literal"><span class="pre">&amp;gt;</span></code> to express <code class="docutils literal"><span class="pre">&gt;</span></code>. Consult a <a class="reference external" href="http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references">reference</a> when creating expressions that cause issues with XML.)</p>
 <p>There are two forms for accessing a column on a record. One is using the &#8220;dot&#8221; notation as above: <code class="docutils literal"><span class="pre">inputRecord.Name</span></code>. The name of the record is before the dot and the column name is after the dot. An alternative is to use brackets: &#8220;[]&#8221;. This is especially useful if the column name contains spaces. In the following example, the column name is &#8220;Column Name with Spaces&#8221;:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#inputRecord[&quot;Column Name with Spaces&quot;] = &quot;A useful value&quot;&lt;/expression&gt;
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;#inputRecord[&#39;Column Name with Spaces&#39;] = &#39;A useful value&#39;&quot;</span>
 </pre></div>
 </div>
-<p>Next in the example is a set of &#8220;output configurations&#8221;. These define the outputs of the transformer. Each configuration (<code class="docutils literal"><span class="pre">config</span></code>) has two attributes. First is the <code class="docutils literal"><span class="pre">outputName</span></code>, which defines a variable for the output pipe used by the configuration. This variable may be used in expressions. Second is the <code class="docutils literal"><span class="pre">recordName</span></code>, which defines a variable for the record that will be output for that configuration. In this example, the <code class="docutils literal"><span class="pre">outputName</span></code> is not being used, but the <code class="docutils literal"><span class="pre">recordName</span></code> is used in each configuration:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#outputRecord.Count = #inputRecord.Count&lt;/expression&gt;
+<p>Next in the example is a list of &#8220;output configurations&#8221;. These define the outputs of the transformer. Each configuration has a number of attributes. First is the <code class="docutils literal"><span class="pre">name</span></code>, which is used in logging. Second is the <code class="docutils literal"><span class="pre">recordName</span></code>, which defines a variable for the record that will be output for that configuration. Next is the <code class="docutils literal"><span class="pre">output</span></code> which sets the pipe for the output configuration. In this example the <code class="docutils literal"><span class="pre">recordName</span></code> is used in each configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;#outputRecord.Count = #inputRecord.Count&quot;</span>
 </pre></div>
 </div>
-<p>This expression sets the value of the <code class="docutils literal"><span class="pre">Count</span></code> column on the <code class="docutils literal"><span class="pre">outputRecord</span></code> to twice the value of the <code class="docutils literal"><span class="pre">Count</span></code> column on the <code class="docutils literal"><span class="pre">inputRecord</span></code>. The <code class="docutils literal"><span class="pre">inputRecord</span></code> is an implicit variable available to all expressions, capturing the current input record of the filter.</p>
+<p>This expression sets the value of the <code class="docutils literal"><span class="pre">Count</span></code> column on the <code class="docutils literal"><span class="pre">outputRecord</span></code> to the value of the <code class="docutils literal"><span class="pre">Count</span></code> column on the <code class="docutils literal"><span class="pre">inputRecord</span></code>. The <code class="docutils literal"><span class="pre">inputRecord</span></code> is an automatic variable available to all expressions, capturing the current input record of the filter.</p>
 <p>The output condition (<code class="docutils literal"><span class="pre">outputCondition</span></code>) element controls the output of a configuration. If the value of the expression is true, the record is written to the output. Otherwise, no record is written. In this example, the <code class="docutils literal"><span class="pre">transformerOutput</span></code> and <code class="docutils literal"><span class="pre">transformerOrderOutput</span></code> are written in opposite conditions: if there is no ordering problem, a record is written to the former, otherwise a record is written to the latter.</p>
-<p>Another variable is the <code class="docutils literal"><span class="pre">input</span></code> variable: it represents the input pipe for the filter and can likewise be used in expressions. In this example, the third output configuration (<code class="docutils literal"><span class="pre">outputName=&quot;transformerOrderCountOutput&quot;</span></code>) has a condition on the input being complete:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;outputCondition&gt;#input.complete&lt;/outputCondition&gt;
+<p>Another variable is the <code class="docutils literal"><span class="pre">input</span></code> variable: it represents the input pipe for the filter and can likewise be used in expressions. In this example, the third output configuration (<code class="docutils literal"><span class="pre">name:</span> <span class="pre">transformerOrderCountOutput</span></code>) has a condition on the input being complete:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;#input.complete&quot;</span>
 </pre></div>
 </div>
 <p>The count of out of order records is written to this output when all records have been read from the input. In this way a transformer may act as an aggregator filter.</p>
 <p>The transformer also supports a short-hand for copying an entire record from the input to the output so that all of the individual columns do not need to be copied individually:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;expression&gt;#outputRecord = #inputRecord&lt;/expression&gt;
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;#outputRecord = #inputRecord&quot;</span>
 </pre></div>
 </div>
 <p>While the transformer is very powerful, it can also be very complex. Designs using simpler filters are easier to understand. Consider the transformer to be a special purpose filter when no other filter will do.</p>
@@ -237,7 +242,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

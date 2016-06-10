@@ -26,7 +26,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="Pneumatic.IO Reference Guide" href="index.html" />
-    <link rel="next" title="Filters" href="filters.html" />
+    <link rel="next" title="Writing Jobs" href="writing-jobs.html" />
     <link rel="prev" title="Getting Involved" href="getting-involved.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css' />
@@ -86,7 +86,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="filters.html" title="Filters"
+          <a href="writing-jobs.html" title="Writing Jobs"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="getting-involved.html" title="Getting Involved"
@@ -121,8 +121,8 @@
   <p class="topless"><a href="getting-involved.html"
                         title="previous chapter">Getting Involved</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="filters.html"
-                        title="next chapter">Filters</a></p>
+  <p class="topless"><a href="writing-jobs.html"
+                        title="next chapter">Writing Jobs</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -163,7 +163,7 @@
 <h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="jobs-and-filters">
 <h2>Jobs and Filters<a class="headerlink" href="#jobs-and-filters" title="Permalink to this headline">¶</a></h2>
-<p>Pneumatic &#8220;programs&#8221; are represented as &#8220;jobs&#8221;. Jobs read from files, from databases, from services and write to those same things. They transform data, join it, filter it, aggregate it and more.</p>
+<p>Pneumatic &#8220;programs&#8221; are known as &#8220;jobs&#8221;. Jobs read from files, from databases, from services and write to those same things. They transform data, join it, filter it, aggregate it and more.</p>
 <p>The reading, writing, transforming, etc. are done in &#8220;filters&#8221;. Filters are connected through pipes that carry the data from one filter to the next. This <a class="reference external" href="http://www.eaipatterns.com/PipesAndFilters.html">pipes and filters</a> architecture is widely-known. It&#8217;s conceptually simple, yet quite powerful, and is the fundamental pattern of Pneumatic jobs.</p>
 <p>It looks a bit like this:</p>
 <img alt="_images/architecture.png" src="_images/architecture.png" />
@@ -172,12 +172,12 @@
 <div class="section" id="running-a-job">
 <h3>Running a Job<a class="headerlink" href="#running-a-job" title="Permalink to this headline">¶</a></h3>
 <p>Jobs may be run in a variety of ways. The easiest way to run a job is using the &#8220;Pneumatic Shell&#8221; (<code class="docutils literal"><span class="pre">pn.sh</span></code> on most systems or <code class="docutils literal"><span class="pre">pn.cmd</span></code> on Windows). The file <code class="docutils literal"><span class="pre">pn.sh</span></code> is in the <code class="docutils literal"><span class="pre">pneumatic-samples</span></code> project on <a class="reference external" href="https://github.com/objectuser/pneumatic">GitHub</a>.</p>
-<p>If your job is contained in <code class="docutils literal"><span class="pre">job.xml</span></code>, run it like this:</p>
-<div class="highlight-python"><div class="highlight"><pre>sh pn.sh run job.xml
+<p>If your job is contained in <code class="docutils literal"><span class="pre">job.yml</span></code>, run it like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>sh pn.sh run job.yml
 </pre></div>
 </div>
 <p>If you have, for example, RESTful services provided by your job, use the Spring Boot runner:</p>
-<div class="highlight-python"><div class="highlight"><pre>sh pn.sh boot job.xml
+<div class="highlight-python"><div class="highlight"><pre>sh pn.sh boot job.yml
 </pre></div>
 </div>
 <p>The boot runner will stay resident until Spring Boot shuts down.</p>
@@ -194,8 +194,8 @@
 <div class="section" id="schemas">
 <h2>Schemas<a class="headerlink" href="#schemas" title="Permalink to this headline">¶</a></h2>
 <p>Schemas describe the structure of data. Filters use schemas for validating and generating structured data in the form of &#8220;records&#8221;. A record may be thought of as an &#8220;instance&#8221; of a schema. A schema is to a record like a car is to a 2015 Porsche 911.</p>
-<p>From the previous example, a schema is defined using the <code class="docutils literal"><span class="pre">schema</span></code> tag. A schema may have one to any number of columns, each with a name and a type. Currently, Pneumatic only supports <code class="docutils literal"><span class="pre">string</span></code> (Java String), <code class="docutils literal"><span class="pre">integer</span></code> (Java Integer) and <code class="docutils literal"><span class="pre">decimal</span></code> (Java Double) column types:</p>
-<div class="highlight-python"><div class="highlight"><pre>mtbSchema: !schema
+<p>From the previous example, a schema is defined by convention: ending the item with <code class="docutils literal"><span class="pre">Schema</span></code>. A YAML tag can also be used (<code class="docutils literal"><span class="pre">!schema</span></code>). A schema may have one to any number of columns, each with a name and a type. Currently, Pneumatic only supports <code class="docutils literal"><span class="pre">string</span></code> (Java String), <code class="docutils literal"><span class="pre">integer</span></code> (Java Integer) and <code class="docutils literal"><span class="pre">decimal</span></code> (Java Double) column types:</p>
+<div class="highlight-python"><div class="highlight"><pre>mtbSchema:
   name: Input Schema
   columns:
     - name: name
@@ -207,7 +207,7 @@
 </pre></div>
 </div>
 <p>If a record does not need to be validated or generated, no schema is required by the filter. An example of this is the copy filter which copies the input records to the configured outputs, unmodified.</p>
-<p>Sometimes a schema is optional. If the schema is not provided, information is derived from other configuration or runtime elements (like the structure of the incoming record). If the schema is supplied, it can be used to validate the configuration of the filter. This requires slightly more configuration, but schema information in validated before a job starts, so supplying a schema can save time spent processing with an invalid configuration.</p>
+<p>Sometimes a schema is optional. If the schema is not provided, information is derived from other configuration or runtime elements (like the structure of the incoming record). If the schema is supplied, it can be used to validate the configuration of the filter. This requires slightly more configuration, but schema information is validated before a job starts, so supplying a schema can save time spent processing with an invalid configuration.</p>
 <div class="section" id="schema-types">
 <h3>Schema Types<a class="headerlink" href="#schema-types" title="Permalink to this headline">¶</a></h3>
 <p>There are three types of schemas:</p>
@@ -220,7 +220,7 @@
 </div>
 <div class="section" id="pipes">
 <h2>Pipes<a class="headerlink" href="#pipes" title="Permalink to this headline">¶</a></h2>
-<p>Pipes are conduits for data. Pipes hold data after it is processed by a filter, until it is extracted by another filter. Pipes have a fixed (and configurable) capacity. When the capacity is reached, a filter putting a record into a pipe will block until the filter on the other end of the pipe removes a record.</p>
+<p>Pipes are conduits for data. Pipes hold data after it is processed by a filter, until it is extracted by another filter. Pipes have a fixed (and configurable) capacity. When the capacity is reached, a filter adding a record to a pipe will block until the filter on the other end of the pipe removes a record.</p>
 </div>
 <div class="section" id="foundations">
 <h2>Foundations<a class="headerlink" href="#foundations" title="Permalink to this headline">¶</a></h2>
@@ -248,7 +248,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="filters.html" title="Filters"
+          <a href="writing-jobs.html" title="Writing Jobs"
              >next</a> |</li>
         <li class="right" >
           <a href="getting-involved.html" title="Getting Involved"
@@ -259,7 +259,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Kevin Lewis.
+        &copy; Copyright 2015-2016, Kevin Lewis.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
