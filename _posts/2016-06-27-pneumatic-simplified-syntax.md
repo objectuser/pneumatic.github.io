@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Pneumatic YAML: Simplifying the Syntax"
-date:   2016-06-14 08:00:00
+date:   2016-06-27 08:00:00
 categories: pneumatic
 comments: true
 ---
